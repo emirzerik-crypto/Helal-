@@ -1,0 +1,1012 @@
+{
+  "generatedAt": "2026-08-27T05:03:30.111Z",
+  "format": "PNG",
+  "categories": [
+    "mobs",
+    "resources",
+    "players",
+    "weapons"
+  ],
+  "assets": [
+    {
+      "name": "mobs/goblin-34.png",
+      "category": "mob",
+      "width": 116,
+      "height": 116,
+      "pivotX": 58,
+      "pivotY": 58
+    },
+    {
+      "name": "mobs/boar-46.png",
+      "category": "mob",
+      "width": 157,
+      "height": 157,
+      "pivotX": 78.5,
+      "pivotY": 78.5
+    },
+    {
+      "name": "mobs/treant-64.png",
+      "category": "mob",
+      "width": 218,
+      "height": 218,
+      "pivotX": 109,
+      "pivotY": 109
+    },
+    {
+      "name": "mobs/bat-28.png",
+      "category": "mob",
+      "width": 96,
+      "height": 96,
+      "pivotX": 48,
+      "pivotY": 48
+    },
+    {
+      "name": "mobs/squirrel-22.png",
+      "category": "mob",
+      "width": 96,
+      "height": 96,
+      "pivotX": 48,
+      "pivotY": 48
+    },
+    {
+      "name": "mobs/mushroom-36.png",
+      "category": "mob",
+      "width": 123,
+      "height": 123,
+      "pivotX": 61.5,
+      "pivotY": 61.5
+    },
+    {
+      "name": "mobs/snowman-38.png",
+      "category": "mob",
+      "width": 130,
+      "height": 130,
+      "pivotX": 65,
+      "pivotY": 65
+    },
+    {
+      "name": "mobs/icetroll-60.png",
+      "category": "mob",
+      "width": 204,
+      "height": 204,
+      "pivotX": 102,
+      "pivotY": 102
+    },
+    {
+      "name": "mobs/arcticwolf-36.png",
+      "category": "mob",
+      "width": 123,
+      "height": 123,
+      "pivotX": 61.5,
+      "pivotY": 61.5
+    },
+    {
+      "name": "mobs/skeleton-32.png",
+      "category": "mob",
+      "width": 109,
+      "height": 109,
+      "pivotX": 54.5,
+      "pivotY": 54.5
+    },
+    {
+      "name": "mobs/penguin-29.png",
+      "category": "mob",
+      "width": 99,
+      "height": 99,
+      "pivotX": 49.5,
+      "pivotY": 49.5
+    },
+    {
+      "name": "mobs/icewraith-31.png",
+      "category": "mob",
+      "width": 106,
+      "height": 106,
+      "pivotX": 53,
+      "pivotY": 53
+    },
+    {
+      "name": "mobs/scorpion-40.png",
+      "category": "mob",
+      "width": 136,
+      "height": 136,
+      "pivotX": 68,
+      "pivotY": 68
+    },
+    {
+      "name": "mobs/mummy-46.png",
+      "category": "mob",
+      "width": 157,
+      "height": 157,
+      "pivotX": 78.5,
+      "pivotY": 78.5
+    },
+    {
+      "name": "mobs/sandgiant-68.png",
+      "category": "mob",
+      "width": 232,
+      "height": 232,
+      "pivotX": 116,
+      "pivotY": 116
+    },
+    {
+      "name": "mobs/sandcrab-36.png",
+      "category": "mob",
+      "width": 123,
+      "height": 123,
+      "pivotX": 61.5,
+      "pivotY": 61.5
+    },
+    {
+      "name": "mobs/cobra-27.png",
+      "category": "mob",
+      "width": 96,
+      "height": 96,
+      "pivotX": 48,
+      "pivotY": 48
+    },
+    {
+      "name": "mobs/vulture-38.png",
+      "category": "mob",
+      "width": 130,
+      "height": 130,
+      "pivotX": 65,
+      "pivotY": 65
+    },
+    {
+      "name": "mobs/slime-30.png",
+      "category": "mob",
+      "width": 102,
+      "height": 102,
+      "pivotX": 51,
+      "pivotY": 51
+    },
+    {
+      "name": "mobs/toad-52.png",
+      "category": "mob",
+      "width": 177,
+      "height": 177,
+      "pivotX": 88.5,
+      "pivotY": 88.5
+    },
+    {
+      "name": "mobs/croc-68.png",
+      "category": "mob",
+      "width": 232,
+      "height": 232,
+      "pivotX": 116,
+      "pivotY": 116
+    },
+    {
+      "name": "mobs/deepworm-46.png",
+      "category": "mob",
+      "width": 157,
+      "height": 157,
+      "pivotX": 78.5,
+      "pivotY": 78.5
+    },
+    {
+      "name": "mobs/mosquito-18.png",
+      "category": "mob",
+      "width": 96,
+      "height": 96,
+      "pivotX": 48,
+      "pivotY": 48
+    },
+    {
+      "name": "mobs/swampshaman-42.png",
+      "category": "mob",
+      "width": 143,
+      "height": 143,
+      "pivotX": 71.5,
+      "pivotY": 71.5
+    },
+    {
+      "name": "mobs/shadowwolf-38.png",
+      "category": "mob",
+      "width": 130,
+      "height": 130,
+      "pivotX": 65,
+      "pivotY": 65
+    },
+    {
+      "name": "mobs/spider-46.png",
+      "category": "mob",
+      "width": 157,
+      "height": 157,
+      "pivotX": 78.5,
+      "pivotY": 78.5
+    },
+    {
+      "name": "mobs/nightmarent-74.png",
+      "category": "mob",
+      "width": 252,
+      "height": 252,
+      "pivotX": 126,
+      "pivotY": 126
+    },
+    {
+      "name": "mobs/firebird-38.png",
+      "category": "mob",
+      "width": 130,
+      "height": 130,
+      "pivotX": 65,
+      "pivotY": 65
+    },
+    {
+      "name": "mobs/demoneye-34.png",
+      "category": "mob",
+      "width": 116,
+      "height": 116,
+      "pivotX": 58,
+      "pivotY": 58
+    },
+    {
+      "name": "mobs/darkpuppet-28.png",
+      "category": "mob",
+      "width": 96,
+      "height": 96,
+      "pivotX": 48,
+      "pivotY": 48
+    },
+    {
+      "name": "mobs/werewolf-52.png",
+      "category": "mob",
+      "width": 177,
+      "height": 177,
+      "pivotX": 88.5,
+      "pivotY": 88.5
+    },
+    {
+      "name": "mobs/golem-66.png",
+      "category": "mob",
+      "width": 225,
+      "height": 225,
+      "pivotX": 112.5,
+      "pivotY": 112.5
+    },
+    {
+      "name": "mobs/vampire-38.png",
+      "category": "mob",
+      "width": 130,
+      "height": 130,
+      "pivotX": 65,
+      "pivotY": 65
+    },
+    {
+      "name": "mobs/thornbeast-50.png",
+      "category": "mob",
+      "width": 170,
+      "height": 170,
+      "pivotX": 85,
+      "pivotY": 85
+    },
+    {
+      "name": "mobs/phoenix-40.png",
+      "category": "mob",
+      "width": 136,
+      "height": 136,
+      "pivotX": 68,
+      "pivotY": 68
+    },
+    {
+      "name": "mobs/crystalgolem-60.png",
+      "category": "mob",
+      "width": 204,
+      "height": 204,
+      "pivotX": 102,
+      "pivotY": 102
+    },
+    {
+      "name": "mobs/minotaur-60.png",
+      "category": "mob",
+      "width": 204,
+      "height": 204,
+      "pivotX": 102,
+      "pivotY": 102
+    },
+    {
+      "name": "mobs/stoneking-72.png",
+      "category": "mob",
+      "width": 245,
+      "height": 245,
+      "pivotX": 122.5,
+      "pivotY": 122.5
+    },
+    {
+      "name": "mobs/naga-48.png",
+      "category": "mob",
+      "width": 164,
+      "height": 164,
+      "pivotX": 82,
+      "pivotY": 82
+    },
+    {
+      "name": "mobs/lich-44.png",
+      "category": "mob",
+      "width": 150,
+      "height": 150,
+      "pivotX": 75,
+      "pivotY": 75
+    },
+    {
+      "name": "mobs/shadowreaper-38.png",
+      "category": "mob",
+      "width": 130,
+      "height": 130,
+      "pivotX": 65,
+      "pivotY": 65
+    },
+    {
+      "name": "mobs/harpy-36.png",
+      "category": "mob",
+      "width": 123,
+      "height": 123,
+      "pivotX": 61.5,
+      "pivotY": 61.5
+    },
+    {
+      "name": "mobs/armorBeetle-44.png",
+      "category": "mob",
+      "width": 150,
+      "height": 150,
+      "pivotX": 75,
+      "pivotY": 75
+    },
+    {
+      "name": "mobs/batking-52.png",
+      "category": "mob",
+      "width": 177,
+      "height": 177,
+      "pivotX": 88.5,
+      "pivotY": 88.5
+    },
+    {
+      "name": "mobs/poisontree-58.png",
+      "category": "mob",
+      "width": 198,
+      "height": 198,
+      "pivotX": 99,
+      "pivotY": 99
+    },
+    {
+      "name": "mobs/icemanticore-56.png",
+      "category": "mob",
+      "width": 191,
+      "height": 191,
+      "pivotX": 95.5,
+      "pivotY": 95.5
+    },
+    {
+      "name": "mobs/frostbeast-48.png",
+      "category": "mob",
+      "width": 164,
+      "height": 164,
+      "pivotX": 82,
+      "pivotY": 82
+    },
+    {
+      "name": "mobs/scorpionking-62.png",
+      "category": "mob",
+      "width": 211,
+      "height": 211,
+      "pivotX": 105.5,
+      "pivotY": 105.5
+    },
+    {
+      "name": "mobs/sandwyvern-50.png",
+      "category": "mob",
+      "width": 170,
+      "height": 170,
+      "pivotX": 85,
+      "pivotY": 85
+    },
+    {
+      "name": "mobs/swampdrake-54.png",
+      "category": "mob",
+      "width": 184,
+      "height": 184,
+      "pivotX": 92,
+      "pivotY": 92
+    },
+    {
+      "name": "mobs/giantleech-34.png",
+      "category": "mob",
+      "width": 116,
+      "height": 116,
+      "pivotX": 58,
+      "pivotY": 58
+    },
+    {
+      "name": "mobs/chimera-60.png",
+      "category": "mob",
+      "width": 204,
+      "height": 204,
+      "pivotX": 102,
+      "pivotY": 102
+    },
+    {
+      "name": "mobs/stonekraken-52.png",
+      "category": "mob",
+      "width": 177,
+      "height": 177,
+      "pivotX": 88.5,
+      "pivotY": 88.5
+    },
+    {
+      "name": "mobs/souleater-36.png",
+      "category": "mob",
+      "width": 123,
+      "height": 123,
+      "pivotX": 61.5,
+      "pivotY": 61.5
+    },
+    {
+      "name": "mobs/forestFairy-20.png",
+      "category": "mob",
+      "width": 96,
+      "height": 96,
+      "pivotX": 48,
+      "pivotY": 48
+    },
+    {
+      "name": "mobs/rockBear-58.png",
+      "category": "mob",
+      "width": 198,
+      "height": 198,
+      "pivotX": 99,
+      "pivotY": 99
+    },
+    {
+      "name": "mobs/vineSnake-40.png",
+      "category": "mob",
+      "width": 136,
+      "height": 136,
+      "pivotX": 68,
+      "pivotY": 68
+    },
+    {
+      "name": "mobs/mossDrake-48.png",
+      "category": "mob",
+      "width": 164,
+      "height": 164,
+      "pivotX": 82,
+      "pivotY": 82
+    },
+    {
+      "name": "mobs/yeti-64.png",
+      "category": "mob",
+      "width": 218,
+      "height": 218,
+      "pivotX": 109,
+      "pivotY": 109
+    },
+    {
+      "name": "mobs/snowOwl-32.png",
+      "category": "mob",
+      "width": 109,
+      "height": 109,
+      "pivotX": 54.5,
+      "pivotY": 54.5
+    },
+    {
+      "name": "mobs/frostShaman-38.png",
+      "category": "mob",
+      "width": 130,
+      "height": 130,
+      "pivotX": 65,
+      "pivotY": 65
+    },
+    {
+      "name": "mobs/iceSpider-36.png",
+      "category": "mob",
+      "width": 123,
+      "height": 123,
+      "pivotX": 61.5,
+      "pivotY": 61.5
+    },
+    {
+      "name": "mobs/sphinxCub-44.png",
+      "category": "mob",
+      "width": 150,
+      "height": 150,
+      "pivotX": 75,
+      "pivotY": 75
+    },
+    {
+      "name": "mobs/sandDjinn-36.png",
+      "category": "mob",
+      "width": 123,
+      "height": 123,
+      "pivotX": 61.5,
+      "pivotY": 61.5
+    },
+    {
+      "name": "mobs/boneLizard-34.png",
+      "category": "mob",
+      "width": 116,
+      "height": 116,
+      "pivotX": 58,
+      "pivotY": 58
+    },
+    {
+      "name": "mobs/desertJackal-30.png",
+      "category": "mob",
+      "width": 102,
+      "height": 102,
+      "pivotX": 51,
+      "pivotY": 51
+    },
+    {
+      "name": "mobs/mudLurker-54.png",
+      "category": "mob",
+      "width": 184,
+      "height": 184,
+      "pivotX": 92,
+      "pivotY": 92
+    },
+    {
+      "name": "mobs/swampGhost-34.png",
+      "category": "mob",
+      "width": 116,
+      "height": 116,
+      "pivotX": 58,
+      "pivotY": 58
+    },
+    {
+      "name": "mobs/poisonDrake-46.png",
+      "category": "mob",
+      "width": 157,
+      "height": 157,
+      "pivotX": 78.5,
+      "pivotY": 78.5
+    },
+    {
+      "name": "mobs/bogWitch-40.png",
+      "category": "mob",
+      "width": 136,
+      "height": 136,
+      "pivotX": 68,
+      "pivotY": 68
+    },
+    {
+      "name": "mobs/voidWraith-36.png",
+      "category": "mob",
+      "width": 123,
+      "height": 123,
+      "pivotX": 61.5,
+      "pivotY": 61.5
+    },
+    {
+      "name": "mobs/darkGolem-62.png",
+      "category": "mob",
+      "width": 211,
+      "height": 211,
+      "pivotX": 105.5,
+      "pivotY": 105.5
+    },
+    {
+      "name": "mobs/nightWyvern-50.png",
+      "category": "mob",
+      "width": 170,
+      "height": 170,
+      "pivotX": 85,
+      "pivotY": 85
+    },
+    {
+      "name": "mobs/corruptedFairy-20.png",
+      "category": "mob",
+      "width": 96,
+      "height": 96,
+      "pivotX": 48,
+      "pivotY": 48
+    },
+    {
+      "name": "resources/tree-forest.png",
+      "category": "resource",
+      "width": 224,
+      "height": 224,
+      "pivotX": 112,
+      "pivotY": 112
+    },
+    {
+      "name": "resources/tree-snow.png",
+      "category": "resource",
+      "width": 224,
+      "height": 224,
+      "pivotX": 112,
+      "pivotY": 112
+    },
+    {
+      "name": "resources/tree-desert.png",
+      "category": "resource",
+      "width": 224,
+      "height": 224,
+      "pivotX": 112,
+      "pivotY": 112
+    },
+    {
+      "name": "resources/rock.png",
+      "category": "resource",
+      "width": 192,
+      "height": 192,
+      "pivotX": 96,
+      "pivotY": 96
+    },
+    {
+      "name": "resources/gold.png",
+      "category": "resource",
+      "width": 192,
+      "height": 192,
+      "pivotX": 96,
+      "pivotY": 96
+    },
+    {
+      "name": "resources/bush.png",
+      "category": "resource",
+      "width": 186,
+      "height": 186,
+      "pivotX": 93,
+      "pivotY": 93
+    },
+    {
+      "name": "resources/mushroom.png",
+      "category": "resource",
+      "width": 173,
+      "height": 173,
+      "pivotX": 86.5,
+      "pivotY": 86.5
+    },
+    {
+      "name": "resources/crystal.png",
+      "category": "resource",
+      "width": 199,
+      "height": 199,
+      "pivotX": 99.5,
+      "pivotY": 99.5
+    },
+    {
+      "name": "resources/hive.png",
+      "category": "resource",
+      "width": 199,
+      "height": 199,
+      "pivotX": 99.5,
+      "pivotY": 99.5
+    },
+    {
+      "name": "players/default.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/panda.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/fox.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/wolf.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/rabbit.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/croc.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/frog.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/polarbear.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/penguin.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/shark.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/lion.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/dragon.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/skull.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/ninja.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/robot.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/phoenix.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/yeti.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/octopus.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/kiz_sakura.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/kiz_deniz.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/kiz_ates.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/kiz_buz.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/kiz_orman.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/kiz_vampir.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/kiz_neon.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/kiz_samurai.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/kiz_karanlik.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "players/kiz_peri.png",
+      "category": "player",
+      "width": 180,
+      "height": 180,
+      "pivotX": 90,
+      "pivotY": 90
+    },
+    {
+      "name": "weapons/axe-tier-0.png",
+      "category": "weapon",
+      "width": 160,
+      "height": 180,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/sword-tier-0.png",
+      "category": "weapon",
+      "width": 110,
+      "height": 190,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/axe-tier-1.png",
+      "category": "weapon",
+      "width": 160,
+      "height": 180,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/sword-tier-1.png",
+      "category": "weapon",
+      "width": 110,
+      "height": 190,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/axe-tier-2.png",
+      "category": "weapon",
+      "width": 160,
+      "height": 180,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/sword-tier-2.png",
+      "category": "weapon",
+      "width": 110,
+      "height": 190,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/axe-tier-3.png",
+      "category": "weapon",
+      "width": 160,
+      "height": 180,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/sword-tier-3.png",
+      "category": "weapon",
+      "width": 110,
+      "height": 190,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/axe-tier-4.png",
+      "category": "weapon",
+      "width": 160,
+      "height": 180,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/sword-tier-4.png",
+      "category": "weapon",
+      "width": 110,
+      "height": 190,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/axe-tier-5.png",
+      "category": "weapon",
+      "width": 160,
+      "height": 180,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/sword-tier-5.png",
+      "category": "weapon",
+      "width": 110,
+      "height": 190,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/axe-tier-6.png",
+      "category": "weapon",
+      "width": 160,
+      "height": 180,
+      "pivotX": 32,
+      "pivotY": 130
+    },
+    {
+      "name": "weapons/sword-tier-6.png",
+      "category": "weapon",
+      "width": 110,
+      "height": 190,
+      "pivotX": 32,
+      "pivotY": 130
+    }
+  ]
+}
