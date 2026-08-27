@@ -1850,6 +1850,7 @@ const _SPRITE_CACHE = new Map();
 const _MOB_SPRITES = new Map();
 const _PLAYER_SPRITES = new Map();
 const _RESOURCE_SPRITES = new Map();
+const _WEAPON_SPRITES = new Map();
 function _loadSprite(name, category) {
   if (_SPRITE_CACHE.has(name)) return _SPRITE_CACHE.get(name);
   const image = new Image();
@@ -1861,12 +1862,13 @@ function _loadSprite(name, category) {
   if (category === 'mob') _MOB_SPRITES.set(name, entry);
   if (category === 'player') _PLAYER_SPRITES.set(name, entry);
   if (category === 'resource') _RESOURCE_SPRITES.set(name, entry);
+  if (category === 'weapon') _WEAPON_SPRITES.set(name, entry);
   return entry;
 }
 function _preloadStaticSprites() {
   fetch(_BASE + 'manifest.json').then(response => response.ok ? response.json() : null).then(manifest => {
     for (const asset of (manifest && Array.isArray(manifest.assets) ? manifest.assets : [])) {
-      if (asset.category === 'mob' || asset.category === 'player' || asset.category === 'resource') _loadSprite(asset.name, asset.category);
+      if (asset.category === 'mob' || asset.category === 'player' || asset.category === 'resource' || asset.category === 'weapon') _loadSprite(asset.name, asset.category);
     }
   }).catch(() => {});
 }
@@ -1893,8 +1895,18 @@ function _resourceSprite(type, biome) {
   const entry = _RESOURCE_SPRITES.get(name);
   return entry && entry.ready ? entry.image : null;
 }
+function _weaponSprite(kind, tier) {
+  if (tier > 5) return null;
+  const entry = _WEAPON_SPRITES.get(`weapons/${kind}-tier-${tier}.png`);
+  return entry && entry.ready ? entry.image : null;
+}
 function _drawCenteredSprite(context, image, width, height = width) {
   context.drawImage(image, -width / 2, -height / 2, width, height);
+}
+function _drawWeaponSprite(context, image, kind) {
+  const pivotX = kind === 'axe' ? 32 : 32;
+  const pivotY = 130;
+  context.drawImage(image, -pivotX, -pivotY);
 }
 _preloadStaticSprites();
 
@@ -10744,11 +10756,19 @@ function drawPlayer() {
   if (player.weapon === 1) {
     const axeSkin = playerAcc && playerAcc.baltalar && playerAcc.baltalar !== 'ba_none' ? playerAcc.baltalar : null;
     if (axeSkin) drawAxeSkin(ctx, axeSkin, globalTime);
-    else drawAxeByTier(ctx, _wepTier(_axeXP), globalTime);
+    else {
+      const _axeTier = _wepTier(_axeXP), _axeImage = _weaponSprite('axe', _axeTier);
+      if (_axeImage) _drawWeaponSprite(ctx, _axeImage, 'axe');
+      else drawAxeByTier(ctx, _axeTier, globalTime);
+    }
   } else if (player.weapon === 2) {
     const swordSkin = playerAcc && playerAcc.kiliclar && playerAcc.kiliclar !== 'ki_none' ? playerAcc.kiliclar : null;
     if (swordSkin) drawSwordSkin(ctx, swordSkin, globalTime);
-    else drawSwordByTier(ctx, _wepTier(_swordXP), globalTime);
+    else {
+      const _swordTier = _wepTier(_swordXP), _swordImage = _weaponSprite('sword', _swordTier);
+      if (_swordImage) _drawWeaponSprite(ctx, _swordImage, 'sword');
+      else drawSwordByTier(ctx, _swordTier, globalTime);
+    }
   }
 
   // ── Arms (detailed — forearm + fist, skin-matched) ──
@@ -14358,8 +14378,12 @@ function drawOtherPlayers() {
       // Weapon (only for axe/sword, not building items)
       if (p.weapon === 1 || p.weapon === 2) {
         if (p.isAttacking && _qualityLevel >= 2) { ctx.shadowColor = p.weapon === 2 ? '#88ccff' : '#ffdd44'; ctx.shadowBlur = 16; }
-        if (p.weapon === 1) drawAxeByTier(ctx, p.axeTier ?? 0, globalTime);
-        else                drawSwordByTier(ctx, p.swordTier ?? 0, globalTime);
+        const _otherWeaponKind = p.weapon === 1 ? 'axe' : 'sword';
+        const _otherWeaponTier = p.weapon === 1 ? (p.axeTier ?? 0) : (p.swordTier ?? 0);
+        const _otherWeaponImage = _weaponSprite(_otherWeaponKind, _otherWeaponTier);
+        if (_otherWeaponImage) _drawWeaponSprite(ctx, _otherWeaponImage, _otherWeaponKind);
+        else if (p.weapon === 1) drawAxeByTier(ctx, _otherWeaponTier, globalTime);
+        else drawSwordByTier(ctx, _otherWeaponTier, globalTime);
         ctx.shadowBlur = 0;
       }
 
