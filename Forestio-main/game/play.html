@@ -1782,7 +1782,6 @@ const _clanId = urlParams.get('clanId') || localStorage.getItem('fb_clan_id') ||
 const _BASE = window.location.pathname.replace(/\/play\.html$/, '/') || '/';
 // mod: 'online' = çok oyunculu (varsayılan), 'offline' = tek oyunculu
 const _GAME_MODE = urlParams.get('mode') === 'offline' ? 'offline' : 'online';
-_preloadStaticSprites();
 
 const _isMobile = ('ontouchstart' in window || navigator.maxTouchPoints > 0) && window.innerWidth < 900;
 let ZOOM = _isMobile ? 0.42 : 0.55;
@@ -1897,6 +1896,7 @@ function _resourceSprite(type, biome) {
 function _drawCenteredSprite(context, image, width, height = width) {
   context.drawImage(image, -width / 2, -height / 2, width, height);
 }
+_preloadStaticSprites();
 
 // ── Frame-level perf cache — set once per frame at top of update() ──────────
 let _nowMs    = 0;     // Date.now() cached per frame — avoid N calls per frame
@@ -12534,7 +12534,10 @@ function update(timestamp = 0) {
     const _resourceImage = _resourceSprite(res.type, biome);
 
     if (_resourceImage) {
+      ctx.save();
+      ctx.translate(rx, ry);
       _drawCenteredSprite(ctx, _resourceImage, R * 3.2);
+      ctx.restore();
     } else if (res.type === 'wood') {
       _drawUltraTree(ctx, rx, ry, R, biome, t, hp);
     } else if (res.type === 'stone') {
