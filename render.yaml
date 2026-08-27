@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: forestbrawl
+    runtime: node
+    rootDir: Forestio-main
+    region: frankfurt
+    plan: free
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
