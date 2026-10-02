@@ -3925,6 +3925,43 @@ const WEAPON_DEFINITIONS = {
   stormcannon: { label: 'Storm Cannon', title: 'Skybreaker', style: 'heavy artillery', damage: 1.34, range: 1.24, speed: 0.7, notes: 'Ağır, yüksek patlama hasarı.' },
   moonpiercer: { label: 'Moonpiercer', title: 'Lunar Fang', style: 'astral lance', damage: 1.2, range: 1.32, speed: 0.92, notes: 'Ay ışığı gibi net ve uzun menzilli vurum.' }
 };
+const HELMET_ITEM_STATS = Object.freeze({
+  helmet_imperator: { maxHp: 1.18, damage: 1.02, armor: 1.16, speed: 0.98, attackSpeed: 1.06 },
+  helmet_cehennem: { maxHp: 1.12, damage: 1.12, armor: 1.08, speed: 1.05, attackSpeed: 1.08 },
+  helmet_cyber: { maxHp: 1.0, damage: 1.14, armor: 1.0, speed: 1.18, attackSpeed: 1.12 },
+  helmet_ejderha: { maxHp: 1.18, damage: 1.18, armor: 1.04, speed: 1.08, attackSpeed: 1.1 },
+  helmet_druid: { maxHp: 1.24, damage: 1.02, armor: 1.14, speed: 0.98, attackSpeed: 1.04 },
+  helmet_necromancer: { maxHp: 0.96, damage: 1.22, armor: 0.86, speed: 1.14, attackSpeed: 1.16 }
+});
+const SCYTHE_ITEM_STATS = Object.freeze({
+  scythe_tier_1: { damage: 1.05, speed: 1.02, attackSpeed: 1.0, dash: 1.04 },
+  scythe_tier_2: { damage: 1.09, speed: 1.04, attackSpeed: 1.04, dash: 1.08 },
+  scythe_tier_3: { damage: 1.13, speed: 1.06, attackSpeed: 1.08, dash: 1.12 },
+  scythe_tier_4: { damage: 1.18, speed: 1.08, attackSpeed: 1.12, dash: 1.18 },
+  scythe_tier_5: { damage: 1.22, speed: 1.1, attackSpeed: 1.16, dash: 1.22 },
+  scythe_tier_6: { damage: 1.28, speed: 1.12, attackSpeed: 1.2, dash: 1.28 },
+  scythe_tier_7: { damage: 1.34, speed: 1.14, attackSpeed: 1.24, dash: 1.34 },
+  scythe_tier_8: { damage: 1.4, speed: 1.16, attackSpeed: 1.28, dash: 1.42 }
+});
+const ITEM_HELMET_ALIAS_MAP = Object.freeze({
+  helmet_imperator: 'guardian',
+  helmet_cehennem: 'warfang',
+  helmet_cyber: 'phantom',
+  helmet_ejderha: 'aegis',
+  helmet_druid: 'relic',
+  helmet_necromancer: 'voidveil'
+});
+function normalizeItemKey(value) {
+  return String(value || '').trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+}
+function getHelmetItemStats(helmetValue) {
+  const key = normalizeItemKey(helmetValue);
+  return HELMET_ITEM_STATS[key] || null;
+}
+function getScytheItemStats(scytheValue) {
+  const key = normalizeItemKey(scytheValue);
+  return SCYTHE_ITEM_STATS[key] || null;
+}
 const mobGrid = new Map();
 const playerGrid = new Map();
 
@@ -4417,6 +4454,12 @@ function ensureMobs(prefX = null, prefY = null) {
 
 function applyMobDamage(mob, target, damage, isWeb = false) {
   if (!mob || !target || (target.hp ?? 0) <= 0) return null;
+  const now = Date.now();
+  if (isWeb) {
+    const lastWebAt = Number(target._lastWebAt || 0);
+    if (lastWebAt && now - lastWebAt < 3600) return null;
+    target._lastWebAt = now;
+  }
   const isBot = Boolean(target.isBot);
   const targetSocket = io.sockets.sockets.get(target.id);
   if (!isBot && (!targetSocket || !targetSocket.connected)) return null;
@@ -4662,7 +4705,8 @@ function sanitizePlayerLoadout(role, helmet) {
   const normalizedRole = String(role || 'tank').toLowerCase();
   const normalizedHelmet = String(helmet || 'guardian').toLowerCase();
   const resolvedRole = BUILD_ROLES[normalizedRole] ? normalizedRole : 'tank';
-  const resolvedHelmet = BUILD_HELMETS[normalizedHelmet] ? normalizedHelmet : 'guardian';
+  const aliasedHelmet = ITEM_HELMET_ALIAS_MAP[normalizedHelmet] || normalizedHelmet;
+  const resolvedHelmet = BUILD_HELMETS[aliasedHelmet] ? aliasedHelmet : 'guardian';
   return {
     role: resolvedRole,
     helmet: resolvedHelmet,
@@ -4712,11 +4756,14 @@ function applyLoadoutStats(player) {
   const setBonus = LOADOUT_SETS[premiumDesign.set] || LOADOUT_SETS.sunforge;
   const roleStats = BUILD_ROLES[loadout.role] || BUILD_ROLES.tank;
   const helmetStats = BUILD_HELMETS[loadout.helmet] || BUILD_HELMETS.guardian;
-  const hpMultiplier = (roleStats.maxHp || 1) * (helmetStats.maxHp || 1);
-  const damageMultiplier = (roleStats.damage || 1) * (helmetStats.damage || 1);
-  const armorMultiplier = (roleStats.armor || 1) * (helmetStats.armor || 1);
-  const speedMultiplier = (roleStats.speed || 1) * (helmetStats.speed || 1);
+  const helmetItemStats = getHelmetItemStats(player.helmetSkin || loadout.helmet || 'guardian');
+  const scytheItemStats = getScytheItemStats(player.scytheId || player.swordSkin || 'scythe_tier_1');
+  const hpMultiplier = (roleStats.maxHp || 1) * (helmetStats.maxHp || 1) * (helmetItemStats?.maxHp || 1);
+  const damageMultiplier = (roleStats.damage || 1) * (helmetStats.damage || 1) * (helmetItemStats?.damage || 1) * (scytheItemStats?.damage || 1);
+  const armorMultiplier = (roleStats.armor || 1) * (helmetStats.armor || 1) * (helmetItemStats?.armor || 1);
+  const speedMultiplier = (roleStats.speed || 1) * (helmetStats.speed || 1) * (helmetItemStats?.speed || 1) * (scytheItemStats?.speed || 1);
   const premiumDamageBuffer = Number(weaponStats.damage || 1) * 1.05;
+  const attackSpeedMultiplier = (Number(weaponStats.speed) || 1) * (helmetItemStats?.attackSpeed || 1) * (scytheItemStats?.attackSpeed || 1);
   const baseMaxHp = Number(player.baseMaxHp) || 250;
   player.baseMaxHp = baseMaxHp;
   player.maxHp = Math.max(130, Math.round(baseMaxHp * hpMultiplier));
@@ -4724,6 +4771,12 @@ function applyLoadoutStats(player) {
   player.damageMultiplier = damageMultiplier * premiumDamageBuffer;
   player.armorMultiplier = armorMultiplier;
   player.speedMultiplier = speedMultiplier * (Number(weaponStats.speed) || 1);
+  player.attackSpeedMultiplier = attackSpeedMultiplier;
+  player.dashBoost = Number(scytheItemStats?.dash || 1);
+  player.itemStats = {
+    helmet: helmetItemStats || null,
+    scythe: scytheItemStats || null
+  };
   player.role = loadout.role;
   player.helmet = loadout.helmet;
   player.designWeapon = premiumDesign.weapon;
@@ -5246,12 +5299,13 @@ setInterval(() => {
       const shape = mob.shape || '';
 
       // Biome Signature Abilities
-      if ((shape === 'spider' || shape === 'orumcek') && distance < 300 && distance > 70 && now >= (mob.nextAbilityAt || 0)) {
-        mob.nextAbilityAt = now + 5000;
-        mob.nextAttackAt = now + (mob.isEnraged ? 1100 : 1600);
+      if ((shape === 'spider' || shape === 'orumcek') && distance < 300 && distance > 70 && now >= (mob.nextAbilityAt || 0) && now - (mob.lastWebAt || 0) >= (mob.isEnraged ? 3200 : 4500)) {
+        mob.lastWebAt = now;
+        mob.nextAbilityAt = now + (mob.isEnraged ? 3200 : 4500);
+        mob.nextAttackAt = now + (mob.isEnraged ? 1200 : 1800);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
-        const webDmg = 20;
+        const webDmg = 18;
         const webDamage = applyMobDamage(mob, target, webDmg, true);
         broadcastMobEventNear(mob, 'mob_attack', {
           id: mob.id, targetId: target.id, dmg: webDmg, hp: webDamage?.hp, hpSeq: webDamage?.hpSeq,

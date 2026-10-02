@@ -928,11 +928,14 @@
         /* ── SHOP & COSMETICS MODALLARI: GENİŞ, FERAH & KONFORLU BOYUTLANDIRMA ── */
         #shopModal,
         #cosmeticsModal {
-            width: min(96vw, 860px) !important;
-            max-width: min(96vw, 860px) !important;
-            height: min(92vh, 92dvh, 580px) !important;
-            max-height: min(92vh, 92dvh, 580px) !important;
-            padding: 10px 14px !important;
+            width: min(calc(100vw - 12px), 980px) !important;
+            max-width: min(calc(100vw - 12px), 980px) !important;
+            height: calc(100dvh - 12px) !important;
+            max-height: calc(100dvh - 12px) !important;
+            padding: max(12px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom)) !important;
+            border-radius: 24px !important;
+            box-shadow: 0 28px 80px rgba(0,0,0,.62), inset 0 1px 0 rgba(255,255,255,.14) !important;
+            background: linear-gradient(180deg, rgba(27,17,10,.96), rgba(15,12,9,.98)) !important;
         }
 
         #shopModal .mt-2.flex,
@@ -1176,9 +1179,11 @@
 
             #shopModal,
             #cosmeticsModal {
-                width: min(96vw, 460px) !important;
-                max-width: min(96vw, 460px) !important;
-                max-height: calc(100dvh - 10px) !important;
+                width: calc(100vw - 8px) !important;
+                max-width: calc(100vw - 8px) !important;
+                height: calc(100dvh - 8px) !important;
+                max-height: calc(100dvh - 8px) !important;
+                border-radius: 18px !important;
             }
 
             #shopModal .mt-2.flex,
@@ -1286,17 +1291,43 @@
                 transform: scale(0.9) !important;
                 transform-origin: center center !important;
             }
+            #shopModal,
+            #cosmeticsModal {
+                height: calc(100dvh - 6px) !important;
+                max-height: calc(100dvh - 6px) !important;
+                min-height: 0 !important;
+            }
         }
         @media (max-height: 420px) {
             .modal-content {
                 transform: scale(0.78) !important;
                 transform-origin: center center !important;
             }
+            #shopModal,
+            #cosmeticsModal {
+                height: calc(100dvh - 4px) !important;
+                max-height: calc(100dvh - 4px) !important;
+            }
         }
         @media (max-height: 340px) {
             .modal-content {
                 transform: scale(0.68) !important;
                 transform-origin: center center !important;
+            }
+            #shopModal,
+            #cosmeticsModal {
+                height: calc(100dvh - 2px) !important;
+                max-height: calc(100dvh - 2px) !important;
+            }
+        }
+
+        @media (max-width: 740px) {
+            #shopModal,
+            #cosmeticsModal {
+                width: calc(100vw - 6px) !important;
+                max-width: calc(100vw - 6px) !important;
+                height: calc(100dvh - 6px) !important;
+                max-height: calc(100dvh - 6px) !important;
             }
         }
 
@@ -10923,27 +10954,7 @@
                 ctx.restore();
             }
 
-            // 3. Eller
-            for (let _ai = 0; _ai < 2; _ai++) {
-                const ay = _ai === 0 ? -14 : 20, sign = _ai === 0 ? -1 : 1;
-                ctx.save();
-                ctx.translate(32, ay);
-                ctx.fillStyle = armCol;
-                ctx.strokeStyle = '#000000';
-                ctx.lineWidth = 3.2;
-                ctx.beginPath();
-                ctx.ellipse(6, 0, 18, 13, 0.18 * sign, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.stroke();
-
-                ctx.fillStyle = 'rgba(255,255,255,0.3)';
-                ctx.beginPath();
-                ctx.ellipse(2, -3 * sign, 7, 4, 0.2 * sign, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            }
-
-            // 4. Gövde
+            // 3. Gövde
             if (GENERATED_SKIN_STYLES[skinId]) {
                 drawGeneratedSkin(ctx, 0, 0, skinId, t, 1);
             } else if (skinImg && skinImg.complete && skinImg.naturalWidth > 0) {
@@ -10956,6 +10967,26 @@
                 ctx.arc(0, 0, 36, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.stroke();
+            }
+
+            // 4. Eller (gövdenin ön yüzünde, merkeze saplanmayacak şekilde)
+            for (let _ai = 0; _ai < 2; _ai++) {
+                const ay = _ai === 0 ? -14 : 20, sign = _ai === 0 ? -1 : 1;
+                ctx.save();
+                ctx.translate(40 + (_ai === 0 ? -4 : 8), ay);
+                ctx.fillStyle = armCol;
+                ctx.strokeStyle = '#000000';
+                ctx.lineWidth = 3.2;
+                ctx.beginPath();
+                ctx.ellipse(12, 0, 18, 13, 0.18 * sign, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = 'rgba(255,255,255,0.3)';
+                ctx.beginPath();
+                ctx.ellipse(5, -3 * sign, 7, 4, 0.2 * sign, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
             }
 
             if (helmetId) drawBattleHelmet(ctx, helmetId, t, 36);

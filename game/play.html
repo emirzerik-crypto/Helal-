@@ -3963,17 +3963,28 @@ html,body{width:100vw !important;max-width:100vw !important;height:var(--app-hei
 }
 
 .scythe-modal-wood {
-  width: min(95vw, 860px);
-  max-height: min(92vh, 640px);
-  background: linear-gradient(180deg, #9e6032 0%, #874f26 100%);
-  border: 5px solid #3c1e08;
-  border-radius: 20px;
-  box-shadow: inset 0 2px 0 rgba(255,255,255,0.25), inset 0 -4px 0 rgba(0,0,0,0.4), 0 20px 60px rgba(0,0,0,0.85);
+  position: fixed;
+  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  transform: none;
+  background: linear-gradient(135deg, #63381d 0%, #9e6032 45%, #744323 100%);
+  border: 1px solid rgba(255,215,0,0.48);
+  border-radius: 0;
+  box-shadow: inset 0 0 0 4px rgba(38,16,4,0.78), inset 0 0 0 5px rgba(255,215,0,0.14);
+  box-sizing: border-box;
   display: none;
   flex-direction: column;
   z-index: 10050;
   overflow: hidden;
   user-select: none;
+  animation: shopModalReveal 0.22s ease-out;
 }
 .scythe-modal-wood.show {
   display: flex !important;
@@ -4360,17 +4371,28 @@ html,body{width:100vw !important;max-width:100vw !important;height:var(--app-hei
 }
 
 .helmet-modal-wood {
-  width: min(95vw, 860px);
-  max-height: min(92vh, 640px);
-  background: linear-gradient(180deg, #9e6032 0%, #874f26 100%);
-  border: 5px solid #3c1e08;
-  border-radius: 20px;
-  box-shadow: inset 0 2px 0 rgba(255,255,255,0.25), inset 0 -4px 0 rgba(0,0,0,0.4), 0 20px 60px rgba(0,0,0,0.85);
+  position: fixed;
+  inset: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  width: 100dvw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  transform: none;
+  background: linear-gradient(135deg, #63381d 0%, #9e6032 45%, #744323 100%);
+  border: 1px solid rgba(56,189,248,0.55);
+  border-radius: 0;
+  box-shadow: inset 0 0 0 4px rgba(38,16,4,0.78), inset 0 0 0 5px rgba(56,189,248,0.16);
+  box-sizing: border-box;
   display: none;
   flex-direction: column;
   z-index: 10050;
   overflow: hidden;
   user-select: none;
+  animation: shopModalReveal 0.22s ease-out;
 }
 .helmet-modal-wood.show {
   display: flex !important;
@@ -4717,20 +4739,66 @@ html,body{width:100vw !important;max-width:100vw !important;height:var(--app-hei
   border-radius: 6px;
 }
 
+@keyframes shopModalReveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scythe-modal-content-wrap,
+.helmet-modal-content-wrap {
+  grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+  gap: clamp(10px, 1.2vw, 18px);
+  padding: clamp(10px, 1.5vw, 22px);
+}
+
+#scythe-modal .scythe-modal-hdr,
+#helmet-modal .helmet-modal-hdr {
+  min-height: 66px;
+  padding: max(10px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
+}
+
+#scythe-modal .scythe-modal-hdr { border-bottom-color: rgba(255,215,0,0.55); }
+#helmet-modal .helmet-modal-hdr { border-bottom-color: rgba(56,189,248,0.6); }
+
+#scythe-modal .scythe-preview-panel,
+#scythe-modal .scythe-catalog-panel { border-color: rgba(74,36,12,0.95); }
+#helmet-modal .helmet-preview-panel,
+#helmet-modal .helmet-catalog-panel { border-color: rgba(56,189,248,0.22); }
+
 @media(max-width:720px) {
   #scythe-modal,
   #helmet-modal {
-    width: min(calc(100vw - 16px), 860px);
-    height: min(92dvh, 640px);
-    max-height: calc(100dvh - 16px);
+    width: 100vw;
+    width: 100dvw;
+    height: 100vh;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
   }
 
   .scythe-modal-content-wrap,
   .helmet-modal-content-wrap {
+    grid-template-columns: minmax(0, 1fr);
     grid-auto-rows: max-content;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
+    padding: max(10px, env(safe-area-inset-top, 0px)) max(10px, env(safe-area-inset-right, 0px)) max(10px, env(safe-area-inset-bottom, 0px)) max(10px, env(safe-area-inset-left, 0px));
   }
+
+  .scythe-modal-hdr,
+  .helmet-modal-hdr { flex-wrap: wrap; }
+
+  .scythe-modal-hdr .fb-modal-title-wrap,
+  .helmet-modal-hdr .fb-modal-title-wrap { min-width: 0; flex: 1 1 180px; }
+
+  .scythe-preview-panel,
+  .helmet-preview-panel { min-height: 340px; }
+
+  .scythe-catalog-panel,
+  .helmet-catalog-panel { min-height: 300px; }
+
+  .scythe-cards-grid,
+  .helmet-cards-grid { min-height: 220px; }
 
   .scythe-preview-panel,
   .helmet-preview-panel {
@@ -4750,7 +4818,8 @@ html,body{width:100vw !important;max-width:100vw !important;height:var(--app-hei
 @media(max-height:500px) and (orientation:landscape) and (max-width:900px) {
   #scythe-modal,
   #helmet-modal {
-    height: calc(100dvh - 16px);
+    height: 100vh;
+    height: 100dvh;
   }
 
   .scythe-modal-content-wrap,
@@ -13276,6 +13345,9 @@ function die() {
   player.gold = 0;
   player.apples = 5;
   player.score = 0;
+  if (typeof window.resetOwnedEquipmentForDeath === 'function') {
+    window.resetOwnedEquipmentForDeath();
+  }
   updateUI();
   // ── Guest & User cumulative stat tracking ─────────
   const _dieAuthTok = localStorage.getItem('fb_auth_token') || '';
@@ -15437,8 +15509,8 @@ function spawnMobAttackEffect(type, x, y, angle, targetX, targetY, radius) {
   const ang = angle !== undefined ? angle : (targetX !== undefined && targetY !== undefined ? Math.atan2(targetY - y, targetX - x) : 0);
 
   if (type === 'spider' || type === 'orumcek' || type === 'örümcek' || type === 'spider_web') {
-    _mobWebProjectiles.push({ x, y, vx: Math.cos(ang) * 14, vy: Math.sin(ang) * 14, angle: ang, life: 35, active: true, targetX, targetY });
-    playSound(420, 0.08, 'triangle', 0.2);
+    _mobWebProjectiles.push({ x, y, vx: Math.cos(ang) * 11, vy: Math.sin(ang) * 11, angle: ang, life: 30, active: true, targetX, targetY });
+    playSound(420, 0.06, 'triangle', 0.17);
   } else if (type === 'glacial_slam') {
     _mobSpecialEffects.push({ type: 'glacial_slam', x: targetX || x, y: targetY || y, r: 15, maxR: radius || 150, life: 30, maxLife: 30 });
     shake(16); playSound(95, 0.3, 'sawtooth', 0.5);
@@ -15524,11 +15596,13 @@ function updateAndDrawMobAttackEffects(ctx) {
     // Check hit on player — 1.5s Complete Root + Damage on Impact
     if (wp.active && Math.hypot(wp.x - player.x, wp.y - player.y) < 48) {
       wp.active = false;
-      player._webRootTimer = 90;
-      player.vx = 0; player.vy = 0;
-      player.momX = 0; player.momY = 0;
-      floatingTexts.push({ x: player.x, y: player.y - 65, text: '🕸️ AĞA YAKALANDIN! (1.5s)', alpha: 1, life: 65, color: '#ffffff', big: true });
-      playSound(140, 0.2, 'sawtooth', 0.4);
+      if (player._webRootTimer <= 0) {
+        player._webRootTimer = 52;
+        player.vx = 0; player.vy = 0;
+        player.momX = 0; player.momY = 0;
+        floatingTexts.push({ x: player.x, y: player.y - 65, text: '🕸️ AĞA YAKALANDIN! (0.9s)', alpha: 1, life: 52, color: '#ffffff', big: true });
+        playSound(140, 0.18, 'sawtooth', 0.28);
+      }
     }
     if (wp.life <= 0 || !wp.active) _mobWebProjectiles.splice(i, 1);
   }
@@ -23556,7 +23630,8 @@ function initMultiplayer() {
     if (isWeb && id) {
       const _now = Date.now();
       const _lastWeb = _mobWebCooldowns.get(id) || 0;
-      if (_now - _lastWeb < 5000) return;
+      const _minWebGap = 4200;
+      if (_now - _lastWeb < _minWebGap) return;
       _mobWebCooldowns.set(id, _now);
     }
     let attackingMob = null;
@@ -27963,7 +28038,7 @@ renderInventoryIcons(true);
       name: 'Paslı Goblin Tırpanı',
       shortName: 'Paslı Goblin',
       file: 'Scythe_Tier_1__Pasl__Goblin_110x190.webp',
-      cost: 0, // Ücretsiz deneme için (sonra skor maliyeti verilebilir)
+      cost: 80,
       rarity: 'common',
       rarityName: 'Yaygın',
       color: '#84cc16',
@@ -27977,7 +28052,7 @@ renderInventoryIcons(true);
       name: 'Güneş Muhafızı Tırpanı',
       shortName: 'Güneş Muhafızı',
       file: 'Scythe_Tier_2__G_ne__Muhaf_z_110x190.webp',
-      cost: 0,
+      cost: 160,
       rarity: 'rare',
       rarityName: 'Nadir',
       color: '#eab308',
@@ -27991,7 +28066,7 @@ renderInventoryIcons(true);
       name: 'Vulkan Cehennem Tırpanı',
       shortName: 'Vulkan Cehennem',
       file: 'Scythe_Tier_3__Vulkan_Cehennem_110x190.webp',
-      cost: 0,
+      cost: 260,
       rarity: 'epic',
       rarityName: 'Destansı',
       color: '#ef4444',
@@ -28005,7 +28080,7 @@ renderInventoryIcons(true);
       name: 'Kozmik Void Tırpanı',
       shortName: 'Kozmik Void',
       file: 'Scythe_Tier_4__Kozmik_Void_110x190.webp',
-      cost: 0,
+      cost: 420,
       rarity: 'epic',
       rarityName: 'Destansı',
       color: '#a855f7',
@@ -28019,7 +28094,7 @@ renderInventoryIcons(true);
       name: 'Glacial Aurora Tırpanı',
       shortName: 'Glacial Aurora',
       file: 'Scythe_Tier_5__Glacial_Aurora_110x190.webp',
-      cost: 0,
+      cost: 620,
       rarity: 'legendary',
       rarityName: 'Efsanevi',
       color: '#06b6d4',
@@ -28033,7 +28108,7 @@ renderInventoryIcons(true);
       name: 'Siber Fraktal Tırpanı',
       shortName: 'Siber Fraktal',
       file: 'Scythe_Tier_6__Siber_Fraktal_110x190.webp',
-      cost: 0,
+      cost: 900,
       rarity: 'legendary',
       rarityName: 'Efsanevi',
       color: '#3b82f6',
@@ -28047,7 +28122,7 @@ renderInventoryIcons(true);
       name: 'Süpernova Tırpanı',
       shortName: 'Süpernova',
       file: 'Scythe_Tier_7__S_pernova_110x190.webp',
-      cost: 0,
+      cost: 1300,
       rarity: 'mythic',
       rarityName: 'Mitolojik',
       color: '#f97316',
@@ -28061,7 +28136,7 @@ renderInventoryIcons(true);
       name: 'OMNIPOTENCE Tırpanı',
       shortName: 'OMNIPOTENCE',
       file: 'Scythe_Tier_8__OMNIPOTENCE_110x190.webp',
-      cost: 0,
+      cost: 2200,
       rarity: 'divine',
       rarityName: 'İlahi',
       color: '#ec4899',
@@ -28076,6 +28151,26 @@ renderInventoryIcons(true);
   window._getScytheItem = function(id) {
     if (!id) return null;
     return SCYTHE_ITEMS.find(s => s.id === id) || null;
+  };
+
+  window.resetOwnedEquipmentForDeath = function() {
+    try {
+      localStorage.setItem('fb_owned_scythes', JSON.stringify([]));
+      localStorage.setItem('fb_owned_helmets', JSON.stringify([]));
+    } catch (_) {}
+    window._equippedScytheId = null;
+    window._equippedHelmetId = null;
+    localStorage.removeItem('fb_equipped_scythe');
+    localStorage.removeItem('fb_equipped_helmet');
+    if (typeof window.selectScythePreview === 'function') window.selectScythePreview(SCYTHE_ITEMS[0].id);
+    if (typeof window.selectHelmetPreview === 'function') window.selectHelmetPreview(HELMET_ITEMS[0].id);
+    if (typeof renderInventoryIcons === 'function') renderInventoryIcons(true);
+    if (typeof window.renderScytheModal === 'function') window.renderScytheModal();
+    if (typeof window.renderHelmetShopModal === 'function') window.renderHelmetShopModal();
+    const hudIcon = document.getElementById('scythe-hud-icon');
+    if (hudIcon) hudIcon.src = 'scytheassets/' + SCYTHE_ITEMS[0].file;
+    const hHud = document.getElementById('helmet-hud-icon');
+    if (hHud) hHud.src = 'helmetsassets/' + HELMET_ITEMS[0].file;
   };
 
   // Sprite Cache & Preloading
@@ -28174,7 +28269,7 @@ renderInventoryIcons(true);
     const owned = _getOwnedScythes();
     const selItem = window._getScytheItem(_selectedScytheId) || SCYTHE_ITEMS[0];
     const isEquipped = window._equippedScytheId === selItem.id;
-    const isOwned = isEquipped || owned.includes(selItem.id) || selItem.cost === 0;
+    const isOwned = isEquipped || owned.includes(selItem.id);
 
     // Update Left Preview
     const pName = document.getElementById('scythe-preview-name');
@@ -28311,7 +28406,7 @@ renderInventoryIcons(true);
     if (!scythe) return;
 
     const owned = _getOwnedScythes();
-    const isOwned = window._equippedScytheId === scythe.id || owned.includes(scythe.id) || scythe.cost === 0;
+    const isOwned = window._equippedScytheId === scythe.id || owned.includes(scythe.id);
 
     if (!isOwned) {
       const curScore = (typeof player !== 'undefined' && player && typeof player.score === 'number') ? player.score : 0;
@@ -28449,7 +28544,7 @@ renderInventoryIcons(true);
       color: '#f59e0b',
       desc: 'İmparatorluğun en ulu hükümdarlarına layık saf altından görkemli taç.',
       statDesc: '🪖 Kafaya Takılır • Altın Taç',
-      cost: 0,
+      cost: 140,
       gradient: 'radial-gradient(circle, rgba(245,158,11,0.5) 0%, rgba(245,158,11,0) 70%)'
     },
     {
@@ -28461,7 +28556,7 @@ renderInventoryIcons(true);
       color: '#ef4444',
       desc: 'Lav vadisinin derinliklerinde dövülmüş, alev saçan iblis miğferi.',
       statDesc: '🪖 Kafaya Takılır • Alevli Boynuzlar',
-      cost: 0,
+      cost: 220,
       gradient: 'radial-gradient(circle, rgba(239,68,68,0.5) 0%, rgba(239,68,68,0) 70%)'
     },
     {
@@ -28473,7 +28568,7 @@ renderInventoryIcons(true);
       color: '#06b6d4',
       desc: 'Gelişmiş nano-alaşımdan üretilmiş yüksek teknolojili mecha miğfer.',
       statDesc: '🪖 Kafaya Takılır • Siber Vizör',
-      cost: 0,
+      cost: 320,
       gradient: 'radial-gradient(circle, rgba(6,182,212,0.5) 0%, rgba(6,182,212,0) 70%)'
     },
     {
@@ -28485,7 +28580,7 @@ renderInventoryIcons(true);
       color: '#f97316',
       desc: 'Antik kırmızı ejderhanın kafatasından oyulmuş korkusuz savaşçı miğferi.',
       statDesc: '🪖 Kafaya Takılır • Ejder Kafatası',
-      cost: 0,
+      cost: 470,
       gradient: 'radial-gradient(circle, rgba(249,115,22,0.5) 0%, rgba(249,115,22,0) 70%)'
     },
     {
@@ -28497,7 +28592,7 @@ renderInventoryIcons(true);
       color: '#10b981',
       desc: 'Kutsal kadim ormanların ruhları ve boynuzlarıyla kutsanmış doğa miğferi.',
       statDesc: '🪖 Kafaya Takılır • Zümrüt Boynuzlar',
-      cost: 0,
+      cost: 700,
       gradient: 'radial-gradient(circle, rgba(16,185,129,0.5) 0%, rgba(16,185,129,0) 70%)'
     },
     {
@@ -28509,7 +28604,7 @@ renderInventoryIcons(true);
       color: '#a855f7',
       desc: 'Yitip gitmiş ruhların fısıltılarını taşıyan karanlık ölüm miğferi.',
       statDesc: '🪖 Kafaya Takılır • Hayalet Başlık',
-      cost: 0,
+      cost: 980,
       gradient: 'radial-gradient(circle, rgba(168,85,247,0.5) 0%, rgba(168,85,247,0) 70%)'
     }
   ];
@@ -28563,6 +28658,26 @@ renderInventoryIcons(true);
 
   let _selectedHelmetId = window._equippedHelmetId || HELMET_ITEMS[0].id;
 
+  window.resetOwnedEquipmentForDeath = function() {
+    try {
+      localStorage.setItem('fb_owned_scythes', JSON.stringify([]));
+      localStorage.setItem('fb_owned_helmets', JSON.stringify([]));
+    } catch (_) {}
+    window._equippedScytheId = null;
+    window._equippedHelmetId = null;
+    localStorage.removeItem('fb_equipped_scythe');
+    localStorage.removeItem('fb_equipped_helmet');
+    if (typeof window.selectScythePreview === 'function') window.selectScythePreview(SCYTHE_ITEMS[0].id);
+    if (typeof window.selectHelmetPreview === 'function') window.selectHelmetPreview(HELMET_ITEMS[0].id);
+    if (typeof renderInventoryIcons === 'function') renderInventoryIcons(true);
+    if (typeof window.renderScytheModal === 'function') window.renderScytheModal();
+    if (typeof window.renderHelmetShopModal === 'function') window.renderHelmetShopModal();
+    const hudIcon = document.getElementById('scythe-hud-icon');
+    if (hudIcon) hudIcon.src = 'scytheassets/' + SCYTHE_ITEMS[0].file;
+    const hHud = document.getElementById('helmet-hud-icon');
+    if (hHud) hHud.src = 'helmetsassets/' + HELMET_ITEMS[0].file;
+  };
+
   // Sync HUD icon on load
   window.addEventListener('load', () => {
     if (window._equippedHelmetId) {
@@ -28602,7 +28717,7 @@ renderInventoryIcons(true);
     const owned = _getOwnedHelmets();
     const selItem = window._getHelmetItem(_selectedHelmetId) || HELMET_ITEMS[0];
     const isEquipped = window._equippedHelmetId === selItem.id;
-    const isOwned = isEquipped || owned.includes(selItem.id) || selItem.cost === 0;
+    const isOwned = isEquipped || owned.includes(selItem.id);
 
     // Update Left Preview
     const pName = document.getElementById('helmet-preview-name');
@@ -28739,7 +28854,7 @@ renderInventoryIcons(true);
     if (!helmet) return;
 
     const owned = _getOwnedHelmets();
-    const isOwned = window._equippedHelmetId === helmet.id || owned.includes(helmet.id) || helmet.cost === 0;
+    const isOwned = window._equippedHelmetId === helmet.id || owned.includes(helmet.id);
 
     if (!isOwned) {
       const curScore = (typeof player !== 'undefined' && player && typeof player.score === 'number') ? player.score : 0;
