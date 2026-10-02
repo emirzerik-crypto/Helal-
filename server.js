@@ -43,8 +43,27 @@ const BUILD_COSTS = { 3: [20, 5, 0], 4: [40, 20, 0], 5: [10, 20, 0], 6: [30, 10,
 const BUILD_RADII = { 3: 34, 4: 44, 5: 22, 6: 78, 7: 58, 8: 24, 9: 52, 10: 30 };
 const BUILD_OVERLAP_RADII = { 3: 42, 4: 54, 5: 40, 6: 55, 7: 66, 8: 40, 9: 56, 10: 32 };
 const BUILD_MAX_HP = { 3: 180, 4: 120, 5: 100, 6: 240, 7: 200, 8: 350, 9: 800, 10: 100 };
+const BUILD_TIER_HP_MULTIPLIERS = Object.freeze([1, 1.6, 2.5, 4, 6.5, 10]);
+const BUILD_DURABILITY_MULTIPLIER = 2;
+const BUILDING_MELEE_DAMAGE_MULTIPLIER = 0.4;
+const SCYTHE_DAMAGE_MULTIPLIER = 0.55;
+const BUILDING_HIT_COOLDOWN_MS = 250;
+const WEAPON_TIER_DAMAGE_MULTIPLIERS = Object.freeze([1, 1.5, 2.2, 3.5, 5, 8, 10, 13, 16]);
 const BUILD_ACTION_COOLDOWN = 50;
 const TRAP_CAPTURE_DEPTH = 4;
+
+function calculateMeleeDamage(weapon, tier, { isScythe = false, damageMultiplier = 1, maxDamage = 150, buildingDamageMultiplier = 1 } = {}) {
+  const tierIndex = Math.max(0, Math.min(8, Math.floor(Number(tier) || 0)));
+  const rawDamage = Math.min(maxDamage, Math.round((weapon === 2 ? 30 : 22) * WEAPON_TIER_DAMAGE_MULTIPLIERS[tierIndex] * damageMultiplier));
+  const weaponMultiplier = isScythe ? SCYTHE_DAMAGE_MULTIPLIER : 1;
+  return Math.max(1, Math.round(rawDamage * weaponMultiplier * buildingDamageMultiplier));
+}
+
+function getBuildingMaxHp(type, tier = 0) {
+  const tierIndex = Math.max(0, Math.min(5, Math.floor(Number(tier) || 0)));
+  const baseHp = type === 6 ? TRAP_MAX_HP : (BUILD_MAX_HP[type] || 100);
+  return Math.round(baseHp * BUILD_DURABILITY_MULTIPLIER * BUILD_TIER_HP_MULTIPLIERS[tierIndex]);
+}
 
 function trapCaptureRadius(trap, targetRadius = 35) {
   const trapRadius = Number(trap?.radius) || 78;
@@ -3453,6 +3472,8 @@ function compactStateCompressed(state) {
     hp: Number(state.hp ?? 100),
     mhp: Number(state.maxHp ?? 100),
     w: Number(state.weapon || 1),
+    bx: typeof state.buildX === 'number' ? Math.round(state.buildX) : null,
+    by: typeof state.buildY === 'number' ? Math.round(state.buildY) : null,
     sq: Number(state.stateSeq || 0),
     tp: Number(state.teleportSeq || 0),
     vx: Math.round((Number(state.vx) || 0) * 10) / 10,
@@ -3474,7 +3495,7 @@ function compressedStateSignature(payload) {
   if (!payload) return '';
   return [
     payload.x, payload.y, payload.a, payload.hp, payload.mhp, payload.w, payload.sq,
-    payload.tp, payload.vx, payload.vy, payload.atk, payload.t, payload.r
+    payload.bx, payload.by, payload.tp, payload.vx, payload.vy, payload.atk, payload.t, payload.r
   ].join('|');
 }
 
@@ -4014,6 +4035,7 @@ function _makeMulberry32(seed) {
 const serverObstacles = [];
 const obstacleGrid = new Map();
 const OBSTACLE_CELL_SIZE = 180;
+const MAX_RESOURCE_COLLISION_RADIUS = 224 * 0.96;
 function obstacleCellKey(x, y) {
   return `${Math.floor(x / OBSTACLE_CELL_SIZE)},${Math.floor(y / OBSTACLE_CELL_SIZE)}`;
 }
@@ -4031,23 +4053,6 @@ function nearbyServerObstacles(x, y, radius) {
   }
   return nearby;
 }
-(function initServerObstacles() {
-  const rng = _makeMulberry32(0x4F524553);
-  const r = 7200 * 0.90 * 0.98;
-  for (let i = 0; i < 420; i++) {
-    const x = (rng() * 2 - 1) * r;
-    const y = (rng() * 2 - 1) * r;
-    const typeRoll = rng();
-    const radius = typeRoll < 0.45 ? 145 : typeRoll < 0.75 ? 125 : 88;
-    const obstacle = { x, y, radius };
-    serverObstacles.push(obstacle);
-    const key = obstacleCellKey(x, y);
-    const bucket = obstacleGrid.get(key);
-    if (bucket) bucket.push(obstacle);
-    else obstacleGrid.set(key, [obstacle]);
-  }
-})();
-
 function publicMob(mob) {
   return {
     id: mob.id, x: Math.round(mob.x), y: Math.round(mob.y), vx: Math.round(mob.vx * 10) / 10,
@@ -4144,7 +4149,7 @@ function previewBiome(x, y) {
 }
 function previewResources() {
   const rng = _makeMulberry32(0x4F524553);
-  const resources = [];
+  const positions = [];
   const radius = 7200 * 0.90 * 0.98;
   const targetCount = 680;
   const cellSize = 300;
@@ -4152,7 +4157,7 @@ function previewResources() {
   const cellKey = (cx, cy) => cx + ',' + cy;
 
   let attempts = 0;
-  while (resources.length < targetCount && attempts < 25000) {
+  while (positions.length < targetCount && attempts < 25000) {
     attempts++;
     const x = Math.round((rng() * 2 - 1) * radius);
     const y = Math.round((rng() * 2 - 1) * radius);
@@ -4177,7 +4182,13 @@ function previewResources() {
     }
     if (tooClose) continue;
 
-    const biome = previewBiome(x, y);
+    positions.push({ x, y });
+    const k = cellKey(cx, cy);
+    if (!grid.has(k)) grid.set(k, []);
+    grid.get(k).push({ x, y });
+  }
+  return positions.map((position, idx) => {
+    const biome = previewBiome(position.x, position.y);
     const defs = PREVIEW_RESOURCE_DEFS[biome] || PREVIEW_RESOURCE_DEFS.forest;
     const total = defs.reduce((sum, entry) => sum + entry.w, 0);
     let roll = rng() * total;
@@ -4186,12 +4197,11 @@ function previewResources() {
       roll -= def.w;
       if (roll <= 0) { picked = def; break; }
     }
-    const idx = resources.length;
-    const res = {
+    return {
       id: `resource-${idx}`,
       idx,
-      x,
-      y,
+      x: position.x,
+      y: position.y,
       type: picked.type,
       model: picked.model || null,
       radius: picked.radius,
@@ -4199,12 +4209,7 @@ function previewResources() {
       hp: picked.hp,
       maxHp: picked.hp
     };
-    resources.push(res);
-    const k = cellKey(cx, cy);
-    if (!grid.has(k)) grid.set(k, []);
-    grid.get(k).push(res);
-  }
-  return resources;
+  });
 }
 const previewWorldResources = previewResources();
 const serverResources = previewWorldResources.map((resource, idx) => ({
@@ -4215,6 +4220,20 @@ const serverResources = previewWorldResources.map((resource, idx) => ({
   destroyed: false,
   lastHitBy: new Map()
 }));
+
+for (const resource of serverResources) {
+  const obstacle = {
+    x: resource.x,
+    y: resource.y,
+    radius: resource.radius * 0.96,
+    resource
+  };
+  serverObstacles.push(obstacle);
+  const key = obstacleCellKey(obstacle.x, obstacle.y);
+  const bucket = obstacleGrid.get(key);
+  if (bucket) bucket.push(obstacle);
+  else obstacleGrid.set(key, [obstacle]);
+}
 
 function findSafeMobSpawn(targetBiome = 'forest', nearX = null, nearY = null) {
   const minMobDist = 140;
@@ -5419,7 +5438,7 @@ setInterval(() => {
     mob.y += mob.vy * tickScale;
 
     // Solid collision push-out against resources (trees, rocks, gold)
-    const nearbyObstacles = nearbyServerObstacles(mob.x, mob.y, mob.radius + 60);
+    const nearbyObstacles = nearbyServerObstacles(mob.x, mob.y, mob.radius + MAX_RESOURCE_COLLISION_RADIUS);
     for (let oi = 0; oi < nearbyObstacles.length; oi++) {
       const obs = nearbyObstacles[oi];
       const ox = mob.x - obs.x, oy = mob.y - obs.y;
@@ -6036,7 +6055,7 @@ setInterval(() => {
         }
 
         // B. Natural Obstacles (Trees, Rocks, Gold Nodes)
-        const nearObs = nearbyServerObstacles(bot.x, bot.y, botRad + 60);
+        const nearObs = nearbyServerObstacles(bot.x, bot.y, botRad + MAX_RESOURCE_COLLISION_RADIUS);
         for (let oi = 0; oi < nearObs.length; oi++) {
           const obs = nearObs[oi];
           const ox = bot.x - obs.x, oy = bot.y - obs.y;
@@ -6978,22 +6997,23 @@ io.on('connection', (socket) => {
     const isBuildingWeapon = incomingWeapon >= 3 && incomingWeapon <= 10;
     const weapon = isBuildingWeapon ? incomingWeapon : (incomingWeapon === 2 ? 2 : 1);
     attacker.weapon = incomingWeapon;
+    const isScythe = weapon === 2 && Boolean(attacker.scytheId || data.scytheId || (attacker.swordSkin && String(attacker.swordSkin).startsWith('scythe_')) || (data.swordSkin && String(data.swordSkin).startsWith('scythe_')));
     const now = Date.now();
-    const swingCooldown = isBuildingWeapon ? 40 : (weapon === 2 ? 54 : 42);
+    const swingCooldown = isBuildingWeapon ? 40 : (isScythe ? 260 : (weapon === 2 ? 54 : 42));
     if (now - (attacker.lastSwingAt || 0) < swingCooldown) return;
     const swingId = Number.isFinite(Number(data.swingId)) ? Number(data.swingId) : null;
     if (swingId !== null && attacker.lastSwingId === swingId) return;
-    const isScythe = weapon === 2 && Boolean(attacker.scytheId || data.scytheId || (attacker.swordSkin && String(attacker.swordSkin).startsWith('scythe_')) || (data.swordSkin && String(data.swordSkin).startsWith('scythe_')));
     const range = isScythe ? 168 : (weapon === 2 ? 140 : 128);
     const spread = isScythe ? Math.PI / 2.6 : (weapon === 2 ? Math.PI / 3.25 : Math.PI / 2.57);
     const tier = Math.max(0, Math.min(8, Number(weapon === 2 ? (data.swordTier ?? attacker.swordTier) : attacker.axeTier) || 0));
-    const multiplier = [1, 1.5, 2.2, 3.5, 5, 8, 10, 13, 16][tier] || (1 + tier * 1.5);
     const dmgMult = Math.max(0.5, Math.min(3.0, Number(attacker.damageMultiplier) || 1.0));
-    const damage = isBuildingWeapon ? 0 : Math.min(150, Math.round((weapon === 2 ? 30 : 22) * multiplier * dmgMult));
+    const damage = isBuildingWeapon ? 0 : calculateMeleeDamage(weapon, tier, { isScythe, damageMultiplier: dmgMult });
     const angle = Number(data.angle);
     if (!Number.isFinite(angle)) return;
     attacker.lastSwingAt = now;
     attacker.lastSwingId = swingId;
+    attacker.lastMobHitIds = new Set();
+    attacker.lastBuildingHitIds = new Set();
     attacker.attackUntil = now + (isBuildingWeapon ? 240 : swingCooldown);
     attacker.isAttacking = true;
     attacker.attackTimer = 0;
@@ -7017,6 +7037,7 @@ io.on('connection', (socket) => {
       if (targetId === socket.id || target.hp <= 0) continue;
       if (!validateCombatState(attacker, target, { allowTrapHit: true, rangeLimit: range + 64, damage })) continue;
       if (swingId && target.lastHitSwingId === swingId) continue;
+      if (now - (target.lastHitTime || 0) < (isScythe ? 260 : 140)) continue;
       const dx = (Number(target.x) || 0) - attackerX, dy = (Number(target.y) || 0) - attackerY;
       let difference = Math.abs(Math.atan2(dy, dx) - angle);
       if (difference > Math.PI) difference = Math.PI * 2 - difference;
@@ -7071,15 +7092,17 @@ io.on('connection', (socket) => {
     const now = Date.now();
     if (!Number.isFinite(attacker.lastSwingAt) || now - attacker.lastSwingAt > 750) return;
     if (swingId && target.lastHitSwingId === swingId) return; // Dedup against swing event
-    if (now - (target.lastHitTime || 0) < 140) return; // Prevent duplicate rapid damage from same swing
+    const weapon = attacker.weapon === 2 ? 2 : 1;
     const isScythe = weapon === 2 && Boolean(attacker.scytheId || (attacker.swordSkin && String(attacker.swordSkin).startsWith('scythe_')));
+    if (now - (target.lastHitTime || 0) < (isScythe ? 260 : 140)) return; // Prevent duplicate rapid damage
+    const dx = (Number(target.x) || 0) - (Number(attacker.x) || 0);
+    const dy = (Number(target.y) || 0) - (Number(attacker.y) || 0);
+    const dist = Math.hypot(dx, dy);
     const range = (isScythe ? 168 : (attacker.weapon === 2 ? 140 : 128)) + 120;
     if (dist > range) return;
-    const weapon = attacker.weapon === 2 ? 2 : 1;
     const tier = Math.max(0, Math.min(8, Number(weapon === 2 ? attacker.swordTier : attacker.axeTier) || 0));
-    const multiplier = [1, 1.5, 2.2, 3.5, 5, 8, 10, 13, 16][tier] || (1 + tier * 1.5);
     const dmgMult = Math.max(0.5, Math.min(3.0, Number(attacker.damageMultiplier) || 1.0));
-    const damage = Math.min(150, Math.round((weapon === 2 ? 30 : 22) * multiplier * dmgMult));
+    const damage = calculateMeleeDamage(weapon, tier, { isScythe, damageMultiplier: dmgMult });
     if (swingId) target.lastHitSwingId = swingId;
     target.lastHitTime = now;
     applyPlayerDamage(target, damage);
@@ -7466,14 +7489,21 @@ io.on('connection', (socket) => {
     const distance = Math.hypot(sourceX - validationMobX, sourceY - validationMobY);
     const rangeSlack = turret ? Math.max(24, Number(mob.radius) || 0) : (Number(mob.radius) || 0) + 16;
     if (distance > range + rangeSlack) return;
+    if (!turret) {
+      const swingId = Number(data.swingId);
+      if (!Number.isFinite(swingId) || swingId !== attacker.lastSwingId || now - (attacker.lastSwingAt || 0) > 350) return;
+      const hitIds = attacker.lastMobHitIds || (attacker.lastMobHitIds = new Set());
+      if (hitIds.has(mobId)) return;
+      hitIds.add(mobId);
+    }
     const weapon = Number(attacker.weapon) === 2 ? 2 : 1;
     let dmg;
     if (turret) {
       dmg = turretProjectileDamage(turret);
     } else {
       const tier = Math.max(0, Math.min(8, Number(weapon === 2 ? attacker.swordTier : attacker.axeTier) || 0));
-      const multiplier = [1, 1.5, 2.2, 3.5, 5, 8, 10, 13, 16][tier] || (1 + tier * 1.5);
-      dmg = Math.min(150, Math.round((weapon === 2 ? 30 : 22) * multiplier));
+      const isScythe = weapon === 2 && Boolean(attacker.scytheId || (attacker.swordSkin && String(attacker.swordSkin).startsWith('scythe_')));
+      dmg = calculateMeleeDamage(weapon, tier, { isScythe });
     }
 
     mob.hp = Math.max(0, mob.hp - dmg);
@@ -7548,11 +7578,12 @@ io.on('connection', (socket) => {
     if (!Number.isInteger(type) || !SERVER_BUILD_LIMITS[type] || !Number.isFinite(x) || !Number.isFinite(y)) return null;
     if (Math.abs(x) > 6480 || Math.abs(y) > 6480) return null;
     if (!owner || owner.hp <= 0 || Math.hypot(x - (Number(owner.x) || 0), y - (Number(owner.y) || 0)) > 380) return null;
-    const maxHp = type === 6 ? TRAP_MAX_HP : Math.max(1, Math.min(2000, Number(data.maxHp) || 100));
+    const tier = Math.max(0, Math.min(5, Number(data.tier) || 0));
+    const maxHp = getBuildingMaxHp(type, tier);
     return {
       id, type, x, y, angle: Number.isFinite(angle) ? angle : 0,
       radius: BUILD_RADII[type], hp: maxHp, maxHp,
-      tier: Math.max(0, Math.min(6, Number(data.tier) || 0)),
+      tier,
       ownerId: owner.id, ownerClanId: owner.clanId || ''
     };
   }
@@ -7651,16 +7682,33 @@ io.on('connection', (socket) => {
     io.emit('build_destroy', { id });
     io.emit('trap_freed', { buildingId: id });
   });
-  socket.on('building_hit', ({ id, dmg } = {}) => {
+  socket.on('building_hit', (data = {}) => {
     if (socketEventRateLimited(socket, 'building_hit')) return;
+    const { id } = data;
     const building = buildings.get(id) || buildings.get(String(id));
     const attacker = players.get(socket.id);
     if (!building || !attacker || attacker.hp <= 0) return;
+    const swingId = Number(data.swingId);
+    const now = Date.now();
+    if (!Number.isFinite(swingId) || swingId !== attacker.lastSwingId || now - (attacker.lastSwingAt || 0) > 350) return;
+    const hitIds = attacker.lastBuildingHitIds || (attacker.lastBuildingHitIds = new Set());
+    const buildingId = String(building.id || id);
+    if (hitIds.has(buildingId)) return;
     if (Math.hypot((Number(attacker.x) || 0) - Number(building.x), (Number(attacker.y) || 0) - Number(building.y)) > 250) return;
     if (building.ownerId === socket.id) return;
+    const lastHitAt = attacker.lastBuildingHitAt || (attacker.lastBuildingHitAt = new Map());
+    if (now - (lastHitAt.get(buildingId) || 0) < BUILDING_HIT_COOLDOWN_MS) return;
+    hitIds.add(buildingId);
+    lastHitAt.set(buildingId, now);
+    if (lastHitAt.size > 256) {
+      for (const [hitBuildingId, hitAt] of lastHitAt) {
+        if (now - hitAt > 10000) lastHitAt.delete(hitBuildingId);
+      }
+    }
     const weapon = Number(attacker.weapon) === 2 ? 2 : 1;
+    const isScythe = weapon === 2 && Boolean(attacker.scytheId || (attacker.swordSkin && String(attacker.swordSkin).startsWith('scythe_')));
     const tier = Math.max(0, Math.min(5, Number(weapon === 2 ? attacker.swordTier : attacker.axeTier) || 0));
-    const hitDmg = Math.min(120, Math.round((weapon === 2 ? 30 : 22) * [1, 1.5, 2.2, 3.5, 5, 8][tier]));
+    const hitDmg = calculateMeleeDamage(weapon, tier, { isScythe, maxDamage: 120, buildingDamageMultiplier: BUILDING_MELEE_DAMAGE_MULTIPLIER });
     building.hp = Math.max(0, (building.hp ?? building.maxHp ?? 100) - hitDmg);
     io.emit('build_hp_update', { id, hp: building.hp });
     if (building.hp <= 0) {
@@ -7700,11 +7748,9 @@ io.on('connection', (socket) => {
     if (!player || (player.score || 0) < cost) return;
     player.score -= cost;
     if (player._authUser) player._authUser.score = Math.max(0, (player._authUser.score || 0) - cost);
-    const baseHp = { 3: 250, 4: 180, 5: 100, 6: 850, 7: 350, 8: 500, 9: 750, 10: 400 }[building.type] || 100;
-    const tierHpMultiplier = [1, 1.6, 2.5, 4, 6.5, 10][newTier] || 1;
     const hpRatio = building.maxHp > 0 ? Math.max(0, Math.min(1, building.hp / building.maxHp)) : 1;
     building.tier = newTier;
-    building.maxHp = Math.round(baseHp * tierHpMultiplier);
+    building.maxHp = getBuildingMaxHp(building.type, newTier);
     building.hp = Math.max(1, Math.round(building.maxHp * hpRatio));
     io.emit('build_tier_update', { id, tier: building.tier, maxHp: building.maxHp, hp: building.hp });
     if (player) {

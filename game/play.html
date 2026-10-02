@@ -11663,7 +11663,7 @@ function checkHits() {
       const dmgFinal = Math.round((_isCrit ? Math.round(dmg * _critMulti) : dmg) * (_comboDmgBonus || 1));
       if (_connected && _socket && e._netId) {
         // Server-authoritative: send hit to server; server applies damage and broadcasts result
-        _socket.emit('mob_hit_req', { mobId: e._netId, dmg: dmgFinal, angle: player.angle });
+        _socket.emit('mob_hit_req', { mobId: e._netId, dmg: dmgFinal, angle: player.angle, swingId: _swingId });
         // Optimistic local HP update: clamp at min 1 so client NEVER deletes mob early in multiplayer!
         e.hp = Math.max(1, e.hp - dmgFinal);
       } else {
@@ -11883,17 +11883,18 @@ function checkHits() {
 
       // HIT confirmed — deal weapon damage to building
       b.lastHitSwingId = _swingId;
+      const isServerBuilding = Boolean(b._netId && _connected && _socket);
       const bDmg = Math.max(20, Math.round(dmg * 0.75)); // guaranteed damage to buildings
-      b.hp = Math.max(0, b.hp - bDmg);
+      if (!isServerBuilding) b.hp = Math.max(0, b.hp - bDmg);
       b.shake = 8; b.hitTimer = 15;
-      spawnBuildingDebris(b.x, b.y, b.type);
+      if (!isServerBuilding) spawnBuildingDebris(b.x, b.y, b.type);
       shake(3.5);
       playSound(180 + Math.random() * 60, 0.08, 'square', 0.16);
-      floatingTexts.push({ x: b.x, y: b.y - 38, text: '-' + bDmg + ' 🪓', alpha: 1, life: 28, color: '#ffcc66' });
+      if (!isServerBuilding) floatingTexts.push({ x: b.x, y: b.y - 38, text: '-' + bDmg + ' 🪓', alpha: 1, life: 28, color: '#ffcc66' });
 
       // Tell server about damage to ANY building — server broadcasts to ALL players
-      if (b._netId && _connected && _socket) {
-        _socket.emit('building_hit', { id: b._netId, dmg: bDmg });
+      if (isServerBuilding) {
+        _socket.emit('building_hit', { id: b._netId, dmg: bDmg, swingId: _swingId });
       }
 
       // If destroyed — notify server/remove
@@ -12052,7 +12053,7 @@ function updateArrows(){
         spawnBlood(e.x,e.y,4);
         if(_connected && _socket && e._netId){
           // Multiplayer: server-authoritative damage via mob_hit_req
-          _socket.emit('mob_hit_req',{mobId:e._netId,dmg});
+          _socket.emit('mob_hit_req',{mobId:e._netId,dmg,swingId:_swingId});
           e.hp = Math.max(1, e.hp - dmg);
         } else {
           // Offline: apply HP locally
@@ -19859,6 +19860,7 @@ function update(timestamp = 0) {
             mobId: e2._netId,
             dmg: p.dmg,
             buildingId: p.buildingId || null,
+            swingId: _swingId,
             sourceX: p.sourceX ?? p.x,
             sourceY: p.sourceY ?? p.y
           });

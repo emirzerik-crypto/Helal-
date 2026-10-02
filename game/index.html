@@ -8588,6 +8588,10 @@
             return String(value ?? '').replace(/[&<>'"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[character]));
         }
 
+        function getLeaderboardScore(entry) {
+            return Math.max(0, Number(entry?.score ?? entry?.gold ?? 0) || 0);
+        }
+
         async function loadHomeLeaderboard() {
             const container = document.getElementById('home-leaderboard-list');
             if (!container) return;
@@ -8610,7 +8614,7 @@
                     const rankId = typeof entry.rankId === 'number' ? entry.rankId : 0;
                     const rankTitle = entry.rankName || RANKS[rankId] || 'Tohum';
                     const visualRankId = getVisualRankId(rankId);
-                    const highestScore = Math.max(0, Number(entry.score || 0));
+                    const highestScore = getLeaderboardScore(entry);
                     const profileSlot = document.createElement('span');
                     profileSlot.className = 'leaderboard-profile-slot inline-block';
                     profileSlot.style.width = '26px';
@@ -8731,14 +8735,14 @@
                 const rankId = typeof entry.rankId === 'number' ? entry.rankId : 0;
                 const rankTitle = entry.rankName || RANKS[rankId] || 'Tohum';
                 const visualRankId = getVisualRankId(rankId);
-                const highestGold = Math.max(0, Number(entry.gold || 0));
+                const highestScore = getLeaderboardScore(entry);
                 const playerKills = Number(entry.playerKills ?? entry.kills ?? 0);
                 const minutesAgo = entry.minutesAgo == null ? null : Number(entry.minutesAgo);
                 const valueText = _currentLbTab === 'kills'
                     ? `${playerKills.toLocaleString()} KILL`
                     : _currentLbTab === 'recent'
                         ? (minutesAgo == null ? 'ZAMAN YOK' : minutesAgo === 0 ? 'ŞİMDİ' : `${minutesAgo} DK ÖNCE`)
-                        : `${highestGold.toLocaleString()} <img class="real-coin-icon" src="asset/gold.png" alt="Altın">`;
+                        : highestScore.toLocaleString();
                 const activityText = _currentLbTab === 'recent'
                     ? `<span class="leaderboard-activity">${minutesAgo == null ? 'Son aktivite bilinmiyor' : `${minutesAgo} dk önce`} · ${Math.max(0, Math.round(Number(entry.timeAlive || entry.lastTimeAlive || 0) / 60))} dk hayatta</span>`
                     : '';
