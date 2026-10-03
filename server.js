@@ -3926,22 +3926,22 @@ const WEAPON_DEFINITIONS = {
   moonpiercer: { label: 'Moonpiercer', title: 'Lunar Fang', style: 'astral lance', damage: 1.2, range: 1.32, speed: 0.92, notes: 'Ay ışığı gibi net ve uzun menzilli vurum.' }
 };
 const HELMET_ITEM_STATS = Object.freeze({
-  helmet_imperator: { maxHp: 1.18, armor: 1.12, damage: 1.02, speed: 0.99 },
-  helmet_cehennem: { damage: 1.19, attackSpeed: 1.11, armor: 0.96, speed: 1.02 },
-  helmet_cyber: { speed: 1.15, attackSpeed: 1.12, maxHp: 0.96, armor: 0.9 },
-  helmet_ejderha: { damage: 1.17, maxHp: 1.08, armor: 1.03, speed: 0.96 },
-  helmet_druid: { maxHp: 1.18, armor: 1.14, damage: 0.96, speed: 1.01 },
-  helmet_necromancer: { attackSpeed: 1.15, damage: 1.1, maxHp: 0.96, armor: 0.92, speed: 1.02 }
+  helmet_imperator: { maxHp: 1.22, armor: 1.22, damage: 1.02, speed: 0.98 },
+  helmet_cehennem: { damage: 1.22, attackSpeed: 1.12, armor: 0.98, speed: 1.04 },
+  helmet_cyber: { speed: 1.16, attackSpeed: 1.18, maxHp: 0.96, armor: 0.92 },
+  helmet_ejderha: { damage: 1.16, maxHp: 1.14, armor: 1.08, speed: 0.98 },
+  helmet_druid: { maxHp: 1.2, armor: 1.16, damage: 0.92, speed: 1.07 },
+  helmet_necromancer: { attackSpeed: 1.18, damage: 1.12, maxHp: 0.98, armor: 0.96, speed: 1.03 }
 });
 const SCYTHE_ITEM_STATS = Object.freeze({
-  scythe_tier_1: { damage: 1.05, attackSpeed: 1.02 },
-  scythe_tier_2: { damage: 1.08, attackSpeed: 1.08, speed: 1.02 },
-  scythe_tier_3: { damage: 1.16, attackSpeed: 0.96, speed: 0.98 },
-  scythe_tier_4: { damage: 1.08, attackSpeed: 1.04, dash: 1.18 },
-  scythe_tier_5: { damage: 1.04, attackSpeed: 1.06, speed: 1.14 },
-  scythe_tier_6: { damage: 1.12, attackSpeed: 1.12, speed: 0.98 },
-  scythe_tier_7: { damage: 1.18, speed: 1.05, dash: 1.08 },
-  scythe_tier_8: { damage: 1.22, attackSpeed: 1.12, dash: 1.14, speed: 1.03 }
+  scythe_tier_1: { damage: 1.03, attackSpeed: 1.02 },
+  scythe_tier_2: { damage: 1.06, attackSpeed: 1.07, speed: 1.03 },
+  scythe_tier_3: { damage: 1.12, attackSpeed: 0.97, speed: 1.01 },
+  scythe_tier_4: { damage: 1.07, attackSpeed: 1.05, dash: 1.18 },
+  scythe_tier_5: { damage: 1.04, attackSpeed: 1.08, speed: 1.12 },
+  scythe_tier_6: { damage: 1.1, attackSpeed: 1.1, speed: 1.05 },
+  scythe_tier_7: { damage: 1.16, attackSpeed: 1.08, dash: 1.08, speed: 1.02 },
+  scythe_tier_8: { damage: 1.2, attackSpeed: 1.14, dash: 1.12, speed: 1.04 }
 });
 const ITEM_HELMET_ALIAS_MAP = Object.freeze({
   helmet_imperator: 'guardian',

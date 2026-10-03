@@ -4016,18 +4016,30 @@ html,body{width:100vw !important;max-width:100vw !important;height:var(--app-hei
   text-transform: uppercase;
 }
 .scythe-score-pill {
-  background: #381a07;
-  border: 2px solid #5a2c0c;
-  border-radius: 20px;
-  padding: 4px 12px;
+  background: linear-gradient(180deg, rgba(92,59,18,0.96), rgba(30,13,4,0.98));
+  border: 2px solid rgba(255,214,92,0.72);
+  border-radius: 999px;
+  padding: 6px 12px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+  gap: 8px;
+  box-shadow: inset 0 2px 10px rgba(255,215,0,0.16), 0 0 18px rgba(255,200,74,0.25);
 }
-.scythe-score-coin { font-size: 14px; }
-.scythe-score-lbl { font-size: 11px; font-weight: 800; color: #ffd700; }
-.scythe-score-val { font-size: 13px; font-weight: 900; color: #fff; text-shadow: 1px 1px 0 #000; }
+.shop-gold-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(255,214,92,0.9));
+  display: block;
+}
+.scythe-score-lbl { display: none; }
+.scythe-score-val {
+  font-size: 15px;
+  font-weight: 900;
+  color: #fff9d9;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 10px rgba(255,214,92,0.7), 1px 1px 0 #000;
+}
 
 .scythe-modal-content-wrap {
   display: grid;
@@ -4424,18 +4436,23 @@ html,body{width:100vw !important;max-width:100vw !important;height:var(--app-hei
   text-transform: uppercase;
 }
 .helmet-score-pill {
-  background: #381a07;
-  border: 2px solid #5a2c0c;
-  border-radius: 20px;
-  padding: 4px 12px;
+  background: linear-gradient(180deg, rgba(92,59,18,0.96), rgba(30,13,4,0.98));
+  border: 2px solid rgba(125,211,252,0.74);
+  border-radius: 999px;
+  padding: 6px 12px;
   display: flex;
   align-items: center;
-  gap: 6px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+  gap: 8px;
+  box-shadow: inset 0 2px 10px rgba(90,180,255,0.14), 0 0 18px rgba(90,180,255,0.2);
 }
-.helmet-score-coin { font-size: 14px; }
-.helmet-score-lbl { font-size: 11px; font-weight: 800; color: #38bdf8; }
-.helmet-score-val { font-size: 13px; font-weight: 900; color: #fff; text-shadow: 1px 1px 0 #000; }
+.helmet-score-lbl { display: none; }
+.helmet-score-val {
+  font-size: 15px;
+  font-weight: 900;
+  color: #eaf9ff;
+  letter-spacing: 0.04em;
+  text-shadow: 0 0 10px rgba(125,211,252,0.8), 1px 1px 0 #000;
+}
 
 .helmet-modal-content-wrap {
   display: grid;
@@ -5072,11 +5089,11 @@ function drawSkinEyesOverlay(c, R, sk, fl) {
   <div style="flex:1;"></div>
   <div style="display:flex;gap:6px;pointer-events:auto;align-items:center;">
     <button type="button" id="scythe-shop-btn" class="ref-hud-btn" onclick="openScytheShopModal()" title="Tırpan Mağazası" aria-label="Tırpan Mağazası">
-      <img id="scythe-hud-icon" src="scytheassets/Scythe_Tier_8__OMNIPOTENCE_110x190.png" alt="Tırpan" style="width:23px;height:23px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.6));" onerror="this.outerHTML='⚡'" />
+      <img id="scythe-hud-icon" src="../scytheassets/Scythe_Tier_8__OMNIPOTENCE_110x190.png" alt="Tırpan" style="width:23px;height:23px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.6));" onerror="this.outerHTML='⚡'" />
       <span class="scythe-hud-badge">YENİ</span>
     </button>
     <button type="button" id="helmet-shop-btn" class="ref-hud-btn" onclick="openHelmetShopModal()" title="Kask Mağazası" aria-label="Kask Mağazası">
-      <img id="helmet-hud-icon" src="helmetsassets/TamingIO_4K_İmparatorluk_Tac_.png" alt="Kask" style="width:23px;height:23px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.6));" onerror="this.outerHTML='🪖'" />
+      <img id="helmet-hud-icon" src="../helmetsassets/TamingIO_4K_İmparatorluk_Tac_.png" alt="Kask" style="width:23px;height:23px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.6));" onerror="this.outerHTML='🪖'" />
       <span class="helmet-hud-badge">YENİ</span>
     </button>
     <button type="button" id="clan-btn" class="ref-hud-btn" onclick="window._toggleClanPanel()" title="Klan" aria-label="Klan">🛡️</button>
@@ -26346,8 +26363,7 @@ setInterval(function(){
     </div>
     <div class="fb-modal-header-actions">
       <div class="scythe-score-pill">
-        <span class="scythe-score-coin">🪙</span>
-        <span class="scythe-score-lbl">Skor:</span>
+        <img class="shop-gold-icon" src="asset/gold.png" alt="Altın" onerror="this.outerHTML='🪙'" />
         <span id="scythe-shop-score" class="scythe-score-val">0</span>
       </div>
       <button type="button" class="fb-modal-close-btn" onclick="window._closeAllModals()" aria-label="Kapat" title="Kapat">✕</button>
@@ -26365,7 +26381,7 @@ setInterval(function(){
 
       <div class="scythe-canvas-box">
         <div id="scythe-aura-glow" class="scythe-aura-glow" style="background:radial-gradient(circle, rgba(132,204,22,0.4) 0%, rgba(132,204,22,0) 70%);"></div>
-        <img id="scythe-preview-img" class="scythe-preview-img" src="scytheassets/Scythe_Tier_1__Pasl__Goblin_110x190.webp" alt="Scythe Preview" />
+        <img id="scythe-preview-img" class="scythe-preview-img" src="../scytheassets/Scythe_Tier_1__Pasl__Goblin_110x190.png" alt="Scythe Preview" />
       </div>
 
       <div class="scythe-preview-info">
@@ -26376,7 +26392,7 @@ setInterval(function(){
       <div class="scythe-preview-action">
         <div class="scythe-price-row">
           <span class="scythe-price-lbl">Fiyat:</span>
-          <span id="scythe-preview-price" class="scythe-price-val">ÜCRETSİZ (0 Skor)</span>
+          <span id="scythe-preview-price" class="scythe-price-val">ÜCRETSİZ</span>
         </div>
         <button type="button" id="scythe-action-btn" onclick="onScytheActionClick()" class="scythe-main-btn">
           KUŞAN
@@ -26407,8 +26423,7 @@ setInterval(function(){
     </div>
     <div class="fb-modal-header-actions">
       <div class="helmet-score-pill">
-        <span class="helmet-score-coin">🪙</span>
-        <span class="helmet-score-lbl">Skor:</span>
+        <img class="shop-gold-icon" src="asset/gold.png" alt="Altın" onerror="this.outerHTML='🪙'" />
         <span id="helmet-shop-score" class="helmet-score-val">0</span>
       </div>
       <button type="button" class="fb-modal-close-btn" onclick="window._closeAllModals()" aria-label="Kapat" title="Kapat">✕</button>
@@ -26426,7 +26441,7 @@ setInterval(function(){
 
       <div class="helmet-canvas-box">
         <div id="helmet-aura-glow" class="helmet-aura-glow" style="background:radial-gradient(circle, rgba(245,158,11,0.4) 0%, rgba(245,158,11,0) 70%);"></div>
-        <img id="helmet-preview-img" class="helmet-preview-img" src="helmetsassets/TamingIO_4K_İmparatorluk_Tac_.webp" alt="Helmet Preview" />
+        <img id="helmet-preview-img" class="helmet-preview-img" src="../helmetsassets/TamingIO_4K_İmparatorluk_Tac_.png" alt="Helmet Preview" />
       </div>
 
       <div class="helmet-preview-info">
@@ -26437,7 +26452,7 @@ setInterval(function(){
       <div class="helmet-preview-action">
         <div class="helmet-price-row">
           <span class="helmet-price-lbl">Fiyat:</span>
-          <span id="helmet-preview-price" class="helmet-price-val">ÜCRETSİZ (0 Skor)</span>
+          <span id="helmet-preview-price" class="helmet-price-val">ÜCRETSİZ</span>
         </div>
         <button type="button" id="helmet-action-btn" onclick="onHelmetActionClick()" class="helmet-main-btn">
           KUŞAN
@@ -28138,22 +28153,22 @@ renderInventoryIcons(true);
 // ============================================================
 (function() {
   const SCYTHE_CLIENT_STATS = Object.freeze({
-    scythe_tier_1: { damage: 1.05, attackSpeed: 1.02 },
-    scythe_tier_2: { damage: 1.08, attackSpeed: 1.08, speed: 1.02 },
-    scythe_tier_3: { damage: 1.16, attackSpeed: 0.96, speed: 0.98 },
-    scythe_tier_4: { damage: 1.08, attackSpeed: 1.04, dash: 1.18 },
-    scythe_tier_5: { damage: 1.04, attackSpeed: 1.06, speed: 1.14 },
-    scythe_tier_6: { damage: 1.12, attackSpeed: 1.12, speed: 0.98 },
-    scythe_tier_7: { damage: 1.18, speed: 1.05, dash: 1.08 },
-    scythe_tier_8: { damage: 1.22, attackSpeed: 1.12, dash: 1.14, speed: 1.03 }
+    scythe_tier_1: { damage: 1.03, attackSpeed: 1.02 },
+    scythe_tier_2: { damage: 1.06, attackSpeed: 1.07, speed: 1.03 },
+    scythe_tier_3: { damage: 1.12, attackSpeed: 0.97, speed: 1.01 },
+    scythe_tier_4: { damage: 1.07, attackSpeed: 1.05, dash: 1.18 },
+    scythe_tier_5: { damage: 1.04, attackSpeed: 1.08, speed: 1.12 },
+    scythe_tier_6: { damage: 1.1, attackSpeed: 1.1, speed: 1.05 },
+    scythe_tier_7: { damage: 1.16, attackSpeed: 1.08, dash: 1.08, speed: 1.02 },
+    scythe_tier_8: { damage: 1.2, attackSpeed: 1.14, dash: 1.12, speed: 1.04 }
   });
   const HELMET_CLIENT_STATS = Object.freeze({
-    helmet_imperator: { maxHp: 1.18, armor: 1.12, damage: 1.02, speed: 0.99 },
-    helmet_cehennem: { damage: 1.19, attackSpeed: 1.11, armor: 0.96, speed: 1.02 },
-    helmet_cyber: { speed: 1.15, attackSpeed: 1.12, maxHp: 0.96, armor: 0.9 },
-    helmet_ejderha: { damage: 1.17, maxHp: 1.08, armor: 1.03, speed: 0.96 },
-    helmet_druid: { maxHp: 1.18, armor: 1.14, damage: 0.96, speed: 1.01 },
-    helmet_necromancer: { attackSpeed: 1.15, damage: 1.1, maxHp: 0.96, armor: 0.92, speed: 1.02 }
+    helmet_imperator: { maxHp: 1.22, armor: 1.22, damage: 1.02, speed: 0.98 },
+    helmet_cehennem: { damage: 1.22, attackSpeed: 1.12, armor: 0.98, speed: 1.04 },
+    helmet_cyber: { speed: 1.16, attackSpeed: 1.18, maxHp: 0.96, armor: 0.92 },
+    helmet_ejderha: { damage: 1.16, maxHp: 1.14, armor: 1.08, speed: 0.98 },
+    helmet_druid: { maxHp: 1.2, armor: 1.16, damage: 0.92, speed: 1.07 },
+    helmet_necromancer: { attackSpeed: 1.18, damage: 1.12, maxHp: 0.98, armor: 0.96, speed: 1.03 }
   });
   const SCYTHE_VFX_PROFILES = Object.freeze({
     scythe_tier_1: { core: '#b8d28a', accent: '#efffc9' },
@@ -28181,7 +28196,7 @@ renderInventoryIcons(true);
       tier: 1,
       name: 'Paslı Goblin Tırpanı',
       shortName: 'Paslı Goblin',
-      file: 'Scythe_Tier_1__Pasl__Goblin_110x190.webp',
+      file: 'Scythe_Tier_1__Pasl__Goblin_110x190.png',
       cost: 60,
       rarity: 'common',
       rarityName: 'Yaygın',
@@ -28195,7 +28210,7 @@ renderInventoryIcons(true);
       tier: 2,
       name: 'Güneş Muhafızı Tırpanı',
       shortName: 'Güneş Muhafızı',
-      file: 'Scythe_Tier_2__G_ne__Muhaf_z_110x190.webp',
+      file: 'Scythe_Tier_2__G_ne__Muhaf_z_110x190.png',
       cost: 120,
       rarity: 'rare',
       rarityName: 'Nadir',
@@ -28209,7 +28224,7 @@ renderInventoryIcons(true);
       tier: 3,
       name: 'Vulkan Cehennem Tırpanı',
       shortName: 'Vulkan Cehennem',
-      file: 'Scythe_Tier_3__Vulkan_Cehennem_110x190.webp',
+      file: 'Scythe_Tier_3__Vulkan_Cehennem_110x190.png',
       cost: 210,
       rarity: 'epic',
       rarityName: 'Destansı',
@@ -28223,7 +28238,7 @@ renderInventoryIcons(true);
       tier: 4,
       name: 'Kozmik Void Tırpanı',
       shortName: 'Kozmik Void',
-      file: 'Scythe_Tier_4__Kozmik_Void_110x190.webp',
+      file: 'Scythe_Tier_4__Kozmik_Void_110x190.png',
       cost: 340,
       rarity: 'epic',
       rarityName: 'Destansı',
@@ -28237,7 +28252,7 @@ renderInventoryIcons(true);
       tier: 5,
       name: 'Glacial Aurora Tırpanı',
       shortName: 'Glacial Aurora',
-      file: 'Scythe_Tier_5__Glacial_Aurora_110x190.webp',
+      file: 'Scythe_Tier_5__Glacial_Aurora_110x190.png',
       cost: 520,
       rarity: 'legendary',
       rarityName: 'Efsanevi',
@@ -28251,7 +28266,7 @@ renderInventoryIcons(true);
       tier: 6,
       name: 'Siber Fraktal Tırpanı',
       shortName: 'Siber Fraktal',
-      file: 'Scythe_Tier_6__Siber_Fraktal_110x190.webp',
+      file: 'Scythe_Tier_6__Siber_Fraktal_110x190.png',
       cost: 760,
       rarity: 'legendary',
       rarityName: 'Efsanevi',
@@ -28265,7 +28280,7 @@ renderInventoryIcons(true);
       tier: 7,
       name: 'Süpernova Tırpanı',
       shortName: 'Süpernova',
-      file: 'Scythe_Tier_7__S_pernova_110x190.webp',
+      file: 'Scythe_Tier_7__S_pernova_110x190.png',
       cost: 1100,
       rarity: 'mythic',
       rarityName: 'Mitolojik',
@@ -28279,7 +28294,7 @@ renderInventoryIcons(true);
       tier: 8,
       name: 'OMNIPOTENCE Tırpanı',
       shortName: 'OMNIPOTENCE',
-      file: 'Scythe_Tier_8__OMNIPOTENCE_110x190.webp',
+      file: 'Scythe_Tier_8__OMNIPOTENCE_110x190.png',
       cost: 1600,
       rarity: 'divine',
       rarityName: 'İlahi',
@@ -28313,16 +28328,16 @@ renderInventoryIcons(true);
     if (typeof window.renderScytheModal === 'function') window.renderScytheModal();
     if (typeof window.renderHelmetShopModal === 'function') window.renderHelmetShopModal();
     const hudIcon = document.getElementById('scythe-hud-icon');
-    if (hudIcon) hudIcon.src = 'scytheassets/' + SCYTHE_ITEMS[0].file;
+    if (hudIcon) hudIcon.src = '../scytheassets/' + SCYTHE_ITEMS[0].file;
     const hHud = document.getElementById('helmet-hud-icon');
-    if (hHud) hHud.src = 'helmetsassets/' + HELMET_ITEMS[0].file;
+    if (hHud) hHud.src = '../helmetsassets/' + HELMET_ITEMS[0].file;
   };
 
   // Sprite Cache & Preloading
   const _SCYTHE_SPRITES = new Map();
   SCYTHE_ITEMS.forEach(item => {
     const img = new Image();
-    img.src = 'scytheassets/' + item.file;
+    img.src = '../scytheassets/' + item.file;
     img.onload = () => { img.ready = true; };
     img.decode().catch(() => {});
     _SCYTHE_SPRITES.set(item.id, img);
@@ -28335,7 +28350,7 @@ renderInventoryIcons(true);
       const it = window._getScytheItem(id);
       if (it) {
         s = new Image();
-        s.src = 'scytheassets/' + it.file;
+        s.src = '../scytheassets/' + it.file;
         s.onload = () => { s.ready = true; };
         _SCYTHE_SPRITES.set(id, s);
       }
@@ -28378,7 +28393,7 @@ renderInventoryIcons(true);
       const sc = window._getScytheItem(window._equippedScytheId);
       if (sc) {
         const hudIcon = document.getElementById('scythe-hud-icon');
-        if (hudIcon) hudIcon.src = 'scytheassets/' + sc.file;
+        if (hudIcon) hudIcon.src = '../scytheassets/' + sc.file;
         const sl = document.getElementById('sword-tier-lbl');
         if (sl) { sl.textContent = sc.shortName; sl.style.color = sc.color; }
         const sf = document.getElementById('sword-xp-fill');
@@ -28408,7 +28423,7 @@ renderInventoryIcons(true);
 
   // Render modal content
   window.renderScytheModal = function() {
-    const scoreVal = (typeof player !== 'undefined' && player && typeof player.score === 'number') ? player.score : 0;
+    const scoreVal = (typeof player !== 'undefined' && player && typeof player.gold === 'number') ? player.gold : 0;
     const scoreEl = document.getElementById('scythe-shop-score');
     if (scoreEl) scoreEl.textContent = scoreVal.toLocaleString('tr-TR');
 
@@ -28432,7 +28447,7 @@ renderInventoryIcons(true);
 
     const pImg = document.getElementById('scythe-preview-img');
     if (pImg) {
-      const imageSrc = 'scytheassets/' + selItem.file;
+      const imageSrc = '../scytheassets/' + selItem.file;
       if (pImg.getAttribute('src') !== imageSrc) pImg.src = imageSrc;
       pImg.alt = selItem.name;
     }
@@ -28455,13 +28470,13 @@ renderInventoryIcons(true);
     const pPrice = document.getElementById('scythe-preview-price');
     if (pPrice) {
       if (isEquipped) {
-        pPrice.textContent = 'KUŞANILDI';
+        pPrice.innerHTML = 'KUŞANILDI';
         pPrice.style.color = '#79d138';
       } else if (isOwned) {
-        pPrice.textContent = 'SAHİPSİNİZ';
+        pPrice.innerHTML = 'SAHİPSİNİZ';
         pPrice.style.color = '#ffd700';
       } else {
-        pPrice.textContent = selItem.cost === 0 ? 'ÜCRETSİZ (0 Skor)' : `${selItem.cost.toLocaleString('tr-TR')} Skor`;
+        pPrice.innerHTML = selItem.cost === 0 ? 'ÜCRETSİZ' : `${selItem.cost.toLocaleString('tr-TR')} <img class="shop-gold-icon" src="asset/gold.png" alt="Altın" onerror="this.outerHTML='🪙'" />`;
         pPrice.style.color = selItem.cost === 0 ? '#79d138' : '#ffdf73';
       }
     }
@@ -28477,7 +28492,7 @@ renderInventoryIcons(true);
         aBtn.className = 'scythe-main-btn';
         aBtn.disabled = false;
       } else {
-        aBtn.textContent = selItem.cost === 0 ? 'ÜCRETSİZ KUŞAN' : `🛒 SATIN AL (${selItem.cost} Skor)`;
+        aBtn.textContent = selItem.cost === 0 ? 'ÜCRETSİZ KUŞAN' : `🛒 SATIN AL (${selItem.cost})`;
         aBtn.className = 'scythe-main-btn';
         aBtn.disabled = false;
       }
@@ -28504,11 +28519,11 @@ renderInventoryIcons(true);
             <span class="scythe-card-tier-tag" style="background:${item.color};">T${item.tier}</span>
             <span class="scythe-card-status-badge">KUŞANILDI</span>
             <div class="scythe-card-img-wrap">
-              <img class="scythe-card-img" src="scytheassets/${item.file}" alt="${item.name}" loading="lazy" />
+              <img class="scythe-card-img" src="../scytheassets/${item.file}" alt="${item.name}" loading="lazy" />
             </div>
             <div class="scythe-card-name" style="${itemEquipped ? 'color:#79d138;' : (isSelected ? 'color:#ffd700;' : '')}">${item.shortName}</div>
             <div class="scythe-card-cost" style="${itemEquipped ? 'color:#79d138;' : ''}">
-              ${itemEquipped ? 'Kuşanıldı' : (itemOwned ? 'Sahipsin' : (item.cost === 0 ? 'Ücretsiz' : item.cost + ' Skor'))}
+              ${itemEquipped ? 'Kuşanıldı' : (itemOwned ? 'Sahipsin' : (item.cost === 0 ? 'Ücretsiz' : item.cost + ' 🪙'))}
             </div>
           </div>
         `;
@@ -28528,7 +28543,7 @@ renderInventoryIcons(true);
         if (name) name.style.color = itemEquipped ? '#79d138' : (isSelected ? '#ffd700' : '');
         if (cost) {
           cost.style.color = itemEquipped ? '#79d138' : '';
-          cost.textContent = itemEquipped ? 'Kuşanıldı' : (itemOwned ? 'Sahipsin' : (item.cost === 0 ? 'Ücretsiz' : item.cost + ' Skor'));
+          cost.textContent = itemEquipped ? 'Kuşanıldı' : (itemOwned ? 'Sahipsin' : (item.cost === 0 ? 'Ücretsiz' : item.cost + ' 🪙'));
         }
       });
     }
@@ -28603,7 +28618,7 @@ renderInventoryIcons(true);
     // Update top HUD icon to show active scythe
     const hudIcon = document.getElementById('scythe-hud-icon');
     if (hudIcon) {
-      hudIcon.src = 'scytheassets/' + scythe.file;
+      hudIcon.src = '../scytheassets/' + scythe.file;
     }
 
     // Floating text notification
@@ -28642,7 +28657,7 @@ renderInventoryIcons(true);
     // Reset top HUD icon
     const hudIcon = document.getElementById('scythe-hud-icon');
     if (hudIcon) {
-      hudIcon.src = 'scytheassets/' + SCYTHE_ITEMS[7].file;
+      hudIcon.src = '../scytheassets/' + SCYTHE_ITEMS[7].file;
     }
 
     // Reset sword label & bar
@@ -28687,7 +28702,7 @@ renderInventoryIcons(true);
       id: 'helmet_imperator',
       name: 'İmparatorluk Tacı',
       shortName: 'İmparator Tacı',
-      file: 'TamingIO_4K_İmparatorluk_Tac_.webp',
+      file: 'TamingIO_4K_İmparatorluk_Tac_.png',
       rarityName: 'Efsanevi',
       color: '#f59e0b',
       desc: 'İmparatorluğun en ulu hükümdarlarına layık saf altından görkemli taç.',
@@ -28699,7 +28714,7 @@ renderInventoryIcons(true);
       id: 'helmet_cehennem',
       name: 'Cehennem Efendisi',
       shortName: 'Cehennem Efendisi',
-      file: 'TamingIO_4K_Cehennem_Efendisi.webp',
+      file: 'TamingIO_4K_Cehennem_Efendisi.png',
       rarityName: 'Kötücül',
       color: '#ef4444',
       desc: 'Lav vadisinin derinliklerinde dövülmüş, alev saçan iblis miğferi.',
@@ -28711,7 +28726,7 @@ renderInventoryIcons(true);
       id: 'helmet_cyber',
       name: 'Cyber Mecha Prime',
       shortName: 'Cyber Mecha',
-      file: 'TamingIO_4K_Cyber_Mecha_Prime.webp',
+      file: 'TamingIO_4K_Cyber_Mecha_Prime.png',
       rarityName: 'Fütüristik',
       color: '#06b6d4',
       desc: 'Gelişmiş nano-alaşımdan üretilmiş yüksek teknolojili mecha miğfer.',
@@ -28723,7 +28738,7 @@ renderInventoryIcons(true);
       id: 'helmet_ejderha',
       name: 'Ejderha Barbar',
       shortName: 'Ejderha Barbar',
-      file: 'TamingIO_4K_Ejderha_Barbar.webp',
+      file: 'TamingIO_4K_Ejderha_Barbar.png',
       rarityName: 'Vahşi',
       color: '#f97316',
       desc: 'Antik kırmızı ejderhanın kafatasından oyulmuş korkusuz savaşçı miğferi.',
@@ -28735,7 +28750,7 @@ renderInventoryIcons(true);
       id: 'helmet_druid',
       name: 'Kadim Druid Kralı',
       shortName: 'Kadim Druid',
-      file: 'TamingIO_4K_Kadim_Druid_Kral_.webp',
+      file: 'TamingIO_4K_Kadim_Druid_Kral_.png',
       rarityName: 'Mitolojik',
       color: '#10b981',
       desc: 'Kutsal kadim ormanların ruhları ve boynuzlarıyla kutsanmış doğa miğferi.',
@@ -28747,7 +28762,7 @@ renderInventoryIcons(true);
       id: 'helmet_necromancer',
       name: 'Ruh Necromancer',
       shortName: 'Ruh Necromancer',
-      file: 'TamingIO_4K_Ruh_Necromancer.webp',
+      file: 'TamingIO_4K_Ruh_Necromancer.png',
       rarityName: 'Gizemli',
       color: '#a855f7',
       desc: 'Yitip gitmiş ruhların fısıltılarını taşıyan karanlık ölüm miğferi.',
@@ -28763,7 +28778,7 @@ renderInventoryIcons(true);
   const _helmetSprites = {};
   HELMET_ITEMS.forEach(item => {
     const img = new Image();
-    img.src = 'helmetsassets/' + item.file;
+    img.src = '../helmetsassets/' + item.file;
     img.decode().catch(() => {});
     _helmetSprites[item.id] = img;
   });
@@ -28774,7 +28789,7 @@ renderInventoryIcons(true);
     const found = HELMET_ITEMS.find(h => h.id === id);
     if (found) {
       const img = new Image();
-      img.src = 'helmetsassets/' + found.file;
+      img.src = '../helmetsassets/' + found.file;
       _helmetSprites[id] = img;
       return img;
     }
@@ -28822,9 +28837,9 @@ renderInventoryIcons(true);
     if (typeof window.renderScytheModal === 'function') window.renderScytheModal();
     if (typeof window.renderHelmetShopModal === 'function') window.renderHelmetShopModal();
     const hudIcon = document.getElementById('scythe-hud-icon');
-    if (hudIcon) hudIcon.src = 'scytheassets/' + SCYTHE_ITEMS[0].file;
+    if (hudIcon) hudIcon.src = '../scytheassets/' + SCYTHE_ITEMS[0].file;
     const hHud = document.getElementById('helmet-hud-icon');
-    if (hHud) hHud.src = 'helmetsassets/' + HELMET_ITEMS[0].file;
+    if (hHud) hHud.src = '../helmetsassets/' + HELMET_ITEMS[0].file;
   };
 
   // Sync HUD icon on load
@@ -28834,7 +28849,7 @@ renderInventoryIcons(true);
       const hItem = window._getHelmetItem(window._equippedHelmetId);
       if (hItem) {
         const hudIcon = document.getElementById('helmet-hud-icon');
-        if (hudIcon) hudIcon.src = 'helmetsassets/' + hItem.file;
+        if (hudIcon) hudIcon.src = '../helmetsassets/' + hItem.file;
       }
     }
   });
@@ -28860,7 +28875,7 @@ renderInventoryIcons(true);
 
   // Render modal content
   window.renderHelmetShopModal = function() {
-    const scoreVal = (typeof player !== 'undefined' && player && typeof player.score === 'number') ? player.score : 0;
+    const scoreVal = (typeof player !== 'undefined' && player && typeof player.gold === 'number') ? player.gold : 0;
     const scoreEl = document.getElementById('helmet-shop-score');
     if (scoreEl) scoreEl.textContent = scoreVal.toLocaleString('tr-TR');
 
@@ -28884,7 +28899,7 @@ renderInventoryIcons(true);
 
     const pImg = document.getElementById('helmet-preview-img');
     if (pImg) {
-      const imageSrc = 'helmetsassets/' + selItem.file;
+      const imageSrc = '../helmetsassets/' + selItem.file;
       if (pImg.getAttribute('src') !== imageSrc) pImg.src = imageSrc;
       pImg.alt = selItem.name;
     }
@@ -28907,13 +28922,13 @@ renderInventoryIcons(true);
     const pPrice = document.getElementById('helmet-preview-price');
     if (pPrice) {
       if (isEquipped) {
-        pPrice.textContent = 'KUŞANILDI';
+        pPrice.innerHTML = 'KUŞANILDI';
         pPrice.style.color = '#79d138';
       } else if (isOwned) {
-        pPrice.textContent = 'SAHİPSİNİZ';
+        pPrice.innerHTML = 'SAHİPSİNİZ';
         pPrice.style.color = '#ffd700';
       } else {
-        pPrice.textContent = selItem.cost === 0 ? 'ÜCRETSİZ (0 Skor)' : `${selItem.cost.toLocaleString('tr-TR')} Skor`;
+        pPrice.innerHTML = selItem.cost === 0 ? 'ÜCRETSİZ' : `${selItem.cost.toLocaleString('tr-TR')} <img class="shop-gold-icon" src="asset/gold.png" alt="Altın" onerror="this.outerHTML='🪙'" />`;
         pPrice.style.color = selItem.cost === 0 ? '#79d138' : '#ffdf73';
       }
     }
@@ -28929,7 +28944,7 @@ renderInventoryIcons(true);
         aBtn.className = 'helmet-main-btn';
         aBtn.disabled = false;
       } else {
-        aBtn.textContent = selItem.cost === 0 ? 'ÜCRETSİZ KUŞAN' : `🛒 SATIN AL (${selItem.cost} Skor)`;
+        aBtn.textContent = selItem.cost === 0 ? 'ÜCRETSİZ KUŞAN' : `🛒 SATIN AL (${selItem.cost})`;
         aBtn.className = 'helmet-main-btn';
         aBtn.disabled = false;
       }
@@ -28956,11 +28971,11 @@ renderInventoryIcons(true);
             <span class="helmet-card-tier-tag" style="background:${item.color};">${item.rarityName.slice(0,3).toUpperCase()}</span>
             <span class="helmet-card-status-badge">KUŞANILDI</span>
             <div class="helmet-card-img-wrap">
-              <img class="helmet-card-img" src="helmetsassets/${item.file}" alt="${item.name}" loading="lazy" />
+              <img class="helmet-card-img" src="../helmetsassets/${item.file}" alt="${item.name}" loading="lazy" />
             </div>
             <div class="helmet-card-name" style="${itemEquipped ? 'color:#79d138;' : (isSelected ? 'color:#ffd700;' : '')}">${item.shortName}</div>
             <div class="helmet-card-cost" style="${itemEquipped ? 'color:#79d138;' : ''}">
-              ${itemEquipped ? 'Kuşanıldı' : (itemOwned ? 'Sahipsin' : (item.cost === 0 ? 'Ücretsiz' : item.cost + ' Skor'))}
+              ${itemEquipped ? 'Kuşanıldı' : (itemOwned ? 'Sahipsin' : (item.cost === 0 ? 'Ücretsiz' : item.cost + ' 🪙'))}
             </div>
           </div>
         `;
@@ -28980,7 +28995,7 @@ renderInventoryIcons(true);
         if (name) name.style.color = itemEquipped ? '#79d138' : (isSelected ? '#ffd700' : '');
         if (cost) {
           cost.style.color = itemEquipped ? '#79d138' : '';
-          cost.textContent = itemEquipped ? 'Kuşanıldı' : (itemOwned ? 'Sahipsin' : (item.cost === 0 ? 'Ücretsiz' : item.cost + ' Skor'));
+          cost.textContent = itemEquipped ? 'Kuşanıldı' : (itemOwned ? 'Sahipsin' : (item.cost === 0 ? 'Ücretsiz' : item.cost + ' 🪙'));
         }
       });
     }
@@ -29031,7 +29046,7 @@ renderInventoryIcons(true);
     // Update top HUD icon
     const hudIcon = document.getElementById('helmet-hud-icon');
     if (hudIcon) {
-      hudIcon.src = 'helmetsassets/' + helmet.file;
+      hudIcon.src = '../helmetsassets/' + helmet.file;
     }
 
     // Floating text notification
@@ -29070,7 +29085,7 @@ renderInventoryIcons(true);
     // Reset top HUD icon
     const hudIcon = document.getElementById('helmet-hud-icon');
     if (hudIcon) {
-      hudIcon.src = 'helmetsassets/' + HELMET_ITEMS[0].file;
+      hudIcon.src = '../helmetsassets/' + HELMET_ITEMS[0].file;
     }
 
     // Sync to multiplayer
