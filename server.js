@@ -3926,22 +3926,22 @@ const WEAPON_DEFINITIONS = {
   moonpiercer: { label: 'Moonpiercer', title: 'Lunar Fang', style: 'astral lance', damage: 1.2, range: 1.32, speed: 0.92, notes: 'Ay ışığı gibi net ve uzun menzilli vurum.' }
 };
 const HELMET_ITEM_STATS = Object.freeze({
-  helmet_imperator: { maxHp: 1.18, damage: 1.02, armor: 1.16, speed: 0.98, attackSpeed: 1.06 },
-  helmet_cehennem: { maxHp: 1.12, damage: 1.12, armor: 1.08, speed: 1.05, attackSpeed: 1.08 },
-  helmet_cyber: { maxHp: 1.0, damage: 1.14, armor: 1.0, speed: 1.18, attackSpeed: 1.12 },
-  helmet_ejderha: { maxHp: 1.18, damage: 1.18, armor: 1.04, speed: 1.08, attackSpeed: 1.1 },
-  helmet_druid: { maxHp: 1.24, damage: 1.02, armor: 1.14, speed: 0.98, attackSpeed: 1.04 },
-  helmet_necromancer: { maxHp: 0.96, damage: 1.22, armor: 0.86, speed: 1.14, attackSpeed: 1.16 }
+  helmet_imperator: { maxHp: 1.18, armor: 1.12, damage: 1.02, speed: 0.99 },
+  helmet_cehennem: { damage: 1.19, attackSpeed: 1.11, armor: 0.96, speed: 1.02 },
+  helmet_cyber: { speed: 1.15, attackSpeed: 1.12, maxHp: 0.96, armor: 0.9 },
+  helmet_ejderha: { damage: 1.17, maxHp: 1.08, armor: 1.03, speed: 0.96 },
+  helmet_druid: { maxHp: 1.18, armor: 1.14, damage: 0.96, speed: 1.01 },
+  helmet_necromancer: { attackSpeed: 1.15, damage: 1.1, maxHp: 0.96, armor: 0.92, speed: 1.02 }
 });
 const SCYTHE_ITEM_STATS = Object.freeze({
-  scythe_tier_1: { damage: 1.05, speed: 1.02, attackSpeed: 1.0, dash: 1.04 },
-  scythe_tier_2: { damage: 1.09, speed: 1.04, attackSpeed: 1.04, dash: 1.08 },
-  scythe_tier_3: { damage: 1.13, speed: 1.06, attackSpeed: 1.08, dash: 1.12 },
-  scythe_tier_4: { damage: 1.18, speed: 1.08, attackSpeed: 1.12, dash: 1.18 },
-  scythe_tier_5: { damage: 1.22, speed: 1.1, attackSpeed: 1.16, dash: 1.22 },
-  scythe_tier_6: { damage: 1.28, speed: 1.12, attackSpeed: 1.2, dash: 1.28 },
-  scythe_tier_7: { damage: 1.34, speed: 1.14, attackSpeed: 1.24, dash: 1.34 },
-  scythe_tier_8: { damage: 1.4, speed: 1.16, attackSpeed: 1.28, dash: 1.42 }
+  scythe_tier_1: { damage: 1.05, attackSpeed: 1.02 },
+  scythe_tier_2: { damage: 1.08, attackSpeed: 1.08, speed: 1.02 },
+  scythe_tier_3: { damage: 1.16, attackSpeed: 0.96, speed: 0.98 },
+  scythe_tier_4: { damage: 1.08, attackSpeed: 1.04, dash: 1.18 },
+  scythe_tier_5: { damage: 1.04, attackSpeed: 1.06, speed: 1.14 },
+  scythe_tier_6: { damage: 1.12, attackSpeed: 1.12, speed: 0.98 },
+  scythe_tier_7: { damage: 1.18, speed: 1.05, dash: 1.08 },
+  scythe_tier_8: { damage: 1.22, attackSpeed: 1.12, dash: 1.14, speed: 1.03 }
 });
 const ITEM_HELMET_ALIAS_MAP = Object.freeze({
   helmet_imperator: 'guardian',
@@ -4757,7 +4757,8 @@ function applyLoadoutStats(player) {
   const roleStats = BUILD_ROLES[loadout.role] || BUILD_ROLES.tank;
   const helmetStats = BUILD_HELMETS[loadout.helmet] || BUILD_HELMETS.guardian;
   const helmetItemStats = getHelmetItemStats(player.helmetSkin || loadout.helmet || 'guardian');
-  const scytheItemStats = getScytheItemStats(player.scytheId || player.swordSkin || 'scythe_tier_1');
+  const scytheItemStats = getScytheItemStats(player.scytheId || player.swordSkin);
+  const previousHpRatio = Number(player.maxHp) > 0 ? Math.max(0, Math.min(1, (Number(player.hp) || 0) / Number(player.maxHp))) : 1;
   const hpMultiplier = (roleStats.maxHp || 1) * (helmetStats.maxHp || 1) * (helmetItemStats?.maxHp || 1);
   const damageMultiplier = (roleStats.damage || 1) * (helmetStats.damage || 1) * (helmetItemStats?.damage || 1) * (scytheItemStats?.damage || 1);
   const armorMultiplier = (roleStats.armor || 1) * (helmetStats.armor || 1) * (helmetItemStats?.armor || 1);
@@ -4767,7 +4768,7 @@ function applyLoadoutStats(player) {
   const baseMaxHp = Number(player.baseMaxHp) || 250;
   player.baseMaxHp = baseMaxHp;
   player.maxHp = Math.max(130, Math.round(baseMaxHp * hpMultiplier));
-  player.hp = Math.min(player.maxHp, Math.max(1, Math.round((player.hp ?? player.maxHp) * (player.maxHp > 0 ? (player.maxHp / Math.max(1, baseMaxHp)) : 1))));
+  player.hp = Math.min(player.maxHp, Math.max(1, Math.round(player.maxHp * previousHpRatio)));
   player.damageMultiplier = damageMultiplier * premiumDamageBuffer;
   player.armorMultiplier = armorMultiplier;
   player.speedMultiplier = speedMultiplier * (Number(weaponStats.speed) || 1);
@@ -6917,6 +6918,7 @@ io.on('connection', (socket) => {
     }
     acceptedX = normalizeWorldCoord(acceptedX, prevX);
     acceptedY = normalizeWorldCoord(acceptedY, prevY);
+    const previousEquipmentKey = `${player.scytheId || ''}|${player.helmetSkin || ''}`;
     for (const key of ['x', 'y', 'angle', 'vx', 'vy', 'isAttacking', 'attackTimer', 'attackDuration', 'team', 'color', 'skin', 'acc', 'buildX', 'buildY', 'weapon', 'designWeapon', 'loadoutSet', 'axeTier', 'swordTier', 'axeSkin', 'swordSkin', 'scytheId', 'helmetSkin']) {
       if (key === 'x' && Number.isFinite(acceptedX)) player.x = acceptedX;
       else if (key === 'y' && Number.isFinite(acceptedY)) player.y = acceptedY;
@@ -6934,6 +6936,10 @@ io.on('connection', (socket) => {
         if (isScytheOrSkin || reqTier <= (player.swordTier || 0) + 1) player.swordTier = reqTier;
       }
       else if (data[key] !== undefined) player[key] = data[key];
+    }
+    if (`${player.scytheId || ''}|${player.helmetSkin || ''}` !== previousEquipmentKey) {
+      applyLoadoutStats(player);
+      socket.emit('self_state', { hp: player.hp, maxHp: player.maxHp, hpSeq: player.hpSeq || 0, hpAt: Date.now() });
     }
     // Accept predicted client resource gathering monotonically only if player is alive with rate clamp
     if (!player._dead && (player.hp ?? 100) > 0) {
@@ -7053,7 +7059,9 @@ io.on('connection', (socket) => {
     attacker.weapon = incomingWeapon;
     const isScythe = weapon === 2 && Boolean(attacker.scytheId || data.scytheId || (attacker.swordSkin && String(attacker.swordSkin).startsWith('scythe_')) || (data.swordSkin && String(data.swordSkin).startsWith('scythe_')));
     const now = Date.now();
-    const swingCooldown = isBuildingWeapon ? 40 : (isScythe ? 260 : (weapon === 2 ? 54 : 42));
+    const attackSpeed = Math.max(0.88, Math.min(1.18, Number(attacker.attackSpeedMultiplier) || 1));
+    const baseSwingCooldown = isBuildingWeapon ? 40 : (isScythe ? 260 : (weapon === 2 ? 54 : 42));
+    const swingCooldown = isBuildingWeapon ? baseSwingCooldown : Math.round(baseSwingCooldown / attackSpeed);
     if (now - (attacker.lastSwingAt || 0) < swingCooldown) return;
     const swingId = Number.isFinite(Number(data.swingId)) ? Number(data.swingId) : null;
     if (swingId !== null && attacker.lastSwingId === swingId) return;
@@ -7071,7 +7079,7 @@ io.on('connection', (socket) => {
     attacker.attackUntil = now + (isBuildingWeapon ? 240 : swingCooldown);
     attacker.isAttacking = true;
     attacker.attackTimer = 0;
-    attacker.attackDuration = isBuildingWeapon ? 240 : (weapon === 2 ? 280 : 300);
+    attacker.attackDuration = isBuildingWeapon ? 240 : Math.round((weapon === 2 ? 280 : 300) / attackSpeed);
     const attackPacket = {
       id: socket.id,
       weapon,
@@ -7079,7 +7087,7 @@ io.on('connection', (socket) => {
       at: now,
       swingId: swingId ?? now,
       serverTime: now,
-      durationMs: isBuildingWeapon ? 240 : (weapon === 2 ? 280 : 300)
+      durationMs: attacker.attackDuration
     };
     broadcastPlayerEventNear(attacker, 'player_attack', attackPacket);
     broadcastPlayerEventNear(attacker, 'playerAttack', socket.id);
@@ -7091,7 +7099,7 @@ io.on('connection', (socket) => {
       if (targetId === socket.id || target.hp <= 0) continue;
       if (!validateCombatState(attacker, target, { allowTrapHit: true, rangeLimit: range + 64, damage })) continue;
       if (swingId && target.lastHitSwingId === swingId) continue;
-      if (now - (target.lastHitTime || 0) < (isScythe ? 260 : 140)) continue;
+      if (now - (target.lastHitTime || 0) < Math.round((isScythe ? 260 : 140) / attackSpeed)) continue;
       const dx = (Number(target.x) || 0) - attackerX, dy = (Number(target.y) || 0) - attackerY;
       let difference = Math.abs(Math.atan2(dy, dx) - angle);
       if (difference > Math.PI) difference = Math.PI * 2 - difference;
@@ -7148,7 +7156,8 @@ io.on('connection', (socket) => {
     if (swingId && target.lastHitSwingId === swingId) return; // Dedup against swing event
     const weapon = attacker.weapon === 2 ? 2 : 1;
     const isScythe = weapon === 2 && Boolean(attacker.scytheId || (attacker.swordSkin && String(attacker.swordSkin).startsWith('scythe_')));
-    if (now - (target.lastHitTime || 0) < (isScythe ? 260 : 140)) return; // Prevent duplicate rapid damage
+    const attackSpeed = Math.max(0.88, Math.min(1.18, Number(attacker.attackSpeedMultiplier) || 1));
+    if (now - (target.lastHitTime || 0) < Math.round((isScythe ? 260 : 140) / attackSpeed)) return; // Prevent duplicate rapid damage
     const dx = (Number(target.x) || 0) - (Number(attacker.x) || 0);
     const dy = (Number(target.y) || 0) - (Number(attacker.y) || 0);
     const dist = Math.hypot(dx, dy);

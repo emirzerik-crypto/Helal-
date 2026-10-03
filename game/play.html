@@ -17875,6 +17875,91 @@ function drawPlayerHelmet(ctx, helmetId, r, hitFlash) {
   }
 }
 
+const _HELMET_TRAIL_STYLES = Object.freeze({
+  helmet_imperator: { core: '#ffe08a', accent: '#fff6cc', pattern: 'royal' },
+  helmet_cehennem: { core: '#ff5a36', accent: '#ffc04d', pattern: 'ember' },
+  helmet_cyber: { core: '#54efff', accent: '#d1ffff', pattern: 'scan' },
+  helmet_ejderha: { core: '#ff8a3d', accent: '#ffe1a1', pattern: 'fork' },
+  helmet_druid: { core: '#65e6a4', accent: '#d4ffc2', pattern: 'leaf' },
+  helmet_necromancer: { core: '#b78aff', accent: '#f2d4ff', pattern: 'wisp' }
+});
+
+function drawHelmetMovementTrail(ctx, actor, helmetId, x, y, radius) {
+  const style = _HELMET_TRAIL_STYLES[helmetId];
+  if (!style || !actor) return;
+  if (actor._helmetTrailStyle !== helmetId) {
+    actor._helmetTrailStyle = helmetId;
+    actor._helmetTrailCount = 0;
+    actor._helmetTrailHead = 0;
+  }
+  const vx = Number(actor.vx) || 0;
+  const vy = Number(actor.vy) || 0;
+  const speed = Math.hypot(vx, vy);
+  if (speed < 0.45) {
+    if (actor._helmetTrailCount) actor._helmetTrailCount = 0;
+    return;
+  }
+  if (!actor._helmetTrail) {
+    actor._helmetTrail = Array.from({ length: 8 }, () => ({ x: 0, y: 0 }));
+    actor._helmetTrailHead = 0;
+    actor._helmetTrailCount = 0;
+  }
+  if (globalTime % 3 === 0) {
+    const point = actor._helmetTrail[actor._helmetTrailHead];
+    point.x = x;
+    point.y = y;
+    actor._helmetTrailHead = (actor._helmetTrailHead + 1) & 7;
+    actor._helmetTrailCount = Math.min(8, actor._helmetTrailCount + 1);
+  }
+  const count = actor._helmetTrailCount;
+  if (count < 2) return;
+  const angle = Number(actor.bodyAngle ?? actor.angle) || 0;
+  const cos = Math.cos(angle), sin = Math.sin(angle);
+  const alpha = Math.min(0.68, 0.28 + speed * 0.012);
+  const firstIndex = (actor._helmetTrailHead - count + 8) & 7;
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.globalAlpha = alpha;
+  ctx.strokeStyle = style.core;
+  ctx.lineWidth = Math.max(2, radius * 0.11);
+  ctx.beginPath();
+  for (let i = 0; i < count; i++) {
+    const point = actor._helmetTrail[(firstIndex + i) & 7];
+    const dx = point.x - x, dy = point.y - y;
+    const localX = dx * cos + dy * sin;
+    const localY = -dx * sin + dy * cos;
+    if (i === 0) ctx.moveTo(localX, localY);
+    else ctx.lineTo(localX, localY);
+  }
+  ctx.stroke();
+  ctx.globalAlpha = alpha * 0.72;
+  ctx.strokeStyle = style.accent;
+  ctx.lineWidth = Math.max(1, radius * 0.035);
+  if (style.pattern === 'royal') {
+    ctx.beginPath(); ctx.moveTo(-radius * 0.2, -radius * 0.48); ctx.lineTo(-radius * 1.9, -radius * 0.48); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-radius * 0.2, radius * 0.48); ctx.lineTo(-radius * 1.9, radius * 0.48); ctx.stroke();
+  } else if (style.pattern === 'ember') {
+    ctx.beginPath(); ctx.moveTo(-radius * 0.2, 0); ctx.lineTo(-radius * 0.85, -radius * 0.32); ctx.lineTo(-radius * 1.45, radius * 0.12); ctx.lineTo(-radius * 2.1, -radius * 0.22); ctx.stroke();
+  } else if (style.pattern === 'scan') {
+    ctx.setLineDash([radius * 0.16, radius * 0.14]);
+    ctx.beginPath(); ctx.moveTo(-radius * 0.25, 0); ctx.lineTo(-radius * 2.1, 0); ctx.stroke();
+    ctx.setLineDash([]);
+    const scanY = Math.sin(globalTime * 0.14) * radius * 0.45;
+    ctx.beginPath(); ctx.moveTo(-radius * 0.55, scanY - radius * 0.12); ctx.lineTo(-radius * 1.8, scanY + radius * 0.12); ctx.stroke();
+  } else if (style.pattern === 'fork') {
+    ctx.beginPath(); ctx.moveTo(-radius * 0.2, 0); ctx.lineTo(-radius * 1.15, -radius * 0.52); ctx.lineTo(-radius * 2.05, -radius * 0.7); ctx.moveTo(-radius * 1.15, radius * 0.52); ctx.lineTo(-radius * 2.05, radius * 0.7); ctx.stroke();
+  } else if (style.pattern === 'leaf') {
+    const sway = Math.sin(globalTime * 0.09) * radius * 0.12;
+    ctx.beginPath(); ctx.moveTo(-radius * 0.25, 0); ctx.quadraticCurveTo(-radius, -radius * 0.55 + sway, -radius * 1.95, -radius * 0.2); ctx.moveTo(-radius * 0.25, 0); ctx.quadraticCurveTo(-radius, radius * 0.55 - sway, -radius * 1.95, radius * 0.2); ctx.stroke();
+  } else {
+    const wave = Math.sin(globalTime * 0.12) * radius * 0.18;
+    ctx.beginPath(); ctx.moveTo(-radius * 0.2, 0); ctx.bezierCurveTo(-radius * 0.8, -radius * 0.55 + wave, -radius * 1.35, radius * 0.55 + wave, -radius * 2.05, -wave); ctx.stroke();
+  }
+  ctx.restore();
+}
+
 function drawPlayerHat(ctx, hatId, t, r) {
   if (r === undefined) r = (typeof player !== 'undefined' && player && player.radius) ? player.radius : 30;
   ctx.save(); ctx.translate(0, -r);
@@ -18868,6 +18953,8 @@ function drawPlayer() {
 
   ctx.rotate(player.angle);
 
+  drawHelmetMovementTrail(ctx, player, window._equippedHelmetId, rx, ry, player.radius);
+
   // -- Halo (above everything, before rotation effects) --
   if (playerAcc.aksesuarlar === 'a_halo') drawPlayerHalo(ctx, globalTime);
   // -- Cape (behind body) --
@@ -19729,7 +19816,7 @@ function update(timestamp = 0) {
   if (_shadowOk) updateAmbientParticles();
   if (globalTime % (_qualityLevel === 0 ? 10 : 4) === 0) updateCampfires();
   _interpOtherPlayers();
-  let speedMult = player.speedBonus || 1;
+  let speedMult = (player.speedBonus || 1) * (player._equipmentSpeedMultiplier || 1);
 
   // Update HP bar every frame (HP changes from enemy hits / healing)
   updateHpBar();
@@ -19745,7 +19832,9 @@ function update(timestamp = 0) {
   }
   if (player.attackHeld && player.weapon < 3) {
     if (!player.isAttacking) {
-      playSwingAnimation(player);
+      const attackSpeed = Math.max(0.88, Math.min(1.18, Number(player._equipmentAttackSpeedMultiplier) || 1));
+      const baseDuration = ATTACK_DUR[player.weapon] || 300;
+      playSwingAnimation(player, player.weapon, Math.round(baseDuration / attackSpeed));
       _mpSwing();
     }
   }
@@ -21737,14 +21826,19 @@ function _drawDashFx() {
   const fade = 1 - progress;
   const radius = player.radius || 35;
   const trailLength = 135 + progress * 65;
+  const palette = typeof window._getScytheVfxProfile === 'function'
+    ? window._getScytheVfxProfile(window._equippedScytheId)
+    : null;
+  const coreColor = palette ? palette.core : '#48c9ff';
+  const accentColor = palette ? palette.accent : '#c9f7ff';
 
   ctx.save();
   ctx.globalCompositeOperation = 'lighter';
 
   ctx.globalAlpha = fade * 0.42;
-  ctx.strokeStyle = '#c9f7ff';
+  ctx.strokeStyle = accentColor;
   ctx.lineWidth = 3;
-  ctx.shadowColor = '#48c9ff';
+  ctx.shadowColor = coreColor;
   ctx.shadowBlur = 14;
   ctx.beginPath();
   ctx.arc(player.x, player.y, radius * (1.08 + progress * 0.72), 0, Math.PI * 2);
@@ -21757,8 +21851,8 @@ function _drawDashFx() {
   const tailX = player.x - dirX * trailLength;
   const tailY = player.y - dirY * trailLength;
   const ribbon = ctx.createLinearGradient(headX, headY, tailX, tailY);
-  ribbon.addColorStop(0, `rgba(224,250,255,${0.72 * fade})`);
-  ribbon.addColorStop(0.34, `rgba(83,210,255,${0.34 * fade})`);
+  ribbon.addColorStop(0, accentColor);
+  ribbon.addColorStop(0.34, coreColor);
   ribbon.addColorStop(1, 'rgba(40,140,255,0)');
   ctx.fillStyle = ribbon;
   ctx.beginPath();
@@ -21776,9 +21870,9 @@ function _drawDashFx() {
     const gy = player.y - dirY * distance;
     const ringFade = fade * (1 - i * 0.18);
     ctx.globalAlpha = Math.max(0, ringFade);
-    ctx.strokeStyle = i % 2 ? '#65d9ff' : '#e5fbff';
+    ctx.strokeStyle = i % 2 ? coreColor : accentColor;
     ctx.lineWidth = 2.5 - i * 0.3;
-    ctx.shadowColor = '#39bfff';
+    ctx.shadowColor = coreColor;
     ctx.shadowBlur = 10 - i;
     ctx.beginPath();
     ctx.ellipse(gx, gy, radius * (0.72 - i * 0.07), radius * (0.9 - i * 0.08), _dashFx.angle, 0, Math.PI * 2);
@@ -21793,7 +21887,7 @@ function _drawDashFx() {
     const start = 28 + (i % 3) * 16;
     const length = 34 + (i % 4) * 12;
     ctx.globalAlpha = fade * (0.24 + (i % 3) * 0.08);
-    ctx.strokeStyle = i % 2 ? '#55cfff' : '#ffffff';
+    ctx.strokeStyle = i % 2 ? coreColor : accentColor;
     ctx.lineWidth = i % 3 === 0 ? 2.2 : 1.2;
     ctx.beginPath();
     ctx.moveTo(player.x - dirX * start + sideX * offset, player.y - dirY * start + sideY * offset);
@@ -21808,7 +21902,8 @@ function _doDash() {
   _dashOnCd = true;
   const _dBtn = document.getElementById('dash-btn');
   if (_dBtn) _dBtn.classList.add('on-cd');
-  const dashPow = 40;
+  const dashMultiplier = Math.max(1, Math.min(1.15, Number(player._equipmentDashMultiplier) || 1));
+  const dashPow = 40 * dashMultiplier;
   let moveX = _joystickActive ? _joystickMoveX : 0;
   let moveY = _joystickActive ? _joystickMoveY : 0;
   let moveLength = Math.hypot(moveX, moveY);
@@ -21839,13 +21934,17 @@ function _doDash() {
   player.momY += Math.sin(dashAng) * dashPow;
   floatingTexts.push({ x: player.x, y: player.y - 44, text: '💨 DASH!', alpha: 1, life: 28, color: '#88ddff' });
   playSound(660, 0.09, 'sine', 0.14);
-  for (let pi = 0; pi < 22; pi++) {
+  const dashParticleCount = _qualityLevel === 0 ? 5 : (_qualityLevel === 1 ? 8 : 11);
+  const dashPalette = typeof window._getScytheVfxProfile === 'function'
+    ? window._getScytheVfxProfile(window._equippedScytheId)
+    : null;
+  for (let pi = 0; pi < dashParticleCount; pi++) {
     const pa = dashAng + Math.PI + (Math.random()-0.5) * 1.4;
-    particles.push({ x: player.x + Math.cos(dashAng)*10, y: player.y + Math.sin(dashAng)*10,
-      vx: Math.cos(pa)*6, vy: Math.sin(pa)*6,
-      r: 2 + Math.random()*3, life: 18 + Math.random()*14, maxLife: 32, color: pi % 3 === 0 ? '#ffffff' : '#66d9ff' });
+    const color = dashPalette ? (pi % 3 === 0 ? dashPalette.accent : dashPalette.core) : (pi % 3 === 0 ? '#ffffff' : '#66d9ff');
+    _spawnParticle(player.x + Math.cos(dashAng)*10, player.y + Math.sin(dashAng)*10,
+      Math.cos(pa)*6, Math.sin(pa)*6, 2 + Math.random()*3, 18 + Math.random()*14, color);
   }
-  setTimeout(() => { _dashOnCd = false; const _dBtnR=document.getElementById('dash-btn'); if(_dBtnR) _dBtnR.classList.remove('on-cd'); }, player._doubleDash ? 900 : 1800);
+  setTimeout(() => { _dashOnCd = false; const _dBtnR=document.getElementById('dash-btn'); if(_dBtnR) _dBtnR.classList.remove('on-cd'); }, player._doubleDash ? 900 : Math.round(1800 / dashMultiplier));
 }
 
 // Bind mobile action buttons (dash-btn & mobile-eat-btn)
@@ -22240,6 +22339,8 @@ function initMultiplayer() {
         axeTier: s.at ?? s.axeTier ?? 0, swordTier: s.st ?? s.swordTier ?? 0,
         axeSkin: s.axeSkin || (s.acc && s.acc.b) || null,
         swordSkin: s.swordSkin || (s.acc && s.acc.w) || null,
+        scytheId: s.scytheId || (s.swordSkin && String(s.swordSkin).startsWith('scythe_') ? s.swordSkin : null),
+        helmetSkin: s.helmetSkin || (s.acc && s.acc.h) || null,
         buildX: (typeof s.bx === 'number') ? s.bx : (typeof s.buildX === 'number' ? s.buildX : null),
         buildY: (typeof s.by === 'number') ? s.by : (typeof s.buildY === 'number' ? s.buildY : null),
         rankId: s.rk ?? s.rankId ?? 0, color: s.color || '#8B5E3A', team: s.team || '', clanId: s.clanId || '', clanTag: s.clanTag || '',
@@ -22373,6 +22474,7 @@ function initMultiplayer() {
         if (s.axeSkin !== undefined) existing.axeSkin = s.axeSkin;
         if (s.swordSkin !== undefined) existing.swordSkin = s.swordSkin;
         if (s.scytheId !== undefined) existing.scytheId = s.scytheId;
+        if (s.helmetSkin !== undefined) existing.helmetSkin = s.helmetSkin;
         if (s.profileCosmetics !== undefined) existing.profileCosmetics = s.profileCosmetics;
         if (s.trappedBy !== undefined) {
           existing._trappedBy = s.trappedBy;
@@ -22397,6 +22499,7 @@ function initMultiplayer() {
           axeSkin: s.axeSkin || (s.acc && s.acc.b) || null,
           swordSkin: s.swordSkin || (s.acc && s.acc.w) || null,
           scytheId: s.scytheId || (s.swordSkin && String(s.swordSkin).startsWith('scythe_') ? s.swordSkin : null),
+          helmetSkin: s.helmetSkin || (s.acc && s.acc.h) || null,
           rankId: s.rk ?? 0, clanId: s.clanId || '', clanTag: s.clanTag || '',
           acc: s.acc || {},
           profileCosmetics: s.profileCosmetics || { avatarId: 'wolf', effectId: 'effect_none', frameId: 'frame_woodland' },
@@ -22462,6 +22565,8 @@ function initMultiplayer() {
       axeTier: _pjS.at ?? _pjS.axeTier ?? 0, swordTier: _pjS.st ?? _pjS.swordTier ?? 0,
       axeSkin: _pjS.axeSkin || (_pjS.acc && _pjS.acc.b) || null,
       swordSkin: _pjS.swordSkin || (_pjS.acc && _pjS.acc.w) || null,
+      scytheId: _pjS.scytheId || (_pjS.swordSkin && String(_pjS.swordSkin).startsWith('scythe_') ? _pjS.swordSkin : null),
+      helmetSkin: _pjS.helmetSkin || (_pjS.acc && _pjS.acc.h) || null,
       rankId: _pjS.rk ?? 0, color: _pjS.color || '#8B5E3A', team: _pjS.team || '', clanId: _pjS.clanId || '', clanTag: _pjS.clanTag || '',
       acc: _pjS.acc || {},
       profileCosmetics: _pjS.profileCosmetics || { avatarId: 'wolf', effectId: 'effect_none', frameId: 'frame_woodland' },
@@ -24241,6 +24346,8 @@ function drawOtherPlayers() {
       ctx.beginPath(); ctx.ellipse(4, 17, 31, 10, 0, 0, Math.PI*2); ctx.fill();
 
       ctx.rotate(p.bodyAngle ?? p.angle ?? 0);
+      const _rHelmet = p.helmetSkin || (pAcc && pAcc.h) || (pAcc && pAcc.s && String(pAcc.s).startsWith('helmet_') ? pAcc.s : null);
+      drawHelmetMovementTrail(ctx, p, _rHelmet, p.x, p.y, 35);
 
       // ── Accessories drawn BEFORE body (behind body) ──────────────────────
       if (pAcc.a === 'a_halo')     drawPlayerHalo(ctx, globalTime, 35);
@@ -24255,7 +24362,6 @@ function drawOtherPlayers() {
       drawWeaponAndHands(ctx, p, false, globalTime);
 
       // ── Body & Helmet ──
-      const _rHelmet = p.helmetSkin || (pAcc && pAcc.h) || (pAcc && pAcc.s && String(pAcc.s).startsWith('helmet_') ? pAcc.s : null);
       if (_rHelmet) {
         drawPlayerHelmet(ctx, _rHelmet, 35, fl);
       } else {
@@ -28031,6 +28137,44 @@ renderInventoryIcons(true);
 // SCYTHE SHOP (TIRPAN MAĞAZASI) SYSTEM
 // ============================================================
 (function() {
+  const SCYTHE_CLIENT_STATS = Object.freeze({
+    scythe_tier_1: { damage: 1.05, attackSpeed: 1.02 },
+    scythe_tier_2: { damage: 1.08, attackSpeed: 1.08, speed: 1.02 },
+    scythe_tier_3: { damage: 1.16, attackSpeed: 0.96, speed: 0.98 },
+    scythe_tier_4: { damage: 1.08, attackSpeed: 1.04, dash: 1.18 },
+    scythe_tier_5: { damage: 1.04, attackSpeed: 1.06, speed: 1.14 },
+    scythe_tier_6: { damage: 1.12, attackSpeed: 1.12, speed: 0.98 },
+    scythe_tier_7: { damage: 1.18, speed: 1.05, dash: 1.08 },
+    scythe_tier_8: { damage: 1.22, attackSpeed: 1.12, dash: 1.14, speed: 1.03 }
+  });
+  const HELMET_CLIENT_STATS = Object.freeze({
+    helmet_imperator: { maxHp: 1.18, armor: 1.12, damage: 1.02, speed: 0.99 },
+    helmet_cehennem: { damage: 1.19, attackSpeed: 1.11, armor: 0.96, speed: 1.02 },
+    helmet_cyber: { speed: 1.15, attackSpeed: 1.12, maxHp: 0.96, armor: 0.9 },
+    helmet_ejderha: { damage: 1.17, maxHp: 1.08, armor: 1.03, speed: 0.96 },
+    helmet_druid: { maxHp: 1.18, armor: 1.14, damage: 0.96, speed: 1.01 },
+    helmet_necromancer: { attackSpeed: 1.15, damage: 1.1, maxHp: 0.96, armor: 0.92, speed: 1.02 }
+  });
+  const SCYTHE_VFX_PROFILES = Object.freeze({
+    scythe_tier_1: { core: '#b8d28a', accent: '#efffc9' },
+    scythe_tier_2: { core: '#ffd45e', accent: '#fff3b0' },
+    scythe_tier_3: { core: '#ff6545', accent: '#ffb77a' },
+    scythe_tier_4: { core: '#a678ff', accent: '#efd6ff' },
+    scythe_tier_5: { core: '#62ebff', accent: '#dffbff' },
+    scythe_tier_6: { core: '#4aa8ff', accent: '#dbeeff' },
+    scythe_tier_7: { core: '#ff8f3d', accent: '#ffe7a3' },
+    scythe_tier_8: { core: '#ff55b8', accent: '#ffd4f4' }
+  });
+  window._getScytheVfxProfile = function(id) { return SCYTHE_VFX_PROFILES[id] || null; };
+  window._refreshEquippedItemStats = function() {
+    if (typeof player === 'undefined' || !player) return;
+    const helmet = HELMET_CLIENT_STATS[window._equippedHelmetId] || {};
+    const scythe = SCYTHE_CLIENT_STATS[window._equippedScytheId] || {};
+    player._equipmentSpeedMultiplier = (helmet.speed || 1) * (scythe.speed || 1);
+    player._equipmentAttackSpeedMultiplier = (helmet.attackSpeed || 1) * (scythe.attackSpeed || 1);
+    player._equipmentDashMultiplier = scythe.dash || 1;
+  };
+
   const SCYTHE_ITEMS = [
     {
       id: 'scythe_tier_1',
@@ -28038,7 +28182,7 @@ renderInventoryIcons(true);
       name: 'Paslı Goblin Tırpanı',
       shortName: 'Paslı Goblin',
       file: 'Scythe_Tier_1__Pasl__Goblin_110x190.webp',
-      cost: 80,
+      cost: 60,
       rarity: 'common',
       rarityName: 'Yaygın',
       color: '#84cc16',
@@ -28052,7 +28196,7 @@ renderInventoryIcons(true);
       name: 'Güneş Muhafızı Tırpanı',
       shortName: 'Güneş Muhafızı',
       file: 'Scythe_Tier_2__G_ne__Muhaf_z_110x190.webp',
-      cost: 160,
+      cost: 120,
       rarity: 'rare',
       rarityName: 'Nadir',
       color: '#eab308',
@@ -28066,7 +28210,7 @@ renderInventoryIcons(true);
       name: 'Vulkan Cehennem Tırpanı',
       shortName: 'Vulkan Cehennem',
       file: 'Scythe_Tier_3__Vulkan_Cehennem_110x190.webp',
-      cost: 260,
+      cost: 210,
       rarity: 'epic',
       rarityName: 'Destansı',
       color: '#ef4444',
@@ -28080,7 +28224,7 @@ renderInventoryIcons(true);
       name: 'Kozmik Void Tırpanı',
       shortName: 'Kozmik Void',
       file: 'Scythe_Tier_4__Kozmik_Void_110x190.webp',
-      cost: 420,
+      cost: 340,
       rarity: 'epic',
       rarityName: 'Destansı',
       color: '#a855f7',
@@ -28094,7 +28238,7 @@ renderInventoryIcons(true);
       name: 'Glacial Aurora Tırpanı',
       shortName: 'Glacial Aurora',
       file: 'Scythe_Tier_5__Glacial_Aurora_110x190.webp',
-      cost: 620,
+      cost: 520,
       rarity: 'legendary',
       rarityName: 'Efsanevi',
       color: '#06b6d4',
@@ -28108,7 +28252,7 @@ renderInventoryIcons(true);
       name: 'Siber Fraktal Tırpanı',
       shortName: 'Siber Fraktal',
       file: 'Scythe_Tier_6__Siber_Fraktal_110x190.webp',
-      cost: 900,
+      cost: 760,
       rarity: 'legendary',
       rarityName: 'Efsanevi',
       color: '#3b82f6',
@@ -28122,7 +28266,7 @@ renderInventoryIcons(true);
       name: 'Süpernova Tırpanı',
       shortName: 'Süpernova',
       file: 'Scythe_Tier_7__S_pernova_110x190.webp',
-      cost: 1300,
+      cost: 1100,
       rarity: 'mythic',
       rarityName: 'Mitolojik',
       color: '#f97316',
@@ -28136,7 +28280,7 @@ renderInventoryIcons(true);
       name: 'OMNIPOTENCE Tırpanı',
       shortName: 'OMNIPOTENCE',
       file: 'Scythe_Tier_8__OMNIPOTENCE_110x190.webp',
-      cost: 2200,
+      cost: 1600,
       rarity: 'divine',
       rarityName: 'İlahi',
       color: '#ec4899',
@@ -28162,6 +28306,7 @@ renderInventoryIcons(true);
     window._equippedHelmetId = null;
     localStorage.removeItem('fb_equipped_scythe');
     localStorage.removeItem('fb_equipped_helmet');
+    if (typeof window._refreshEquippedItemStats === 'function') window._refreshEquippedItemStats();
     if (typeof window.selectScythePreview === 'function') window.selectScythePreview(SCYTHE_ITEMS[0].id);
     if (typeof window.selectHelmetPreview === 'function') window.selectHelmetPreview(HELMET_ITEMS[0].id);
     if (typeof renderInventoryIcons === 'function') renderInventoryIcons(true);
@@ -28228,6 +28373,7 @@ renderInventoryIcons(true);
 
   // If already equipped on load, update weapon slot & UI after boot
   window.addEventListener('load', () => {
+    window._refreshEquippedItemStats();
     if (window._equippedScytheId) {
       const sc = window._getScytheItem(window._equippedScytheId);
       if (sc) {
@@ -28428,6 +28574,7 @@ renderInventoryIcons(true);
     // Equip
     window._equippedScytheId = scythe.id;
     localStorage.setItem('fb_equipped_scythe', scythe.id);
+    window._refreshEquippedItemStats();
 
     // Switch to slot 2 (weapon = 2) so scythe is immediately held
     if (typeof selectInventorySlot === 'function') {
@@ -28490,6 +28637,7 @@ renderInventoryIcons(true);
   window.unequipScythe = function() {
     window._equippedScytheId = null;
     localStorage.removeItem('fb_equipped_scythe');
+    window._refreshEquippedItemStats();
 
     // Reset top HUD icon
     const hudIcon = document.getElementById('scythe-hud-icon');
@@ -28544,7 +28692,7 @@ renderInventoryIcons(true);
       color: '#f59e0b',
       desc: 'İmparatorluğun en ulu hükümdarlarına layık saf altından görkemli taç.',
       statDesc: '🪖 Kafaya Takılır • Altın Taç',
-      cost: 140,
+      cost: 100,
       gradient: 'radial-gradient(circle, rgba(245,158,11,0.5) 0%, rgba(245,158,11,0) 70%)'
     },
     {
@@ -28556,7 +28704,7 @@ renderInventoryIcons(true);
       color: '#ef4444',
       desc: 'Lav vadisinin derinliklerinde dövülmüş, alev saçan iblis miğferi.',
       statDesc: '🪖 Kafaya Takılır • Alevli Boynuzlar',
-      cost: 220,
+      cost: 180,
       gradient: 'radial-gradient(circle, rgba(239,68,68,0.5) 0%, rgba(239,68,68,0) 70%)'
     },
     {
@@ -28568,7 +28716,7 @@ renderInventoryIcons(true);
       color: '#06b6d4',
       desc: 'Gelişmiş nano-alaşımdan üretilmiş yüksek teknolojili mecha miğfer.',
       statDesc: '🪖 Kafaya Takılır • Siber Vizör',
-      cost: 320,
+      cost: 290,
       gradient: 'radial-gradient(circle, rgba(6,182,212,0.5) 0%, rgba(6,182,212,0) 70%)'
     },
     {
@@ -28580,7 +28728,7 @@ renderInventoryIcons(true);
       color: '#f97316',
       desc: 'Antik kırmızı ejderhanın kafatasından oyulmuş korkusuz savaşçı miğferi.',
       statDesc: '🪖 Kafaya Takılır • Ejder Kafatası',
-      cost: 470,
+      cost: 430,
       gradient: 'radial-gradient(circle, rgba(249,115,22,0.5) 0%, rgba(249,115,22,0) 70%)'
     },
     {
@@ -28592,7 +28740,7 @@ renderInventoryIcons(true);
       color: '#10b981',
       desc: 'Kutsal kadim ormanların ruhları ve boynuzlarıyla kutsanmış doğa miğferi.',
       statDesc: '🪖 Kafaya Takılır • Zümrüt Boynuzlar',
-      cost: 700,
+      cost: 620,
       gradient: 'radial-gradient(circle, rgba(16,185,129,0.5) 0%, rgba(16,185,129,0) 70%)'
     },
     {
@@ -28604,7 +28752,7 @@ renderInventoryIcons(true);
       color: '#a855f7',
       desc: 'Yitip gitmiş ruhların fısıltılarını taşıyan karanlık ölüm miğferi.',
       statDesc: '🪖 Kafaya Takılır • Hayalet Başlık',
-      cost: 980,
+      cost: 900,
       gradient: 'radial-gradient(circle, rgba(168,85,247,0.5) 0%, rgba(168,85,247,0) 70%)'
     }
   ];
@@ -28667,6 +28815,7 @@ renderInventoryIcons(true);
     window._equippedHelmetId = null;
     localStorage.removeItem('fb_equipped_scythe');
     localStorage.removeItem('fb_equipped_helmet');
+    if (typeof window._refreshEquippedItemStats === 'function') window._refreshEquippedItemStats();
     if (typeof window.selectScythePreview === 'function') window.selectScythePreview(SCYTHE_ITEMS[0].id);
     if (typeof window.selectHelmetPreview === 'function') window.selectHelmetPreview(HELMET_ITEMS[0].id);
     if (typeof renderInventoryIcons === 'function') renderInventoryIcons(true);
@@ -28680,6 +28829,7 @@ renderInventoryIcons(true);
 
   // Sync HUD icon on load
   window.addEventListener('load', () => {
+    window._refreshEquippedItemStats();
     if (window._equippedHelmetId) {
       const hItem = window._getHelmetItem(window._equippedHelmetId);
       if (hItem) {
@@ -28876,6 +29026,7 @@ renderInventoryIcons(true);
     // Equip
     window._equippedHelmetId = helmet.id;
     localStorage.setItem('fb_equipped_helmet', helmet.id);
+    window._refreshEquippedItemStats();
 
     // Update top HUD icon
     const hudIcon = document.getElementById('helmet-hud-icon');
@@ -28914,6 +29065,7 @@ renderInventoryIcons(true);
   window.unequipHelmet = function() {
     window._equippedHelmetId = null;
     localStorage.removeItem('fb_equipped_helmet');
+    window._refreshEquippedItemStats();
 
     // Reset top HUD icon
     const hudIcon = document.getElementById('helmet-hud-icon');
