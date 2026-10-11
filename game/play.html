@@ -48,7 +48,7 @@
 <script>
 // ULTRA-EARLY: Replit badge ve benzeri enjekte edilen DOM elemanlarını yok et.
 (function(){
-  var K={gameCanvas:1,'game-ui-layer':1,minimap:1,'kill-feed':1,'dmg-flash':1,'upgrade-overlay':1,'upg-backdrop':1,'upg-notify-btn':1,'death-overlay':1,'spawn-overlay':1,'top-hud':1,'bottom-hud':1,'joy-left':1,'joy-right':1,'inv-bar':1,'lb-panel':1,'ui-top':1,'ui-bottom':1,'toast':1,'boss-bar':1,'biome-indicator':1,'safe-village-banner':1,'ping-display':1,'fps-display':1,'res-panel':1,'resource-hud':1,'left-stats-stack':1,'kill-flash':1,'kill-notif':1,'rage-overlay':1,'event-banner':1,'streak-hud':1,'shield-hud':1,'lvlup-flash':1,'tab-scoreboard':1,'quick-chat-wheel':1,'build-upg-panel':1,'train-btn':1,'train-stop-hud':1,'loading-screen':1,'tutorial-overlay':1,'quest-panel':1,'ach-popup':1,'spectator-hud':1,'invite-hud-btn':1,'event-meteor-banner':1,'trophy-meta-hud':1,'cave-prompt':1,'ach-panel':1,'bp-panel':1,'dash-btn':1,'snap-settings-panel':1,'entry-consent':1,'clan-game-btn':1,'clan-game-panel':1,'mmo-modal-bag':1,'mmo-modal-char':1,'mmo-modal-skills':1,'mmo-modal-bank':1,'mmo-modal-forge':1,'mmo-modal-merchant':1,'mmo-popover':1,'mmo-lvlup-toast':1,'blacksmith-modal':1,'blacksmith-shop-btn':1,'scythe-modal':1,'scythe-shop-btn':1,'helmet-modal':1,'helmet-shop-btn':1,'inventory-modal':1,'inventory-btn':1,'combat-stats-panel':1,'combat-stats-toggle-btn':1};
+  var K={gameCanvas:1,'game-ui-layer':1,minimap:1,'kill-feed':1,'dmg-flash':1,'upgrade-overlay':1,'upg-backdrop':1,'upg-notify-btn':1,'death-overlay':1,'spawn-overlay':1,'top-hud':1,'bottom-hud':1,'joy-left':1,'joy-right':1,'inv-bar':1,'lb-panel':1,'ui-top':1,'ui-bottom':1,'toast':1,'boss-bar':1,'biome-indicator':1,'safe-village-banner':1,'ping-display':1,'fps-display':1,'res-panel':1,'resource-hud':1,'left-stats-stack':1,'kill-flash':1,'kill-notif':1,'rage-overlay':1,'event-banner':1,'streak-hud':1,'shield-hud':1,'lvlup-flash':1,'tab-scoreboard':1,'quick-chat-wheel':1,'build-upg-panel':1,'train-btn':1,'train-stop-hud':1,'loading-screen':1,'quest-panel':1,'ach-popup':1,'spectator-hud':1,'invite-hud-btn':1,'event-meteor-banner':1,'trophy-meta-hud':1,'cave-prompt':1,'ach-panel':1,'bp-panel':1,'dash-btn':1,'snap-settings-panel':1,'entry-consent':1,'clan-game-btn':1,'clan-game-panel':1,'mmo-modal-bag':1,'mmo-modal-char':1,'mmo-modal-skills':1,'mmo-modal-bank':1,'mmo-modal-forge':1,'mmo-modal-merchant':1,'mmo-popover':1,'mmo-lvlup-toast':1,'blacksmith-modal':1,'blacksmith-shop-btn':1,'scythe-modal':1,'scythe-shop-btn':1,'helmet-modal':1,'helmet-shop-btn':1,'inventory-modal':1,'inventory-btn':1,'combat-stats-panel':1,'combat-stats-toggle-btn':1};
   function shouldHide(el){
     if(!el||el.nodeType!==1)return false;
     if(el===document.body||el===document.head||el===document.documentElement)return false;
@@ -146,7 +146,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png?v=3" sizes="180x180">
 <script>
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=9').catch(() => {}));
+    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=13').catch(() => {}));
   }
   (function() {
     const root = document.documentElement;
@@ -255,7 +255,7 @@ body>iframe,body>[id^="replit"],body>[class^="replit"]{
   position:fixed!important;top:0!important;left:0!important;
 }
 /* Nuke any injected divs not in our game keep list */
-body>div:not(#game-ui-layer):not(#ui-top):not(#ui-bottom):not(#top-hud):not(#bottom-hud):not(#kill-feed):not(#dmg-flash):not(#upgrade-overlay):not(#upg-backdrop):not(#upg-notify-btn):not(#death-overlay):not(#spawn-overlay):not(#lb-panel):not(#inv-bar):not(#joy-left):not(#joy-right):not(#minimap):not(#toast):not(#biome-indicator):not(#safe-village-banner):not(#ping-display):not(#fps-display):not(#res-panel):not(#resource-hud):not(#left-stats-stack):not(#kill-flash):not(#kill-notif):not(#rage-overlay):not(#event-banner):not(#streak-hud):not(#shield-hud):not(#lvlup-flash):not(#tab-scoreboard):not(#quick-chat-wheel):not(#build-upg-panel):not(#train-btn):not(#train-stop-hud):not(#loading-screen):not(#tutorial-overlay):not(#quest-panel):not(#ach-popup):not(#spectator-hud):not(#invite-hud-btn):not(#event-meteor-banner):not(#snap-settings-panel):not(#entry-consent):not(#clan-game-panel):not(#blacksmith-modal):not(#scythe-modal):not(#helmet-modal):not(#inventory-modal):not(#combat-stats-panel):not(#combat-stats-toggle-btn){
+body>div:not(#game-ui-layer):not(#ui-top):not(#ui-bottom):not(#top-hud):not(#bottom-hud):not(#kill-feed):not(#dmg-flash):not(#upgrade-overlay):not(#upg-backdrop):not(#upg-notify-btn):not(#death-overlay):not(#spawn-overlay):not(#lb-panel):not(#inv-bar):not(#joy-left):not(#joy-right):not(#minimap):not(#toast):not(#biome-indicator):not(#safe-village-banner):not(#ping-display):not(#fps-display):not(#res-panel):not(#resource-hud):not(#left-stats-stack):not(#kill-flash):not(#kill-notif):not(#rage-overlay):not(#event-banner):not(#streak-hud):not(#shield-hud):not(#lvlup-flash):not(#tab-scoreboard):not(#quick-chat-wheel):not(#build-upg-panel):not(#train-btn):not(#train-stop-hud):not(#loading-screen):not(#quest-panel):not(#ach-popup):not(#spectator-hud):not(#invite-hud-btn):not(#event-meteor-banner):not(#snap-settings-panel):not(#entry-consent):not(#clan-game-panel):not(#blacksmith-modal):not(#scythe-modal):not(#helmet-modal):not(#inventory-modal):not(#combat-stats-panel):not(#combat-stats-toggle-btn){
   display:none!important;pointer-events:none!important;
   position:fixed!important;top:0!important;left:0!important;
   width:0!important;height:0!important;max-width:0!important;max-height:0!important;
@@ -1413,7 +1413,8 @@ html.touch-device #mobile-eat-btn{display:flex !important;}
   border-bottom:1px solid rgba(255,255,255,0.07);
   position:relative;
 }
-#bup-type-icon{font-size:30px;line-height:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.6));}
+#bup-type-icon{width:42px;height:42px;display:flex;align-items:center;justify-content:center;flex:none;font-size:30px;line-height:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,0.6));}
+#bup-type-icon canvas{width:42px;height:42px;object-fit:contain;}
 #bup-header-info{flex:1;min-width:0;}
 #bup-title{font-size:14px;font-weight:900;color:#fff;letter-spacing:.4px;line-height:1.1;}
 #bup-subtitle{font-size:10px;font-weight:700;color:rgba(255,255,255,0.5);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
@@ -1427,10 +1428,11 @@ html.touch-device #mobile-eat-btn{display:flex !important;}
 #bup-body{padding:11px 13px 12px;}
 #bup-tierbar{display:flex;gap:3px;margin-bottom:10px;}
 .bup-td{
-  flex:1;height:24px;border-radius:6px;display:flex;align-items:center;
+  flex:1;height:28px;border-radius:6px;display:flex;align-items:center;gap:2px;
   justify-content:center;font-size:7.5px;font-weight:800;
   overflow:hidden;white-space:nowrap;letter-spacing:.1px;transition:all .2s;
 }
+.bup-tier-icon{width:17px;height:17px;flex:none;object-fit:contain;}
 .bup-td.td-done{opacity:.85;}
 .bup-td.td-cur{box-shadow:0 0 10px var(--bup-color,#4db832);transform:scaleY(1.13);}
 .bup-td.td-lock{opacity:.22;}
@@ -1688,8 +1690,6 @@ html.touch-device #mobile-eat-btn{display:flex !important;}
 @keyframes ldotBounce{0%,80%,100%{transform:scale(0.6);opacity:0.3;}40%{transform:scale(1);opacity:1;background:rgba(34,255,102,0.9);}}
 
 /* ===== TUTORIAL OVERLAY ===== */
-#tutorial-overlay{display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,0.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);align-items:center;justify-content:center;}
-#tutorial-overlay.show{display:flex;}
 #tutorial-card{background:linear-gradient(160deg,#0d2318,#091f28);border:1.5px solid rgba(80,255,130,0.22);border-radius:26px;padding:38px 44px 32px;max-width:460px;width:90%;box-shadow:0 0 100px rgba(0,200,80,0.12),0 24px 60px rgba(0,0,0,0.65);text-align:center;position:relative;}
 #tutorial-step-num{color:#22ff66;font-size:10px;font-weight:900;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:10px;opacity:0.8;}
 #tutorial-step-icon{font-size:60px;margin:10px 0 16px;display:block;filter:drop-shadow(0 4px 16px rgba(0,200,80,0.4));}
@@ -3067,6 +3067,66 @@ html.touch-device #mobile-eat-btn{display:flex !important;}
   .snap-row,.snap-toggle-track,.snap-toggle-thumb{transition:none;}
 }
 
+html.fb-high-contrast #game-ui-layer #ref-player-panel,
+html.fb-high-contrast #game-ui-layer #resource-hud,
+html.fb-high-contrast #game-ui-layer #lb-panel,
+html.fb-high-contrast #game-ui-layer #minimap,
+html.fb-high-contrast #game-ui-layer #ui-bottom .inventory,
+html.fb-high-contrast #game-ui-layer #fps-display,
+html.fb-high-contrast #game-ui-layer #ping-display{
+  background-color:#000 !important;
+  background-image:none !important;
+  border-color:#fff !important;
+  color:#fff !important;
+}
+html.fb-high-contrast #game-ui-layer #ref-player-panel *,
+html.fb-high-contrast #game-ui-layer #resource-hud *,
+html.fb-high-contrast #game-ui-layer #lb-panel *,
+html.fb-high-contrast #game-ui-layer #fps-display *,
+html.fb-high-contrast #game-ui-layer #ping-display *{
+  color:#fff !important;
+}
+html.fb-high-contrast #game-ui-layer .ref-player-name,
+html.fb-high-contrast #game-ui-layer #lb-title,
+html.fb-high-contrast #game-ui-layer #minimap::before,
+html.fb-high-contrast #game-ui-layer #ui-bottom .age-text,
+html.fb-high-contrast #game-ui-layer #hp-text{
+  color:#fff !important;
+  text-shadow:0 1px 3px #000,0 0 4px #000 !important;
+}
+html.fb-reduced-motion *,
+html.fb-reduced-motion *::before,
+html.fb-reduced-motion *::after{
+  animation-duration:0.01ms !important;
+  animation-iteration-count:1 !important;
+  scroll-behavior:auto !important;
+  transition-duration:0.01ms !important;
+}
+#game-ui-layer #quick-start-overlay{
+  position:fixed;inset:0;z-index:1200;display:none;align-items:center;justify-content:center;
+  padding:18px;box-sizing:border-box;background:rgba(0,0,0,.76);
+  backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);pointer-events:auto;
+}
+#game-ui-layer #quick-start-overlay.show{display:flex;}
+#quick-start-card{
+  width:min(440px,100%);box-sizing:border-box;padding:clamp(22px,6vw,34px);
+  border:2px solid #79d138;border-radius:20px;text-align:center;
+  background:linear-gradient(150deg,#10251a,#101820);color:#fff;
+  box-shadow:0 20px 70px rgba(0,0,0,.8),0 0 28px rgba(121,209,56,.16);
+}
+#quick-start-kicker{color:#b7ee8b;font-size:11px;font-weight:900;letter-spacing:1.7px;}
+#quick-start-icon{margin:12px 0;font-size:48px;}
+#quick-start-title{margin:0 0 10px;color:#fff;font-size:clamp(22px,5vw,30px);font-weight:900;}
+#quick-start-desc{min-height:54px;margin:0 auto 18px;max-width:340px;color:#e5e9e2;font-size:15px;line-height:1.55;}
+#quick-start-progress{margin-bottom:14px;color:#d7dfd2;font-size:12px;font-weight:800;}
+#quick-start-actions{display:flex;justify-content:center;gap:10px;}
+#quick-start-actions button{
+  min-height:44px;padding:10px 22px;border:1px solid #879487;border-radius:10px;
+  background:#202a25;color:#fff;font-family:inherit;font-size:14px;font-weight:900;cursor:pointer;
+}
+#quick-start-actions #quick-start-next{border-color:#79d138;background:#287b37;}
+#quick-start-actions button:focus-visible{outline:3px solid #ffe36d;outline-offset:3px;}
+
 /* Settings panel: compact control center with real state-backed controls. */
 #snap-settings-panel {
   top: max(env(safe-area-inset-top, 0px), 52px);
@@ -3366,7 +3426,7 @@ html.touch-device #mobile-eat-btn{display:flex !important;}
   #joy-left,#joy-right{bottom:48px;}
   #joy-left .joy-base,#joy-right .joy-base{width:64px;height:64px;}
   #joy-left .joy-stick,#joy-right .joy-stick{width:24px;height:24px;}
-  #minimap{display:block !important;}
+  #minimap{display:block;}
   #ref-player-panel{display:none;}
 }
 /* ==========================================================================
@@ -4024,6 +4084,8 @@ html.touch-device #mobile-eat-btn{display:flex !important;}
 #game-ui-layer #joy-left,#game-ui-layer #joy-right,#game-ui-layer #dash-btn,
 #game-ui-layer #mobile-eat-btn,#game-ui-layer #quest-btn,#game-ui-layer #invite-hud-btn,
 #game-ui-layer #upg-notify-btn,#game-ui-layer #cave-prompt,#game-ui-layer #snap-settings-panel,
+#game-ui-layer #world-chat-panel,#game-ui-layer #world-chat-toggle,
+#game-ui-layer #quick-start-overlay,
 #game-ui-layer #quest-panel,#game-ui-layer #quest-body,#game-ui-layer #ach-panel,#game-ui-layer #ach-body,#game-ui-layer #bp-panel,#game-ui-layer #bp-body,#game-ui-layer #fb-modal-backdrop,#game-ui-layer .fb-modal-box,#game-ui-layer .fb-modal-body,#game-ui-layer #clan-game-panel,#game-ui-layer #tab-scoreboard,#game-ui-layer #blacksmith-modal,#game-ui-layer #blacksmith-shop-btn,#game-ui-layer #scythe-modal,#game-ui-layer #scythe-shop-btn,#game-ui-layer #helmet-modal,#game-ui-layer #helmet-shop-btn,#game-ui-layer #inventory-modal,#game-ui-layer #inventory-btn,#game-ui-layer #combat-stats-panel,#game-ui-layer #combat-stats-toggle-btn{pointer-events:auto;}
 #game-ui-layer button{font:inherit;font-weight:900;text-shadow:1px 1px 0 #000;}
 
@@ -4085,7 +4147,7 @@ html,body{width:100vw !important;max-width:100vw !important;height:var(--app-hei
 
 #minimap{
   position:absolute;bottom:max(15px,env(safe-area-inset-bottom));left:max(15px,env(safe-area-inset-left));top:auto;right:auto;
-  width:clamp(100px,15vw,150px);height:auto;aspect-ratio:1;padding:4px;display:block !important;
+  width:clamp(100px,15vw,150px);height:auto;aspect-ratio:1;padding:4px;display:block;
   background:rgba(0,0,0,.55);border:4px solid #3e2a14;border-radius:8px;z-index:25;pointer-events:auto;
   box-shadow:inset 0 2px 8px rgba(0,0,0,.7),0 5px 18px rgba(0,0,0,.4);
 }
@@ -5105,12 +5167,24 @@ html,body{width:100vw !important;max-width:100vw !important;height:var(--app-hei
   .blacksmith-modal-content-wrap {
     grid-template-columns: 1fr;
     overflow-y: auto;
+    overscroll-behavior-y: contain;
+    overflow-anchor: none;
+    touch-action: pan-y;
   }
   .blacksmith-preview-panel {
     min-height: 380px;
+    overflow-anchor: none;
+    touch-action: pan-y;
   }
   .blacksmith-catalog-panel {
     min-height: 340px;
+    overflow-anchor: none;
+  }
+  .blacksmith-cards-grid {
+    overscroll-behavior-y: contain;
+    overflow-anchor: none;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
   }
 }
 
@@ -7403,6 +7477,113 @@ function drawSkinEyesOverlay(c, R, sk, fl) {
   line-height: 1.45;
   word-break: break-word;
 }
+#ui-bottom{width:min(96vw,48rem);}
+#ui-bottom .inventory-row{display:flex;align-items:stretch;gap:7px;width:100%;min-width:0;}
+#ui-bottom .inventory-row .inventory{flex:1 1 auto;width:auto;min-width:0;}
+#world-chat-toggle{
+  position:relative;display:flex;flex:0 0 clamp(42px,5vw,56px);flex-direction:column;
+  align-items:center;justify-content:center;gap:2px;min-width:0;min-height:54px;padding:4px 2px;
+  border:2px solid #d5b15b;border-radius:9px;color:#fff2bf;
+  background:linear-gradient(155deg,#614722,#2d2116 70%,#1e1914);
+  box-shadow:inset 0 1px 0 rgba(255,244,197,.25),0 3px 0 #17100b,0 0 14px rgba(222,177,76,.14);
+  cursor:pointer;pointer-events:auto;transition:filter .15s,transform .15s,border-color .15s;
+}
+#world-chat-toggle:hover{filter:brightness(1.2);border-color:#ffe08a;}
+#world-chat-toggle:active{transform:translateY(2px);}
+#world-chat-toggle>[aria-hidden="true"]{font-size:19px;line-height:1;}
+#world-chat-toggle .world-chat-toggle-label{font-size:7px;letter-spacing:.7px;font-weight:1000;}
+#world-chat-unread{
+  position:absolute;top:-7px;right:-7px;display:none;min-width:18px;height:18px;padding:0 3px;
+  align-items:center;justify-content:center;border:2px solid #24170d;border-radius:10px;
+  background:#df493b;color:#fff;font-size:10px;font-weight:1000;line-height:1;
+}
+#world-chat-unread.show{display:flex;}
+#world-chat-panel{
+  position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 92px);
+  z-index:610;display:none;flex-direction:column;width:min(370px,calc(100vw - 24px));
+  height:min(420px,calc(100dvh - 150px));min-height:230px;max-height:calc(100dvh - 24px);
+  overflow:hidden;transform:translateX(-50%);pointer-events:auto;
+  border:1px solid rgba(243,205,111,.72);border-radius:17px;color:#f9f3df;
+  background:linear-gradient(155deg,rgba(35,28,21,.985),rgba(13,20,21,.985));
+  box-shadow:0 20px 65px rgba(0,0,0,.68),0 0 26px rgba(222,177,76,.16),inset 0 1px 0 rgba(255,255,255,.1);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+}
+#world-chat-panel.open{display:flex;animation:worldChatIn .18s ease-out;}
+@keyframes worldChatIn{from{opacity:0;transform:translate(-50%,8px) scale(.98);}to{opacity:1;transform:translate(-50%,0) scale(1);}}
+#world-chat-header{
+  display:flex;flex:none;align-items:center;justify-content:space-between;gap:12px;
+  padding:13px 14px;border-bottom:1px solid rgba(239,205,129,.18);
+  background:linear-gradient(110deg,rgba(117,82,35,.42),rgba(16,37,31,.48));
+}
+#world-chat-header>div{display:flex;flex-direction:column;gap:4px;min-width:0;}
+#world-chat-header strong{font-size:12px;letter-spacing:1.1px;color:#ffe09a;}
+#world-chat-header span{display:flex;align-items:center;gap:6px;color:#c8c0ad;font-size:10px;font-weight:700;}
+#world-chat-header span i{width:7px;height:7px;border-radius:50%;background:#66e58a;box-shadow:0 0 9px #66e58a;}
+#world-chat-close{
+  width:32px;height:32px;border:1px solid rgba(255,255,255,.16);border-radius:9px;
+  background:rgba(255,255,255,.07);color:#f5e7c4;font-size:22px;line-height:1;cursor:pointer;
+}
+#world-chat-messages{
+  display:flex;flex:1;flex-direction:column;gap:7px;min-height:0;padding:12px;overflow-y:auto;
+  overscroll-behavior:contain;scrollbar-color:rgba(230,193,110,.45) transparent;
+}
+.world-chat-empty{margin:auto;color:#bdb5a4;font-size:12px;text-align:center;line-height:1.6;}
+.world-chat-message{
+  display:flex;flex-direction:column;gap:3px;padding:8px 10px;border:1px solid rgba(255,255,255,.065);
+  border-radius:10px;background:rgba(255,255,255,.045);overflow-wrap:anywhere;
+}
+.world-chat-message.me{border-color:rgba(121,209,56,.25);background:rgba(76,130,45,.13);}
+.world-chat-meta{display:flex;align-items:center;gap:6px;min-width:0;font-size:10px;}
+.world-chat-level{flex:none;color:#f6d276;font-weight:1000;}
+.world-chat-name{max-width:65%;overflow:hidden;color:#d5eebc;font-weight:900;text-overflow:ellipsis;white-space:nowrap;}
+.world-chat-time{margin-left:auto;color:#b0aa9c;font-size:9px;}
+.world-chat-text{color:#f8f6ef;font-size:12px;line-height:1.4;white-space:pre-wrap;}
+#world-chat-form{
+  display:flex;flex:none;gap:8px;padding:10px;border-top:1px solid rgba(239,205,129,.16);
+  background:rgba(0,0,0,.16);
+}
+#world-chat-input{
+  flex:1;min-width:0;height:40px;padding:0 12px;border:1px solid rgba(255,255,255,.17);
+  border-radius:10px;outline:none;background:rgba(0,0,0,.34);color:#fff;font-family:inherit;font-size:13px;font-weight:600;
+}
+#world-chat-input::placeholder{color:#c6c0b3;}
+#world-chat-input:focus{border-color:#dfbd69;box-shadow:0 0 0 2px rgba(223,189,105,.16);}
+#world-chat-form button{
+  width:42px;border:1px solid #a98745;border-radius:10px;background:linear-gradient(145deg,#bd9450,#775124);
+  color:#fff;font-size:18px;cursor:pointer;
+}
+.visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+#world-chat-notices{
+  position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 92px);z-index:605;
+  display:flex;flex-direction:column;align-items:center;gap:6px;width:min(360px,calc(100vw - 24px));
+  transform:translateX(-50%);pointer-events:none;
+}
+.world-chat-notice{
+  width:100%;box-sizing:border-box;padding:9px 12px;border:1px solid rgba(242,206,121,.56);
+  border-radius:11px;background:linear-gradient(110deg,rgba(35,29,21,.94),rgba(12,26,24,.94));
+  box-shadow:0 8px 24px rgba(0,0,0,.4);color:#fff;animation:worldChatNoticeLife 5s ease both;
+}
+.world-chat-notice .world-chat-meta{margin-bottom:3px;}
+.world-chat-notice .world-chat-text{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+@keyframes worldChatNoticeLife{0%,82%{opacity:1;transform:translateY(0);}100%{opacity:0;transform:translateY(-8px);}}
+@media(max-width:768px){
+  #ui-bottom{width:96vw;}
+  #ui-bottom .inventory-row{gap:4px;}
+  #ui-bottom .inventory-row .inventory{gap:2px;padding:3px;}
+  #world-chat-toggle{flex-basis:38px;min-height:40px;padding:2px;}
+  #world-chat-toggle>[aria-hidden="true"]{font-size:16px;}
+  #world-chat-toggle .world-chat-toggle-label{font-size:6px;letter-spacing:.2px;}
+  #world-chat-panel{bottom:calc(env(safe-area-inset-bottom,0px) + 76px);height:min(390px,calc(100dvh - 110px));}
+  #world-chat-notices{bottom:calc(env(safe-area-inset-bottom,0px) + 76px);}
+}
+@media(max-height:500px) and (orientation:landscape){
+  #world-chat-panel{bottom:calc(env(safe-area-inset-bottom,0px) + 54px);height:calc(100dvh - 72px);min-height:190px;}
+  #world-chat-notices{bottom:calc(env(safe-area-inset-bottom,0px) + 54px);}
+}
+@media(prefers-reduced-motion:reduce){
+  #world-chat-panel.open,.world-chat-notice{animation:none;}
+  #world-chat-toggle{transition:none;}
+}
 </style>
 <div id="game-announce-banner">
   <div class="announce-banner-content">
@@ -7486,8 +7667,6 @@ function drawSkinEyesOverlay(c, R, sk, fl) {
       <span style="position:absolute;bottom:-3px;right:-3px;background:rgba(20,15,10,0.94);border:1px solid #d97706;color:#fbbf24;font-size:7.5px;font-weight:900;padding:0 3px;border-radius:3px;line-height:1.2;pointer-events:none;box-shadow:0 2px 4px rgba(0,0,0,0.6);">I</span>
     </button>
     <button type="button" id="clan-btn" class="ref-hud-btn" onclick="window._toggleClanPanel()" title="Klan" aria-label="Klan">🛡️</button>
-    <button type="button" id="loadout-btn" class="ref-hud-btn" onclick="window._toggleLoadoutPanel()" title="Kılavuz & Loadout (Rol ve Kask)" aria-label="Loadout">🎖️</button>
-    <button type="button" id="party-hud-btn" class="ref-hud-btn" onclick="window._togglePartyPanel()" title="Parti Sistemi" aria-label="Parti">👥</button>
     <button type="button" id="scoreboard-btn" class="ref-hud-btn" tabindex="-1" onfocus="this.blur()" onclick="this.blur();toggleTabScoreboard()" title="Skor tablosu" aria-label="Skor tablosu">⚔</button>
     <button type="button" id="chat-wheel-btn" class="ref-hud-btn" tabindex="-1" onfocus="this.blur()" onclick="this.blur();toggleQuickChat()" title="Hızlı sohbet" aria-label="Hızlı sohbet">✋</button>
     <button type="button" id="quest-btn" class="ref-hud-btn" tabindex="-1" onfocus="this.blur()" onclick="this.blur();window._toggleQuests()" title="Görevler" aria-label="Görevler">📜</button>
@@ -7543,6 +7722,14 @@ function drawSkinEyesOverlay(c, R, sk, fl) {
     </label>
   </div>
   <div class="settings-group-title">Oyun</div>
+  <div class="snap-row">
+    <div class="snap-row-label">◐ Yüksek Kontrast<span class="snap-row-sublabel">HUD ve metinleri daha belirgin yap</span></div>
+    <label class="snap-toggle"><input type="checkbox" id="high-contrast-toggle" onchange="_onHighContrastToggle(this.checked)"><div class="snap-toggle-track"></div><div class="snap-toggle-thumb"></div></label>
+  </div>
+  <div class="snap-row">
+    <div class="snap-row-label">⏸ Azaltılmış Hareket<span class="snap-row-sublabel">Arayüz animasyonlarını azalt</span></div>
+    <label class="snap-toggle"><input type="checkbox" id="reduced-motion-toggle" onchange="_onReducedMotionToggle(this.checked)"><div class="snap-toggle-track"></div><div class="snap-toggle-thumb"></div></label>
+  </div>
   <div class="snap-row">
     <div class="snap-row-label">🍎 Otomatik Elma<span class="snap-row-sublabel">Can azalınca elma kullan</span></div>
     <label class="snap-toggle"><input type="checkbox" id="auto-eat-toggle" onchange="_onAutoEatToggle(this.checked)"><div class="snap-toggle-track"></div><div class="snap-toggle-thumb"></div></label>
@@ -7608,6 +7795,20 @@ function drawSkinEyesOverlay(c, R, sk, fl) {
   </div>
 </div>
 
+<div id="quick-start-overlay" aria-hidden="true">
+  <section id="quick-start-card" role="dialog" aria-modal="true" aria-labelledby="quick-start-title" aria-describedby="quick-start-desc">
+    <div id="quick-start-kicker">ORMAN BRAWL • HIZLI BAŞLANGIÇ</div>
+    <div id="quick-start-icon" aria-hidden="true">🌲</div>
+    <h2 id="quick-start-title">Ormanda hayatta kal</h2>
+    <p id="quick-start-desc">Kaynak topla, ekipmanını geliştir ve arenada ayakta kalan son savaşçı ol.</p>
+    <div id="quick-start-progress" aria-live="polite">1 / 3</div>
+    <div id="quick-start-actions">
+      <button type="button" id="quick-start-skip">Atla</button>
+      <button type="button" id="quick-start-next">Devam et</button>
+    </div>
+  </section>
+</div>
+
 <!-- BOTTOM CENTER: HP + XP + Inventory -->
 <div id="ui-bottom">
   <div id="hp-wrap">
@@ -7618,7 +7819,13 @@ function drawSkinEyesOverlay(c, R, sk, fl) {
     <div class="age-bar"><div class="age-fill" id="xp-fill" style="width:0%"></div></div>
     <div class="age-text" id="age-text">SEVİYE 1</div>
   </div>
-  <div class="inventory">
+  <div class="inventory-row">
+    <button type="button" id="world-chat-toggle" aria-expanded="false" aria-controls="world-chat-panel" onclick="window.toggleWorldChat()" title="Dünya sohbeti" aria-label="Dünya sohbetini aç">
+      <span aria-hidden="true">✉</span>
+      <span class="world-chat-toggle-label">SOHBET</span>
+      <span id="world-chat-unread" aria-label="Okunmamış mesajlar">0</span>
+    </button>
+    <div class="inventory">
     <div class="inv-slot active" id="slot-1">
       <span class="slot-num">1</span>
       <canvas class="inv-icon-canvas" id="icanv-1" width="40" height="40"></canvas>
@@ -7685,8 +7892,26 @@ function drawSkinEyesOverlay(c, R, sk, fl) {
       <span class="bld-count-badge food-badge" id="food-count-badge">5</span>
       <span class="slot-label">Yemek</span>
     </div>
+    </div>
   </div>
 </div>
+
+<section id="world-chat-panel" role="dialog" aria-label="Dünya sohbeti" aria-hidden="true">
+  <header id="world-chat-header">
+    <div>
+      <strong>🌐 DÜNYA SOHBETİ</strong>
+      <span><i></i> Canlı • Tüm oyuncular</span>
+    </div>
+    <button type="button" id="world-chat-close" onclick="window.toggleWorldChat(false)" aria-label="Sohbeti kapat">×</button>
+  </header>
+  <div id="world-chat-messages" role="log" aria-live="polite" aria-relevant="additions"></div>
+  <form id="world-chat-form" autocomplete="off">
+    <label class="visually-hidden" for="world-chat-input">Dünya sohbetine mesaj yaz</label>
+    <input id="world-chat-input" name="message" type="text" maxlength="120" placeholder="Herkese mesaj yaz..." aria-label="Herkese mesaj yaz">
+    <button type="submit" aria-label="Mesajı gönder">➤</button>
+  </form>
+</section>
+<div id="world-chat-notices" aria-live="polite" aria-atomic="false"></div>
 
 <!-- JOYSTICKS — ultra-detailed custom theme matching reference -->
 <div id="joy-left" class="joy-zone">
@@ -8764,6 +8989,7 @@ function _getBuildSprite(k) {
 
 const _BUILD_TIER_IMAGES = new Map();
 const _BUILD_TIER_COMPOSITES = new Map();
+const _BUILD_TIER_FAMILY_BY_TYPE = { 3: 'spike', 4: 'windmill', 5: 'boost', 6: 'trap', 7: 'turret', 8: 'door', 9: 'heal' };
 const _BUILD_TIER_LAYOUTS = {
   spike: tier => ({ staticParts: ['base', ...([2, 4, 5].includes(tier) ? ['core'] : [])], animatedPart: tier === 5 ? 'rotor' : null }),
   windmill: () => ({ staticParts: ['base'], animatedPart: 'blades' }),
@@ -8784,11 +9010,39 @@ function _getTierBuildImage(family, tier, part) {
     image.onload = () => {
       entry.ready = true;
       _BUILD_TIER_COMPOSITES.delete(`${family}:${tier}`);
+      if (typeof renderInventoryIcons === 'function') renderInventoryIcons(true);
+      if (typeof _bup_building !== 'undefined' && _bup_building) _refreshBuildUpgradePanel();
     };
-    image.onerror = () => { entry.failed = true; };
-    image.src = `/buildassets/tier-sprites/t${tier + 1}/${family}-${part}.webp`;
+    image.onerror = () => {
+      entry.failed = true;
+      console.warn('[Build tier asset] Sprite yüklenemedi:', `../buildassets/tier-sprites/t${tier + 1}/${family}-${part}.webp`);
+      if (typeof renderInventoryIcons === 'function') renderInventoryIcons(true);
+      if (typeof _bup_building !== 'undefined' && _bup_building) _refreshBuildUpgradePanel();
+    };
+    image.src = `../buildassets/tier-sprites/t${tier + 1}/${family}-${part}.webp?v=3`;
   }
   return entry;
+}
+
+function _preloadTierBuildAsset(building, tier) {
+  const family = _BUILD_TIER_FAMILY_BY_TYPE[Number(building?.type)];
+  if (!family) return;
+  const layout = _BUILD_TIER_LAYOUTS[family](tier);
+  for (const part of layout.staticParts) _getTierBuildImage(family, tier, part);
+  if (layout.animatedPart) _getTierBuildImage(family, tier, layout.animatedPart);
+}
+
+function _invalidateBuildingTierVisuals(building, ...tiers) {
+  const type = Number(building?.type);
+  const fallbackPrefix = { 3: 'sp_', 5: 'bp_', 6: 'tr_', 7: 'tu_', 8: 'wa3_', 9: 'ca_', 10: 'cf_' }[type];
+  const family = _BUILD_TIER_FAMILY_BY_TYPE[type];
+  for (const tier of new Set(tiers.map(value => Math.min(5, Math.max(0, Number(value) || 0))))) {
+    if (fallbackPrefix) _bldSC.delete(fallbackPrefix + tier);
+    if (type === 4) _wmOC.delete(tier);
+    if (type === 6) _bldSC.delete(`tr_eye_${tier}`);
+    if (type === 9) _bldSC.delete(`ca_cyd_${tier}`);
+    if (family) _BUILD_TIER_COMPOSITES.delete(`${family}:${tier}`);
+  }
 }
 
 function _drawTierBuildAsset(context, building, family, size) {
@@ -8970,14 +9224,16 @@ window.addEventListener('touchend', (e) => {
 function _trackQuestProgress(key, amount = 1) {
   const normalizedKey = key === 'builds' ? 'buildings' : key;
   if (!normalizedKey || !Number.isFinite(Number(amount))) return;
+  if (localStorage.getItem('fb_auth_token')) return;
   try {
     const progress = JSON.parse(localStorage.getItem('fb_quest_prog') || '{}');
     const delta = Math.max(0, Number(amount));
-    progress[normalizedKey] = Math.max(0, Number(progress[normalizedKey] || 0) + delta);
+    const progressKey = normalizedKey === 'kills' ? 'pvpKills' : normalizedKey;
+    progress[progressKey] = Math.max(0, Number(progress[progressKey] || 0) + delta);
     localStorage.setItem('fb_quest_prog', JSON.stringify(progress));
     let hasChanged = false;
     function checkTask(task) {
-      if (task.key === normalizedKey && !task.claimed) {
+      if (task.key === progressKey && !task.claimed) {
         const target = Number(task.target || task.goal || 1);
         task.progress = Math.min(target, (task.progress || 0) + delta);
         if (task.progress >= target) {
@@ -11448,8 +11704,15 @@ function _checkPlayerLevel(){
   if(_playerLevelKills>=needed&&_playerLevel<10){
     _playerLevel++;
     const bonus=_playerLevel*5;
-    player.maxHp+=bonus; player.hp=Math.min(player.hp+bonus,player.maxHp); updateHpBar();
-    floatingTexts.push({x:player.x,y:player.y-110,text:`⬆️ SEVİYE ${_playerLevel}! +${bonus} MAX HP`,alpha:1,life:110,color:'#ffdd00',big:true});
+    if (!_serverMobAuthority) {
+      player.maxHp+=bonus;
+      player.hp=Math.min(player.hp+bonus,player.maxHp);
+    }
+    updateHpBar();
+    const levelText = _serverMobAuthority
+      ? `⬆️ SEVİYE ${_playerLevel}!`
+      : `⬆️ SEVİYE ${_playerLevel}! +${bonus} MAX HP`;
+    floatingTexts.push({x:player.x,y:player.y-110,text:levelText,alpha:1,life:110,color:'#ffdd00',big:true});
     playSound(660,0.22,'triangle',0.35); playSound(880,0.18,'triangle',0.25);
     _spawnLevelUpRing();
   }
@@ -11704,7 +11967,7 @@ function openTabScoreboard() {
     const sc = p.score || 0;
     const scStr = sc >= 1000 ? (sc/1000).toFixed(1)+'K' : String(sc);
     return `<div style="display:flex;align-items:center;gap:8px;background:${bg};border:${border};border-radius:8px;padding:5px 10px;font-size:12px;">
-      <span style="flex:1;font-weight:${p.isSelf ? 800 : 600};color:${p.isSelf ? '#8ddc52' : '#fff'}">${p.name}${p.isSelf ? ' (Sen)' : ''}</span>
+      <span style="flex:1;font-weight:${p.isSelf ? 800 : 600};color:${p.isSelf ? '#8ddc52' : '#fff'}">${window.escapeHtml(p.name)}${p.isSelf ? ' (Sen)' : ''}</span>
       <span style="color:#ffd700;font-weight:800">${scStr}</span>
     </div>`;
   }).join('');
@@ -12390,28 +12653,63 @@ function drawRankBadge12(ctx, cx, cy, rankId, size, t) {
   ctx.restore();
 }
 
+const _PLAYER_LEVEL_RANKS = [
+  { name: 'ÇAYLAK', color: '#86efac' },
+  { name: 'SAVAŞÇI', color: '#7dd3fc' },
+  { name: 'AKINCI', color: '#60a5fa' },
+  { name: 'MUHAFIZ', color: '#a78bfa' },
+  { name: 'USTA', color: '#c084fc' },
+  { name: 'ŞAMPİYON', color: '#fbbf24' },
+  { name: 'EFSANE', color: '#fb923c' },
+  { name: 'KAHRAMAN', color: '#fb7185' },
+  { name: 'MİTİK', color: '#f472b6' },
+  { name: 'KADİM', color: '#a3e635' },
+  { name: 'RUH MUHAFIZI', color: '#34d399' },
+  { name: 'FIRTINA', color: '#22d3ee' },
+  { name: 'YILDIZDOĞAN', color: '#818cf8' },
+  { name: 'EJDERHA LORDU', color: '#f97316' },
+  { name: 'YÜCE', color: '#facc15' },
+  { name: 'ÖLÜMSÜZ', color: '#f43f5e' },
+  { name: 'KOZMİK', color: '#c084fc' },
+  { name: 'EBEDİ', color: '#67e8f9' },
+  { name: 'İLAHİ', color: '#fde68a' },
+  { name: 'MUTLAK', color: '#ffffff' },
+  { name: 'ZİRVE', color: '#fff1a8' }
+];
+
+function _getPlayerLevelRank(level) {
+  const lvl = Math.max(1, Number(level) || 1);
+  const rankIndex = Math.min(_PLAYER_LEVEL_RANKS.length - 1, Math.floor(lvl / 5));
+  return {
+    ..._PLAYER_LEVEL_RANKS[rankIndex],
+    index: rankIndex + 1,
+    progress: rankIndex === _PLAYER_LEVEL_RANKS.length - 1 ? 5 : (rankIndex === 0 ? lvl : (lvl - rankIndex * 5 + 1))
+  };
+}
+
 // ── Name tag: [Lv. X] PlayerName [badge] ──────────────────
 function drawNameTag12(ctx, wx, wy, name, rankId, hpRatio, isOwn, t, level = 1) {
   const rid = Math.max(0, Math.min(11, (rankId|0)));
-  const BR  = isOwn ? 8 : 7;
-  const FS  = isOwn ? 9 : 8;
+  const BR  = isOwn ? 12 : 7;
+  const FS  = isOwn ? 16 : 8;
   const GAP = 5;
   const lvlNum = Math.max(1, (level | 0) || 1);
   const myLvl = isOwn ? lvlNum : ((typeof getPlayerLevel === 'function') ? getPlayerLevel() : 1);
   const lvlDiff = isOwn ? 0 : (lvlNum - myLvl);
   const isLethal = !isOwn && lvlDiff >= 5;
-  const lvlText = isLethal ? `💀 Lv.${lvlNum}` : `Lv.${lvlNum}`;
+  const lvlText = isLethal ? `💀 Lv.${lvlNum}` : (isOwn ? `LV.${lvlNum}` : `Lv.${lvlNum}`);
+  const rowY = wy + (isOwn ? 5 : 0);
 
   ctx.save();
   ctx.font = `900 ${FS}px Arial`;
   ctx.textBaseline = 'middle';
   const tw = ctx.measureText(name).width;
 
-  ctx.font = `bold ${FS - 1}px Arial`;
+  ctx.font = `900 ${isOwn ? 14 : FS - 1}px Arial`;
   const lw = ctx.measureText(lvlText).width;
-  const pillPadX = 4;
+  const pillPadX = isOwn ? 8 : 4;
   const pillW = lw + pillPadX * 2;
-  const pillH = FS + 4;
+  const pillH = FS + (isOwn ? 10 : 4);
   const pillGap = 5;
 
   const totalW = pillW + pillGap + tw + GAP + BR * 2 + 2;
@@ -12419,33 +12717,76 @@ function drawNameTag12(ctx, wx, wy, name, rankId, hpRatio, isOwn, t, level = 1) 
 
   // 1. Stylish Level Capsule on the left
   const pillX = lx;
-  const pillY = wy - pillH / 2;
-  ctx.fillStyle = isOwn ? 'rgba(15, 23, 42, 0.90)' : (isLethal ? 'rgba(35, 10, 10, 0.92)' : 'rgba(10, 15, 30, 0.88)');
-  ctx.strokeStyle = isOwn ? '#38bdf8' : (isLethal ? '#ef4444' : (lvlDiff >= 3 ? '#fb923c' : (lvlDiff <= -3 ? '#22c55e' : '#eab308')));
-  ctx.lineWidth = isLethal ? 1.5 : 1.0;
+  const pillY = rowY - pillH / 2;
+  ctx.fillStyle = isOwn ? 'rgba(10, 25, 42, 0.96)' : (isLethal ? 'rgba(35, 10, 10, 0.92)' : 'rgba(10, 15, 30, 0.88)');
+  ctx.strokeStyle = isOwn ? '#7dd3fc' : (isLethal ? '#ef4444' : (lvlDiff >= 3 ? '#fb923c' : (lvlDiff <= -3 ? '#22c55e' : '#eab308')));
+  ctx.lineWidth = isOwn ? 1.8 : (isLethal ? 1.5 : 1.0);
   ctx.beginPath();
-  ctx.roundRect(pillX, pillY, pillW, pillH, 4);
+  ctx.roundRect(pillX, pillY, pillW, pillH, isOwn ? 7 : 4);
   ctx.fill();
   ctx.stroke();
+  if (isOwn) {
+    ctx.shadowColor = '#38bdf8';
+    ctx.shadowBlur = 12;
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+  }
 
   ctx.fillStyle = isOwn ? '#7dd3fc' : (isLethal ? '#fca5a5' : (lvlDiff >= 3 ? '#fed7aa' : (lvlDiff <= -3 ? '#86efac' : '#fef08a')));
   ctx.textAlign = 'center';
-  ctx.font = `bold ${FS - 1}px Arial`;
-  ctx.fillText(lvlText, pillX + pillW / 2, wy);
+  ctx.font = `900 ${isOwn ? 14 : FS - 1}px Arial`;
+  ctx.fillText(lvlText, pillX + pillW / 2, rowY);
 
   // 2. Name text
   const nameX = pillX + pillW + pillGap;
   const nameCol = isOwn ? '#ffffff' : (hpRatio < 0.30 ? '#ff7777' : '#ffffff');
   ctx.strokeStyle = 'rgba(0,0,0,0.80)';
-  ctx.lineWidth = 1.25;
+  ctx.lineWidth = isOwn ? 2 : 1.25;
   ctx.textAlign = 'left';
   ctx.font = `900 ${FS}px Arial`;
-  ctx.strokeText(name, nameX, wy);
+  ctx.strokeText(name, nameX, rowY);
   ctx.fillStyle = nameCol;
-  ctx.fillText(name, nameX, wy);
+  ctx.fillText(name, nameX, rowY);
 
   // 3. Badge on the right side of the name with a tiny gap
-  drawRankBadge12(ctx, nameX + tw + GAP + BR, wy, rid, BR, t);
+  drawRankBadge12(ctx, nameX + tw + GAP + BR, rowY, rid, BR, t);
+
+  if (isOwn) {
+    const rank = _getPlayerLevelRank(lvlNum);
+    const rankLabel = `KADEME ${String(rank.index).padStart(2, '0')}  ·  ${rank.name}`;
+    const rankProgress = `${rank.progress}/5`;
+    ctx.font = '900 9px Arial';
+    const labelWidth = ctx.measureText(rankLabel).width;
+    const chipW = labelWidth + 39;
+    const chipH = 15;
+    const chipX = wx - chipW / 2;
+    const chipY = rowY - pillH / 2 - chipH - 3;
+
+    ctx.fillStyle = 'rgba(8, 15, 27, 0.94)';
+    ctx.strokeStyle = rank.color;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(chipX, chipY, chipW, chipH, 6);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = rank.color;
+    ctx.fillText(rankLabel, chipX + 6, chipY + chipH / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillText(rankProgress, chipX + chipW - 5, chipY + chipH / 2);
+
+    const progressX = wx - 23;
+    const progressY = chipY - 4;
+    for (let i = 0; i < 5; i++) {
+      ctx.fillStyle = i < rank.progress ? rank.color : 'rgba(255,255,255,0.24)';
+      ctx.beginPath();
+      ctx.roundRect(progressX + i * 10, progressY, 7, 3, 1);
+      ctx.fill();
+    }
+  }
 
   ctx.restore();
 }
@@ -12461,16 +12802,23 @@ function _drawNameTagCached(ctx, sx, sy, name, rankId, hpRatio, isOwn, t, level 
 
   let entry = _NT_OC_CACHE.get(key);
   if (!entry) {
-    const BR = isOwn ? 8 : 7, FS = isOwn ? 9 : 8, GAP = 5;
-    _NT_MEAS_CTX.font = `bold ${FS - 1}px Arial`;
-    const lw = _NT_MEAS_CTX.measureText(`Lv.${lvlNum}`).width;
-    const pillW = lw + 8;
+    const BR = isOwn ? 12 : 7, FS = isOwn ? 16 : 8, GAP = 5;
+    const lvlText = isOwn ? `LV.${lvlNum}` : `Lv.${lvlNum}`;
+    _NT_MEAS_CTX.font = `900 ${isOwn ? 14 : FS - 1}px Arial`;
+    const lw = _NT_MEAS_CTX.measureText(lvlText).width;
+    const pillW = lw + (isOwn ? 16 : 8);
     const pillGap = 5;
 
     _NT_MEAS_CTX.font = '900 ' + FS + 'px Arial';
     const tw = _NT_MEAS_CTX.measureText(name).width;
-    const totalW = pillW + pillGap + tw + GAP + BR * 2 + 2;
-    const pad = 6;
+    let totalW = pillW + pillGap + tw + GAP + BR * 2 + 2;
+    const pad = isOwn ? 22 : 6;
+    if (isOwn) {
+      _NT_MEAS_CTX.font = '900 9px Arial';
+      const rank = _getPlayerLevelRank(lvlNum);
+      const rankLabel = `KADEME ${String(rank.index).padStart(2, '0')}  ·  ${rank.name}`;
+      totalW = Math.max(totalW, _NT_MEAS_CTX.measureText(rankLabel).width + 39);
+    }
     const ocW = Math.ceil(totalW + pad * 2);
     const anchorX = pad + totalW / 2;
     const anchorY = pad + BR + 2;
@@ -13602,9 +13950,11 @@ if (_foodSlotEl) {
     e.stopPropagation();
     eatApple();
   };
-  _foodSlotEl.addEventListener('pointerdown', onFoodTap, { passive: false });
-  if (!('PointerEvent' in window)) _foodSlotEl.addEventListener('touchstart', onFoodTap, { passive: false });
-  _foodSlotEl.addEventListener('mousedown', onFoodTap);
+  if ('PointerEvent' in window) {
+    _foodSlotEl.addEventListener('pointerdown', onFoodTap, { passive: false });
+  } else {
+    _foodSlotEl.addEventListener('click', onFoodTap);
+  }
 }
 
 // ============================================================
@@ -13614,7 +13964,7 @@ function eatApple() {
   if (!player || player.dead) return;
   if (player.apples > 0 && player.hp < player.maxHp) {
     player.apples--;
-    const healAmt = 25;
+    const healAmt = 30;
     player.hp = Math.min(player.maxHp, player.hp + healAmt);
     player._fruitUseUntil = 0;
     player._foodUseVisualUntil = 0;
@@ -13631,8 +13981,15 @@ function eatApple() {
 }
 const appleBtn = document.getElementById('apple-btn');
 if (appleBtn) {
-  appleBtn.addEventListener('touchstart', e => { e.preventDefault(); eatApple(); });
-  appleBtn.addEventListener('mousedown', eatApple);
+  const onApplePress = (e) => {
+    e.preventDefault();
+    eatApple();
+  };
+  if ('PointerEvent' in window) {
+    appleBtn.addEventListener('pointerdown', onApplePress, { passive: false });
+  } else {
+    appleBtn.addEventListener('click', eatApple);
+  }
 }
 
 // ============================================================
@@ -13739,6 +14096,14 @@ function _onShakeToggle(checked) {
   _saveGameSetting('fb_shake', checked);
   if (!checked) shakeMag = 0;
 }
+function _onHighContrastToggle(checked) {
+  document.documentElement.classList.toggle('fb-high-contrast', checked);
+  _saveGameSetting('fb_high_contrast', checked);
+}
+function _onReducedMotionToggle(checked) {
+  document.documentElement.classList.toggle('fb-reduced-motion', checked);
+  _saveGameSetting('fb_reduced_motion', checked);
+}
 function _onMinimapToggle(checked) {
   const minimap = document.getElementById('minimap');
   if (minimap) minimap.style.display = checked ? '' : 'none';
@@ -13753,16 +14118,22 @@ function _onFpsToggle(checked) {
 function _initGameSettingsUI() {
   const minimapVisible = localStorage.getItem('fb_minimap') !== 'false';
   const fpsVisible = localStorage.getItem('fb_fps') !== 'false';
+  const highContrast = localStorage.getItem('fb_high_contrast') === 'true';
+  const reducedMotion = localStorage.getItem('fb_reduced_motion') === 'true';
   const values = {
     'auto-eat-toggle': _autoEatEnabled,
     'shake-toggle': _shakeEnabled,
     'minimap-toggle': minimapVisible,
     'fps-toggle': fpsVisible,
+    'high-contrast-toggle': highContrast,
+    'reduced-motion-toggle': reducedMotion,
   };
   Object.entries(values).forEach(([id, checked]) => {
     const input = document.getElementById(id);
     if (input) input.checked = checked;
   });
+  document.documentElement.classList.toggle('fb-high-contrast', highContrast);
+  document.documentElement.classList.toggle('fb-reduced-motion', reducedMotion);
   _onMinimapToggle(minimapVisible);
   _onFpsToggle(fpsVisible);
 }
@@ -13772,7 +14143,7 @@ function _initGameSettingsUI() {
 // ============================================================
 const DEFAULT_KEYBINDS = {
   trap: 'f',
-  spike: 'e',
+  spike: 't',
   eat: 'q',
   boost: 'v',
   windmill: 'n',
@@ -13788,6 +14159,10 @@ try {
   const _savedKb = localStorage.getItem('fb_keybinds');
   if (_savedKb) _customKeybinds = Object.assign({}, DEFAULT_KEYBINDS, JSON.parse(_savedKb));
 } catch(e) {}
+if (_customKeybinds.spike === 'e') {
+  _customKeybinds.spike = DEFAULT_KEYBINDS.spike;
+  try { localStorage.setItem('fb_keybinds', JSON.stringify(_customKeybinds)); } catch (e) {}
+}
 
 _initGameSettingsUI();
 
@@ -13872,7 +14247,7 @@ function _gameUiBlocksHotkeys() {
     || _elIsOpen('clan-game-panel', 'open')
     || _elIsOpen('quest-panel', 'open')
     || _elIsOpen('snap-settings-panel', 'open')
-    || _elIsOpen('tutorial-overlay', 'show')
+    || _elIsOpen('world-chat-panel', 'open')
     || (typeof _upgPanelOpen !== 'undefined' && _upgPanelOpen)
     || (typeof _qcwOpen !== 'undefined' && _qcwOpen);
 }
@@ -13926,8 +14301,8 @@ function _handleGameEscape(e) {
     ['quest-panel', 'open'],
     ['quest-panel', 'show'],
     ['snap-settings-panel', 'open'],
+    ['world-chat-panel', 'open'],
     ['snap-settings-panel', 'show'],
-    ['tutorial-overlay', 'show'],
     ['fb-modal-backdrop', 'show']
   ];
   let anyOverlayOpen = false;
@@ -13946,6 +14321,13 @@ function _handleGameEscape(e) {
   if (anyOverlayOpen) {
     if (typeof window._closeAllModals === 'function') window._closeAllModals();
     if (pnl) pnl.classList.remove('open', 'show');
+    const worldChat = document.getElementById('world-chat-panel');
+    if (worldChat) {
+      worldChat.classList.remove('open');
+      worldChat.setAttribute('aria-hidden', 'true');
+      const toggle = document.getElementById('world-chat-toggle');
+      if (toggle) toggle.setAttribute('aria-expanded', 'false');
+    }
     const clanGame = document.getElementById('clan-game-panel');
     if (clanGame) clanGame.classList.remove('open', 'show');
     const questPnl = document.getElementById('quest-panel');
@@ -14368,7 +14750,15 @@ function _refreshBuildUpgradePanel() {
   pnl.style.setProperty('--bup-mid',   theme.mid);
 
   // Header
-  document.getElementById('bup-type-icon').textContent = theme.icon;
+  const typeIcon = document.getElementById('bup-type-icon');
+  typeIcon.textContent = theme.icon;
+  const headerIcon = document.createElement('canvas');
+  headerIcon.width = 48;
+  headerIcon.height = 48;
+  if (_drawBuildTierIcon(headerIcon, type, tier, 42)) {
+    typeIcon.textContent = '';
+    typeIcon.appendChild(headerIcon);
+  }
   document.getElementById('bup-title').textContent = `🔨 ${theme.name}`;
   document.getElementById('bup-subtitle').innerHTML =
     tier < 5
@@ -14384,8 +14774,12 @@ function _refreshBuildUpgradePanel() {
       ? `2px solid ${TIER_COLORS[t]}`
       : t < tier ? `1px solid ${TIER_COLORS[t]}55` : '1px solid rgba(255,255,255,0.07)';
     const col = t <= tier ? TIER_COLORS[t] : 'rgba(255,255,255,0.18)';
-    return `<div class="bup-td ${cls}" style="background:${bg};border:${brd};color:${col}">${lbl}</div>`;
+    return `<div class="bup-td ${cls}" title="${lbl}" style="background:${bg};border:${brd};color:${col}"><canvas class="bup-tier-icon" data-tier="${t}" width="20" height="20" aria-hidden="true"></canvas><span>${lbl}</span></div>`;
   }).join('');
+  const tierIcons = document.querySelectorAll('#bup-tierbar .bup-tier-icon');
+  for (const icon of tierIcons) {
+    _drawBuildTierIcon(icon, type, Number(icon.dataset.tier), 18);
+  }
 
   // HP bar
   const hpR  = b.maxHp > 0 ? b.hp / b.maxHp : 1;
@@ -14496,19 +14890,31 @@ function _canUpgrade(b) {
   const t = _getTier(b);
   return t < 5 && player.score >= UPGRADE_SCORE[t];
 }
+function _drawBuildTierIcon(canvas, type, tier, size) {
+  const family = _BUILD_TIER_FAMILY_BY_TYPE[Number(type)];
+  if (!canvas || !family) return false;
+  const iconSize = Number(size) || canvas.width || 24;
+  const building = { type: Number(type), tier: Math.min(5, Math.max(0, Number(tier) || 0)), angle: 0, life: 0 };
+  _preloadTierBuildAsset(building, building.tier);
+  const iconContext = canvas.getContext('2d');
+  if (!iconContext) return false;
+  iconContext.clearRect(0, 0, canvas.width, canvas.height);
+  iconContext.save();
+  iconContext.translate(canvas.width / 2, canvas.height / 2);
+  const drawn = _drawTierBuildAsset(iconContext, building, family, iconSize);
+  iconContext.restore();
+  return drawn;
+}
+
 function _applyUpgrade(b, spawnVfx = true) {
   const tier = _getTier(b);
   if (tier >= 5) return false;
   if (player.score < UPGRADE_SCORE[tier]) return false;
   player.score -= UPGRADE_SCORE[tier];
+  const previousTier = tier;
   b.tier = tier + 1;
-  // Pre-invalidate only this building type's new-tier cache so it rebuilds on next draw
-  const _bTypeKeys = {3:'sp_',5:'bp_',6:'tr_',7:'tu_',8:'wa3_',9:'ca_',10:'cf_'};
-  const _bPfx = _bTypeKeys[b.type];
-  if (_bPfx) { _bldSC.delete(_bPfx + b.tier); }
-  if (b.type === 4) { _wmOC.delete(b.tier); } // windmill uses _wmOC, not _bldSC
-  _bldSC.delete('tr_eye_'+b.tier);  // trap eye cache per tier
-  _bldSC.delete('ca_cyd_'+b.tier);  // castle courtyard cache per tier
+  _invalidateBuildingTierVisuals(b, previousTier, b.tier);
+  _preloadTierBuildAsset(b, b.tier);
   const hpRatio = b.hp / b.maxHp;
   const baseHp  = BTYPE_BASE_HP[b.type] || 100;
   b.maxHp = Math.round(baseHp * TIER_HP_MULS[b.tier]);
@@ -15660,7 +16066,7 @@ function checkHits() {
       res.hp = res.maxHp || 500;
       res._destroyed = false;
       if (_connected && _socket && res._netIdx !== undefined && res._netIdx >= 0) {
-        _socket.emit('res_hit', { idx: res._netIdx, dmg });
+        _socket.emit('res_hit', { idx: res._netIdx, dmg, swingId: _swingId });
       }
       if (player.weapon === 1) addAxeXP(4);
       const resourceTool = player.weapon === 1 ? 'axe' : 'sword';
@@ -15715,7 +16121,9 @@ function checkHits() {
         player.diamond = (player.diamond || 0) + gDia;
         localStorage.setItem('fb_player_diamond', player.diamond);
         if (gDia > 0) floatingTexts.push({ x: res.x, y: res.y - 65, text: `+${gDia} ELMAS`, alpha: 1, life: 55, color: '#00e6ff', big: true, resourceIcon: 'diamond' });
-        if (typeof window.addMeleeXp === 'function') window.addMeleeXp(8); else if (typeof addAxeXP === 'function') addAxeXP(8);
+        if (!_connected) {
+          if (typeof window.addMeleeXp === 'function') window.addMeleeXp(8); else if (typeof addAxeXP === 'function') addAxeXP(8);
+        }
       } else if (res.type === 'amethyst') {
         playSound(750 + Math.floor(Math.random() * 100), 0.14, 'triangle', 0.32);
         shake(1.8);
@@ -15727,7 +16135,9 @@ function checkHits() {
         player.amethyst = (player.amethyst || 0) + gAme;
         localStorage.setItem('fb_player_amethyst', player.amethyst);
         if (gAme > 0) floatingTexts.push({ x: res.x, y: res.y - 70, text: `+${gAme} AMETİST`, alpha: 1, life: 60, color: '#e879f9', big: true, resourceIcon: 'amethyst' });
-        if (typeof window.addMeleeXp === 'function') window.addMeleeXp(16); else if (typeof addAxeXP === 'function') addAxeXP(16);
+        if (!_connected) {
+          if (typeof window.addMeleeXp === 'function') window.addMeleeXp(16); else if (typeof addAxeXP === 'function') addAxeXP(16);
+        }
       } else if (res.type === 'redite') {
         playSound(520, 0.20, 'sawtooth', 0.38);
         playSound(1040, 0.15, 'sine', 0.35);
@@ -15740,7 +16150,9 @@ function checkHits() {
         player.redite = (player.redite || 0) + gRed;
         localStorage.setItem('fb_player_redite', player.redite);
         if (gRed > 0) floatingTexts.push({ x: res.x, y: res.y - 75, text: `+${gRed} KADİM REDİTE`, alpha: 1, life: 75, color: '#ff2255', big: true, resourceIcon: 'redite' });
-        if (typeof window.addMeleeXp === 'function') window.addMeleeXp(35); else if (typeof addAxeXP === 'function') addAxeXP(35);
+        if (!_connected) {
+          if (typeof window.addMeleeXp === 'function') window.addMeleeXp(35); else if (typeof addAxeXP === 'function') addAxeXP(35);
+        }
       } else if (res.type === 'wood' || res.type === 'apple' || res.type === 'bush') {
         playSound(200 + Math.floor(Math.random() * 60), 0.07, 'square', 0.14);
         shake(0.7);
@@ -16846,10 +17258,14 @@ function updateUI() {
     window.renderArpgBag();
   }
 
-  // Sync Blacksmith forge resources if open
+  // Refresh forge requirements only when the player's resource totals change.
   const bmModal = document.getElementById('blacksmith-modal');
-  if (bmModal && bmModal.classList.contains('show') && typeof renderBlacksmithModal === 'function') {
-    renderBlacksmithModal();
+  if (bmModal && bmModal.classList.contains('show') && typeof window.renderBlacksmithModal === 'function') {
+    const resourceSignature = [player.wood, player.stone, player.gold, player.diamond, player.amethyst, player.redite].join(':');
+    if (bmModal.dataset.resourceSignature !== resourceSignature) {
+      bmModal.dataset.resourceSignature = resourceSignature;
+      window.renderBlacksmithModal();
+    }
   }
   
   const foodBadge = document.getElementById('food-count-badge');
@@ -20202,7 +20618,7 @@ function updateAndDrawMobAttackEffects(ctx) {
 function _drawSpriteWolf(ctx, e, R, isMoving, state, animTimer, attackTimer, flash) {
   if (!_mobPartsReady('kurt_govde', 'kurt_kafa', 'kurt_pati', 'kurt_kuyruk')) return false;
   ctx.save();
-  const scale = R / 62;
+  const scale = (R / 62) * 1.15;
   ctx.scale(scale, scale);
   ctx.rotate(Math.PI / 2);
 
@@ -23415,6 +23831,20 @@ function drawEnemy(e) {
 
   // HP bar
   drawHpBar(e.x, e.y - R - 14, e.hp, e.maxHp, Math.max(55, R * 1.6), 0);
+  const mobLevel = Math.max(1, Number(e.lvl || e.level) || 1);
+  const mobName = String(e.typeName || 'Canavar').replace(/^[^A-Za-zÀ-ÿ0-9]+\s*/, '');
+  const labelY = e.y - R - 23;
+  ctx.save();
+  ctx.font = e.isBoss ? 'bold 15px sans-serif' : 'bold 12px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'bottom';
+  ctx.lineWidth = 3;
+  ctx.strokeStyle = 'rgba(0,0,0,0.85)';
+  ctx.fillStyle = e.isBoss ? '#ffd76a' : '#ffffff';
+  const mobLabel = `${e.isBoss ? '👑 ' : ''}[Lv.${mobLevel}] ${mobName}`;
+  ctx.strokeText(mobLabel, e.x, labelY);
+  ctx.fillText(mobLabel, e.x, labelY);
+  ctx.restore();
 }
 
 
@@ -24566,7 +24996,7 @@ function drawPlayer() {
     const _nto = _NT_OBJ_POOL[_ntPoolIdx++];
     _nto.wx = rx; _nto.wy = ry - player.radius - 32;
     _nto.name = (player.clanTag ? '[' + player.clanTag + '] ' : '') + player.name; _nto.rankId = _myRankId ?? 0;
-    _nto.hpRatio = player.hp / player.maxHp; _nto.isOwn = true; _nto.level = getAge(player.gold);
+    _nto.hpRatio = player.hp / player.maxHp; _nto.isOwn = true; _nto.level = getPlayerLevel(player);
     _pendingNameTags.push(_nto);
   }
 
@@ -25574,11 +26004,11 @@ function update(timestamp = 0) {
   // Auto-eat apple at critical HP
   if(_autoEatEnabled && player.hp < player.maxHp * 0.18 && player.apples > 0 && globalTime - _lastAutoEat > 180){
     _lastAutoEat = globalTime;
-    player.apples--; player.hp = Math.min(player.maxHp, player.hp + 20);
+    player.apples--; player.hp = Math.min(player.maxHp, player.hp + 30);
     player._foodUseVisualUntil = Date.now() + 650;
     if (_connected && _socket) _socket.emit('eat_apple'); // server applies authoritative heal
     updateHpBar(); updateUI();
-    floatingTexts.push({x:player.x,y:player.y-55,text:'🍎 OTO-YE +20 HP',alpha:1,life:50,color:'#88ff44'});
+    floatingTexts.push({x:player.x,y:player.y-55,text:'🍎 OTO-YE +30 HP',alpha:1,life:50,color:'#88ff44'});
   }
   updateArrows();
   updateEnemyProjectiles();
@@ -26312,13 +26742,8 @@ function update(timestamp = 0) {
         e.vy = e.vy * 0.5 + ny * 2.5;
         // Kaynağa hasar ver (1.2 saniyede bir)
         if (now - e.lastResHit > 1200) {
-          const resDmg = Math.max(1, Math.round(e.dmg * 0.3));
           res.shake = 5;
           e.lastResHit = now;
-          // Server-authoritative: notify server so all players see mob-caused resource damage
-          if (_connected && _socket && res._netIdx !== undefined && res._netIdx >= 0) {
-            _socket.emit('res_hit', { idx: res._netIdx, dmg: resDmg });
-          }
         }
       }
     }
@@ -27091,19 +27516,19 @@ function update(timestamp = 0) {
           : _resourceSprite(res.type, biome, res.model);
         if (res.type === 'diamond') {
           const frame = Math.floor(t / (Math.PI / 0.2)) % 8;
-          if (!_drawMissingAtlasFrame(ctx, 'resources', 'diamond', frame, 0, R * 3.1)) {
+          if (!_drawMissingAtlasFrame(ctx, 'resources', 'diamond', frame, 0, R * 3.1, R * 3.1, rx, ry)) {
             _drawUltraDiamond(ctx, rx, ry, R, biome, t);
           }
           _drawSpecialMineralLabel(ctx, rx, ry, R, res);
         } else if (res.type === 'amethyst') {
           const frame = Math.floor(t / (Math.PI / 0.192)) % 8;
-          if (!_drawMissingAtlasFrame(ctx, 'resources', 'amethyst', frame, 0, R * 3.16)) {
+          if (!_drawMissingAtlasFrame(ctx, 'resources', 'amethyst', frame, 0, R * 3.16, R * 3.16, rx, ry)) {
             _drawUltraAmethyst(ctx, rx, ry, R, biome, t);
           }
           _drawSpecialMineralLabel(ctx, rx, ry, R, res);
         } else if (res.type === 'redite') {
           const frame = Math.floor(t / (Math.PI / 0.2)) % 8;
-          if (!_drawMissingAtlasFrame(ctx, 'resources', 'redite', frame, 0, R * 3.1)) {
+          if (!_drawMissingAtlasFrame(ctx, 'resources', 'redite', frame, 0, R * 3.1, R * 3.1, rx, ry)) {
             _drawUltraRedite(ctx, rx, ry, R, biome, t);
           }
           _drawSpecialMineralLabel(ctx, rx, ry, R, res);
@@ -27550,10 +27975,21 @@ window.addEventListener('keydown', e => {
 
   if (_gameUiBlocksHotkeys()) return;
 
+  // E is reserved for NPC interaction and must never trigger a build action.
+  if (k === 'e') {
+    e.preventDefault();
+    if (_isNearVillageBlacksmith()) {
+      window.interactWithVillageBlacksmith();
+    } else if (_connected && _socket) {
+      _socket.emit('interact_npc', {});
+    }
+    return;
+  }
+
   // Q (or custom) — yemek ye
   if (_matchKey(k, _customKeybinds.eat)) eatApple();
 
-  // E (or custom) — spike yerleştir (slot 3)
+  // T (or custom) — spike yerleştir (slot 3)
   if (_matchKey(k, _customKeybinds.spike)) {
     selectInventorySlot(2);
     tryPlaceBuilding();
@@ -27617,14 +28053,6 @@ window.addEventListener('keydown', e => {
     else { openQuickChat(window.innerWidth / 2, window.innerHeight / 2); }
   }
 
-  // E — Interact with NPCs if nearby
-  if (k === 'e' && !e.repeat) {
-    if (_isNearVillageBlacksmith()) {
-      window.interactWithVillageBlacksmith();
-    } else if (typeof _connected !== 'undefined' && _connected && _socket) {
-      _socket.emit('interact_npc', {});
-    }
-  }
 });
 
 const _VILLAGE_BLACKSMITH = Object.freeze({ x: 420, y: -380, radius: 180 });
@@ -28831,7 +29259,6 @@ function initMultiplayer() {
   // We killed the bounty target — extra reward
   _socket.on('bounty_kill_reward', ({ name, bonus }) => {
     _incQuestStat('kingKills', 1);
-    _incQuestStat('kills', 1);
     player.score = (player.score || 0) + (bonus || 300);
     const reducedBonus = scaleGoldReward(bonus || 300);
     player.gold += reducedBonus;
@@ -28881,6 +29308,10 @@ function initMultiplayer() {
 
   _socket.on('loot_item_action_result', (data = {}) => {
     if (!data.ok && typeof showGameToast === 'function') showGameToast(data.message || 'Eşya işlemi başarısız oldu.');
+  });
+
+  _socket.on('combat_stats_state', (data = {}) => {
+    if (typeof window.applyServerCombatStats === 'function') window.applyServerCombatStats(data);
   });
 
   _socket.on('combat_xp_gain', (data = {}) => {
@@ -28986,7 +29417,12 @@ function initMultiplayer() {
         const s = remoteBuildings[netId];
         b.hp = s.hp;
         b.maxHp = s.maxHp;
-        if (s.tier !== undefined) b.tier = s.tier;
+        if (s.tier !== undefined && Number(s.tier) !== Number(b.tier || 0)) {
+          const previousTier = Number(b.tier) || 0;
+          b.tier = s.tier;
+          _invalidateBuildingTierVisuals(b, previousTier, b.tier);
+          _preloadTierBuildAsset(b, b.tier);
+        }
         if (s.type !== undefined) b.type = s.type;
         if (s.angle !== undefined) b.angle = s.angle;
         b.ownerClanId = s.ownerClanId || b.ownerClanId || '';
@@ -29009,7 +29445,12 @@ function initMultiplayer() {
           _buildingsMap.set(matchedServerId, b);
           b.hp = s.hp;
           b.maxHp = s.maxHp;
-          if (s.tier !== undefined) b.tier = s.tier;
+          if (s.tier !== undefined && Number(s.tier) !== Number(b.tier || 0)) {
+            const previousTier = Number(b.tier) || 0;
+            b.tier = s.tier;
+            _invalidateBuildingTierVisuals(b, previousTier, b.tier);
+            _preloadTierBuildAsset(b, b.tier);
+          }
           incomingIds.delete(matchedServerId);
         }
         // Always retain own buildings locally unless server explicitly sends build_destroy
@@ -29097,23 +29538,22 @@ function initMultiplayer() {
   _socket.on('build_tier_update', ({ id, tier, maxHp, hp }) => {
     const b = _buildingsMap.get(id); // O(1) — was buildings.find()
     if (!b) return;
+    const previousTier = Number(b.tier) || 0;
     b.tier   = Math.min(5, Math.max(0, tier || 0));
     b.maxHp  = maxHp;
     b.hp     = Math.max(1, hp);
-    // Invalidate OffscreenCanvas cache so the new tier's visual is drawn on next frame
-    const _bTypeKeys = {3:'sp_',5:'bp_',6:'tr_',7:'tu_',8:'wa3_',9:'ca_',10:'cf_'};
-    const _bPfx = _bTypeKeys[b.type];
-    if (_bPfx) { _bldSC.delete(_bPfx + b.tier); }
-    if (b.type === 4) { _wmOC.delete(b.tier); }
-    _bldSC.delete('tr_eye_'+b.tier);
-    _bldSC.delete('ca_cyd_'+b.tier);
+    _invalidateBuildingTierVisuals(b, previousTier, b.tier);
+    _preloadTierBuildAsset(b, b.tier);
     if (_bup_building === b) _refreshBuildUpgradePanel();
   });
 
   _socket.on('build_tier_rejected', ({ id, tier, maxHp, hp, score }) => {
     const b = _buildingsMap.get(id);
     if (!b) return;
+    const previousTier = Number(b.tier) || 0;
     b.tier = Math.min(5, Math.max(0, Number(tier) || 0));
+    _invalidateBuildingTierVisuals(b, previousTier, b.tier);
+    _preloadTierBuildAsset(b, b.tier);
     if (Number(maxHp) > 0) b.maxHp = Number(maxHp);
     if (Number.isFinite(Number(hp))) b.hp = Number(hp);
     if (Number.isFinite(Number(score))) player.score = Number(score);
@@ -29196,6 +29636,7 @@ function initMultiplayer() {
     if (typeof s.sc === 'number') player.score = Math.max(0, s.sc);
     if (typeof s.g === 'number') player.gold = Math.max(0, s.g);
     if (typeof s.xp === 'number') { player.xp = Math.max(0, s.xp); updateXP(); }
+    if (typeof s.k === 'number') player.kills = Math.max(0, s.k);
     if (typeof s.wood === 'number') player.wood = Math.max(0, s.wood);
     if (typeof s.stone === 'number') player.stone = Math.max(0, s.stone);
     if (typeof s.apples === 'number') player.apples = Math.max(0, s.apples);
@@ -29415,8 +29856,146 @@ function initMultiplayer() {
     floatingTexts.push({ x: player.x, y: player.y - 30, text: '💨 HIZ!', alpha: 1, life: 28, color: '#ffe066' });
   });
 
+  const _worldChatHistoryKey = 'fb_world_chat_history';
+  const _worldChatHistoryLimit = 100;
+  const _worldChatHistory = [];
+  let _worldChatUnreadCount = 0;
+  const _worldChatMessagesEl = document.getElementById('world-chat-messages');
+  const _worldChatUnreadEl = document.getElementById('world-chat-unread');
+  const _worldChatToggleEl = document.getElementById('world-chat-toggle');
+  const _worldChatPanelEl = document.getElementById('world-chat-panel');
+  const _worldChatInputEl = document.getElementById('world-chat-input');
+  function _renderWorldChatMessage(message) {
+    if (!_worldChatMessagesEl) return;
+    const empty = _worldChatMessagesEl.querySelector('.world-chat-empty');
+    if (empty) empty.remove();
+    const item = document.createElement('article');
+    item.className = 'world-chat-message' + (message.id === _mySocketId ? ' me' : '');
+    const meta = document.createElement('div');
+    meta.className = 'world-chat-meta';
+    const level = document.createElement('span');
+    level.className = 'world-chat-level';
+    level.textContent = 'LV.' + Math.max(1, Math.floor(Number(message.level) || 1));
+    const name = document.createElement('span');
+    name.className = 'world-chat-name';
+    name.textContent = String(message.name || 'Oyuncu').slice(0, 32);
+    const time = document.createElement('time');
+    time.className = 'world-chat-time';
+    time.textContent = new Date(Number(message.at) || Date.now()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    meta.append(level, name, time);
+    const text = document.createElement('div');
+    text.className = 'world-chat-text';
+    text.textContent = String(message.msg || '').slice(0, 120);
+    item.append(meta, text);
+    _worldChatMessagesEl.appendChild(item);
+    while (_worldChatMessagesEl.children.length > _worldChatHistoryLimit) {
+      _worldChatMessagesEl.firstElementChild.remove();
+    }
+    _worldChatMessagesEl.scrollTop = _worldChatMessagesEl.scrollHeight;
+  }
+  function _persistWorldChatHistory() {
+    try {
+      localStorage.setItem(_worldChatHistoryKey, JSON.stringify(_worldChatHistory.slice(-_worldChatHistoryLimit)));
+    } catch (error) {
+      console.warn('[WorldChat] Sohbet geçmişi kaydedilemedi.', error);
+    }
+  }
+  function _updateWorldChatUnread() {
+    if (!_worldChatUnreadEl) return;
+    _worldChatUnreadEl.textContent = _worldChatUnreadCount > 99 ? '99+' : String(_worldChatUnreadCount);
+    _worldChatUnreadEl.classList.toggle('show', _worldChatUnreadCount > 0);
+  }
+  function _showWorldChatNotice(message) {
+    const notices = document.getElementById('world-chat-notices');
+    if (!notices) return;
+    const notice = document.createElement('div');
+    notice.className = 'world-chat-notice';
+    const meta = document.createElement('div');
+    meta.className = 'world-chat-meta';
+    const level = document.createElement('span');
+    level.className = 'world-chat-level';
+    level.textContent = 'LV.' + Math.max(1, Math.floor(Number(message.level) || 1));
+    const name = document.createElement('span');
+    name.className = 'world-chat-name';
+    name.textContent = String(message.name || 'Oyuncu').slice(0, 32);
+    meta.append(level, name);
+    const text = document.createElement('span');
+    text.className = 'world-chat-text';
+    text.textContent = String(message.msg || '').slice(0, 120);
+    notice.append(meta, text);
+    notices.appendChild(notice);
+    while (notices.children.length > 3) notices.firstElementChild.remove();
+    window.setTimeout(() => notice.remove(), 5000);
+  }
+  try {
+    const saved = JSON.parse(localStorage.getItem(_worldChatHistoryKey) || '[]');
+    if (Array.isArray(saved)) {
+      saved.slice(-_worldChatHistoryLimit).forEach(message => {
+        if (!message || typeof message.msg !== 'string' || !message.msg.trim()) return;
+        const clean = {
+          id: String(message.id || ''),
+          name: String(message.name || 'Oyuncu').slice(0, 32),
+          level: Math.max(1, Math.floor(Number(message.level) || 1)),
+          msg: message.msg.slice(0, 120),
+          at: Number(message.at) || Date.now()
+        };
+        _worldChatHistory.push(clean);
+        _renderWorldChatMessage(clean);
+      });
+    }
+  } catch (error) {
+    console.warn('[WorldChat] Kayıtlı sohbet geçmişi okunamadı.', error);
+  }
+  if (_worldChatMessagesEl && !_worldChatMessagesEl.children.length) {
+    const empty = document.createElement('div');
+    empty.className = 'world-chat-empty';
+    empty.textContent = 'Henüz mesaj yok. Dünyadaki oyuncularla sohbete başla!';
+    _worldChatMessagesEl.appendChild(empty);
+  }
+  window.toggleWorldChat = function(forceOpen) {
+    if (!_worldChatPanelEl) return;
+    const shouldOpen = typeof forceOpen === 'boolean' ? forceOpen : !_worldChatPanelEl.classList.contains('open');
+    _worldChatPanelEl.classList.toggle('open', shouldOpen);
+    _worldChatPanelEl.setAttribute('aria-hidden', String(!shouldOpen));
+    if (_worldChatToggleEl) {
+      _worldChatToggleEl.setAttribute('aria-expanded', String(shouldOpen));
+      _worldChatToggleEl.setAttribute('aria-label', shouldOpen ? 'Dünya sohbetini kapat' : 'Dünya sohbetini aç');
+    }
+    if (shouldOpen) {
+      _worldChatUnreadCount = 0;
+      _updateWorldChatUnread();
+      window.setTimeout(() => _worldChatInputEl?.focus(), 30);
+    }
+  };
+  const _worldChatForm = document.getElementById('world-chat-form');
+  if (_worldChatForm) {
+    _worldChatForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const msg = String(_worldChatInputEl?.value || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 120);
+      if (!msg) return;
+      if (!_connected || !_socket?.connected) {
+        if (typeof showToast === 'function') showToast('Dünya sohbetine yazmak için sunucu bağlantısı gerekli.', 3000, '#ff8844');
+        return;
+      }
+      _socket.emit('chat', { msg });
+      _worldChatInputEl.value = '';
+    });
+  }
+
   // ─── In-game chat (moomoo.io/sploop.io style) ───────────────────────────
-  _socket.on('chat', ({ name, msg, id }) => {
+  _socket.on('chat', ({ name, msg, id, level, at }) => {
+    if (msg) {
+      const message = { name: name || 'Oyuncu', msg, id: id || '', level, at: at || Date.now() };
+      _worldChatHistory.push(message);
+      if (_worldChatHistory.length > _worldChatHistoryLimit) _worldChatHistory.shift();
+      _renderWorldChatMessage(message);
+      _persistWorldChatHistory();
+      if (!_worldChatPanelEl?.classList.contains('open')) {
+        _worldChatUnreadCount++;
+        _updateWorldChatUnread();
+        _showWorldChatNotice(message);
+      }
+    }
     const isMe = id === _mySocketId;
     if (!isMe) {
       const op = _otherPlayers.get(id);
@@ -29425,9 +30004,20 @@ function initMultiplayer() {
     if (msg) pushKillFeed(`💬 ${name || 'Oyuncu'}: ${msg}`);
   });
 
-  _socket.on('quick_chat', ({ name, id, idx, x, y }) => {
+  _socket.on('quick_chat', ({ name, id, idx, x, y, level, at }) => {
     const chat = QUICK_CHATS[Number(idx)];
-    if (!chat || id === _mySocketId) return;
+    if (!chat) return;
+    const message = { name: name || 'Oyuncu', msg: chat.emoji + ' ' + chat.text, id: id || '', level, at: at || Date.now() };
+    _worldChatHistory.push(message);
+    if (_worldChatHistory.length > _worldChatHistoryLimit) _worldChatHistory.shift();
+    _renderWorldChatMessage(message);
+    _persistWorldChatHistory();
+    if (!_worldChatPanelEl?.classList.contains('open')) {
+      _worldChatUnreadCount++;
+      _updateWorldChatUnread();
+      _showWorldChatNotice(message);
+    }
+    if (id === _mySocketId) return;
     const op = _otherPlayers.get(id);
     const chatX = Number.isFinite(Number(x)) ? Number(x) : op?.x;
     const chatY = Number.isFinite(Number(y)) ? Number(y) : op?.y;
@@ -29548,7 +30138,7 @@ function initMultiplayer() {
 
   function _acceptMobSequence(mob, seq, ts) {
     if (typeof ts === 'number' && (mob._stateAt || 0) - ts > 1200) return false;
-    if (typeof seq === 'number' && typeof mob._stateSeq === 'number' && seq < mob._stateSeq && (mob._stateSeq - seq < 500)) return false;
+    if (typeof seq === 'number' && typeof mob._stateSeq === 'number' && seq < mob._stateSeq) return false;
     if (typeof seq === 'number') mob._stateSeq = Math.max(mob._stateSeq || 0, seq);
     if (typeof ts === 'number') mob._stateAt = Math.max(mob._stateAt || 0, ts);
     return true;
@@ -29586,6 +30176,9 @@ function initMultiplayer() {
       if (m.level) already.level = m.level;
       already.angle = m.angle || 0;
       already._lastSeen = now;
+      already._stateSeq = m.seq || already._stateSeq || 0;
+      already._stateAt = m.ts || now;
+      already._lastPacketTime = now;
       return;
     }
     enemies.push({
@@ -29598,7 +30191,7 @@ function initMultiplayer() {
       hitFlash: 0, typeName: m.typeName||'🐺 Kurt',
       dmg: m.dmg||28, speed: 0, xpReward: m.xpReward||50, goldReward: m.goldReward||20,
       provoked: true, lastHit: 0, lastBuildHit: 0, lastSpikeHit: 0, lastResHit: 0, lastHitSwingId: -1,
-      angle: m.angle || 0, _stateSeq: m.seq || 0, _lastSeen: now, isBoss: m.isBoss||false
+      angle: m.angle || 0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastPacketTime: now, _lastSeen: now, isBoss: m.isBoss||false
     });
   });
 
@@ -29643,7 +30236,7 @@ function initMultiplayer() {
           eyes: m.eyes||'#ffcc66', hitFlash: m.hitFlash||0, typeName: m.typeName||'🐺 Kurt',
           dmg: m.dmg||28, speed: 0, xpReward: m.xpReward||50, goldReward: m.goldReward||20,
           provoked: true, lastHit: 0, lastBuildHit: 0, lastSpikeHit: 0, lastResHit: 0, lastHitSwingId: -1,
-          angle: m.angle||0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastSeen: now, isBoss: m.isBoss||false
+          angle: m.angle||0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastPacketTime: now, _lastSeen: now, isBoss: m.isBoss||false
         };
         enemies.push(newMob);
         _enemyLocalMap.set(m.id, newMob);
@@ -29723,9 +30316,6 @@ function initMultiplayer() {
   // ── Kill reward for the player who dealt the killing blow ─────────────
   _socket.on('mob_kill_reward', ({ xp, gold, score, typeName }) => {
     const _bcScoreGain = score || Math.round(xp * 0.75 + gold * 3);
-    player.xp += scaledXpGain(xp); player.kills++;
-    player.gold += gold;
-    player.score = (player.score||0) + _bcScoreGain;
     _playerLevelKills++; _checkPlayerLevel();
     updateUI(); updateXP();
     _killCamTimer = 40; _killCamX = player.x; _killCamY = player.y;
@@ -29757,7 +30347,14 @@ function initMultiplayer() {
       }
     }
     if (typeof m.hitFlash === 'number' && m.hitFlash > 0) e.hitFlash = m.hitFlash;
-    if (typeof m.x === 'number') { e._targetX = m.x; e._targetY = m.y; }
+    if (typeof m.x === 'number') {
+      e._targetX = m.x; e._targetY = m.y;
+      e._lastPacketTime = Date.now();
+      if (typeof m.vx === 'number') e.vx = m.vx;
+      if (typeof m.vy === 'number') e.vy = m.vy;
+    }
+    if (m.typeName) e.typeName = m.typeName;
+    if (m.lvl || m.level) e.level = e.lvl = m.lvl || m.level;
     if (typeof m.angle === 'number') e.angle = m.angle;
   });
 
@@ -30516,6 +31113,7 @@ window._startParty = function() {
 document.addEventListener('keydown', (e) => {
   if (!_connected) return;
   if (e.key === 'Enter') {
+    if (e.target && e.target.id === 'world-chat-input') return;
     if (_chatInput && document.body.contains(_chatInput)) {
       // Submit
       const msg = _chatInput.value.trim().slice(0, 60);
@@ -30528,22 +31126,8 @@ document.addEventListener('keydown', (e) => {
       document.body.removeChild(_chatInput);
       _chatInput = null;
     } else if (!_chatInput) {
-      // Open chat
-      _chatInput = document.createElement('input');
-      _chatInput.type = 'text'; _chatInput.maxLength = 60;
-      _chatInput.placeholder = 'Mesaj yaz... (Enter gönder, Esc iptal)';
-      Object.assign(_chatInput.style, {
-        position:'fixed', bottom:'90px', left:'50%', transform:'translateX(-50%)',
-        width:'320px', padding:'10px 16px', borderRadius:'22px',
-        border:'2.5px solid rgba(255,255,255,0.5)', background:'rgba(0,0,0,0.72)',
-        color:'#fff', fontSize:'15px', fontFamily:'Arial', outline:'none', zIndex:'9999'
-      });
-      document.body.appendChild(_chatInput);
-      setTimeout(() => _chatInput && _chatInput.focus(), 10);
-      _chatInput.addEventListener('keydown', ev => {
-        if (ev.key === 'Escape') { document.body.removeChild(_chatInput); _chatInput = null; ev.stopPropagation(); }
-        if (ev.key === 'Enter') ev.stopPropagation(); // handled by document listener above
-      });
+      window.toggleWorldChat?.(true);
+      window.setTimeout(() => document.getElementById('world-chat-input')?.focus(), 30);
     }
   }
 });
@@ -31803,6 +32387,58 @@ var _TIPS = [
   '🗺️ Haritanın ortasına yavaş yavaş ölüm bölgesi gelir!',
   '👁️ Minimapi takip et — kirmizi noktalar dusmandır!',
 ];
+function _initQuickStart() {
+  var overlay = document.getElementById('quick-start-overlay');
+  var title = document.getElementById('quick-start-title');
+  var desc = document.getElementById('quick-start-desc');
+  var icon = document.getElementById('quick-start-icon');
+  var progress = document.getElementById('quick-start-progress');
+  var next = document.getElementById('quick-start-next');
+  var skip = document.getElementById('quick-start-skip');
+  if (!overlay || !title || !desc || !icon || !progress || !next || !skip) return;
+  if (localStorage.getItem('fb_quick_start_done') === 'true') return;
+
+  var steps = [
+    { icon: '🌲', title: 'Ormanda hayatta kal', desc: 'Kaynak topla, ekipmanını geliştir ve arenada ayakta kalan son savaşçı ol.' },
+    { icon: '🪓', title: 'Kaynaklarını topla', desc: 'Ağaçları, taşları ve cevherleri kır. Kaynaklarla silahlarını ve savunmalarını güçlendir.' },
+    { icon: '❤️', title: 'Savaş ve iyileş', desc: 'Rakiplerini ve yaratıkları yenerek ilerle. Canın eksildiğinde elma kullan; ayarları ⚙️ menüsünden kişiselleştir.' },
+  ];
+  var step = 0;
+  function closeQuickStart() {
+    localStorage.setItem('fb_quick_start_done', 'true');
+    overlay.classList.remove('show');
+    overlay.setAttribute('aria-hidden', 'true');
+  }
+  function renderStep() {
+    var current = steps[step];
+    icon.textContent = current.icon;
+    title.textContent = current.title;
+    desc.textContent = current.desc;
+    progress.textContent = (step + 1) + ' / ' + steps.length;
+    next.textContent = step === steps.length - 1 ? 'Oyuna başla' : 'Devam et';
+  }
+  next.addEventListener('click', function() {
+    if (step < steps.length - 1) {
+      step++;
+      renderStep();
+    } else {
+      closeQuickStart();
+    }
+  });
+  skip.addEventListener('click', closeQuickStart);
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && overlay.classList.contains('show')) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      closeQuickStart();
+    }
+  }, true);
+  renderStep();
+  overlay.classList.add('show');
+  overlay.setAttribute('aria-hidden', 'false');
+  next.focus();
+}
+window.setTimeout(_initQuickStart, 700);
 function _initLoadingScreen() {
   var _lsEl  = document.getElementById('loading-screen');
   var _lbFil = document.getElementById('loading-bar-fill');
@@ -31826,49 +32462,6 @@ if (document.readyState === 'loading') {
 } else {
   _initLoadingScreen();
 }
-
-// ── TUTORIAL ──────────────────────────────────────────────────────────
-var _tutSteps = [
-  { icon:'🗺️', title:'Harekete Geç!', desc:'<b>WASD</b> veya ok tuşlarıyla hareket et. <b>Mouse</b> ile nişan al, <b>Sol Tık</b> veya <b>Space</b> ile saldır.' },
-  { icon:'🪓', title:'Kaynak Topla!', desc:'Ağaç, taş ve altın madenine yaklaş ve vur. Topladığın kaynakla <b>bina inşa et</b> — bir duvar bile seni kurtarabilir!' },
-  { icon:'⚔️', title:'Hayatta Kal!', desc:'Düşmanları öldürerek <b>XP ve altın</b> kazan. Kill serisi yap, yeni silah seviyelerine ulaş. <b>Sen en güçlü ol!</b>' },
-];
-var _tutStep = 0;
-
-function _tutShow(){
-  var _tutOv = document.getElementById('tutorial-overlay');
-  if (!_tutOv) return;
-  _tutStep = 0;
-  _tutRender();
-  _tutOv.classList.add('show');
-}
-function _tutRender(){
-  var s = _tutSteps[_tutStep];
-  var _tutNum  = document.getElementById('tutorial-step-num');
-  var _tutIcon = document.getElementById('tutorial-step-icon');
-  var _tutTtl  = document.getElementById('tutorial-step-title');
-  var _tutDesc = document.getElementById('tutorial-step-desc');
-  var _tutDots = document.getElementById('tutorial-dots');
-  var _tutNext = document.getElementById('tut-next');
-  if (_tutNum)  _tutNum.textContent  = 'ADIM ' + (_tutStep+1) + '/' + _tutSteps.length;
-  if (_tutIcon) _tutIcon.textContent = s.icon;
-  if (_tutTtl)  _tutTtl.textContent  = s.title;
-  if (_tutDesc) _tutDesc.innerHTML   = s.desc;
-  if (_tutDots) {
-    var dots = _tutDots.querySelectorAll('.tut-dot');
-    dots.forEach(function(d,i){ d.classList.toggle('active', i===_tutStep); });
-  }
-  if (_tutNext) _tutNext.textContent = _tutStep === _tutSteps.length-1 ? '✅ Başla!' : 'Sonraki →';
-}
-window._tutNext = function(){
-  if (_tutStep < _tutSteps.length-1) { _tutStep++; _tutRender(); }
-  else { window._tutClose(); }
-};
-window._tutClose = function(){
-  localStorage.setItem('fb_tutorial_done', '1');
-  var _tutOv = document.getElementById('tutorial-overlay');
-  if (_tutOv) _tutOv.classList.remove('show');
-};
 
 // Every game entry requires an explicit, non-persistent control consent (desktop and returning users bypassed).
 function _initEntryConsent(){
@@ -32095,7 +32688,8 @@ var QUEST_UNITS = {
   gold: 'altın',
   time: 'dakika',
   buildings: 'yapı',
-  kills: 'oyuncu',
+  kills: 'düşman',
+  pvpKills: 'oyuncu',
   wolves: 'kurt',
   bears: 'ayı',
   scorpions: 'akrep',
@@ -32109,7 +32703,7 @@ var _DEFAULT_DAILY_POOL = [
   { id: 'daily_gold_100', title: 'Parlayan Damar', desc: '100 altın çıkar', icon: '🪙', key: 'gold', target: 100, rewardCoins: 220, rewardXp: 150 },
   { id: 'daily_survive_4', title: 'İlk Nöbet', desc: 'Toplam 4 dakika hayatta kal', icon: '⏱️', key: 'time', target: 4, rewardCoins: 220, rewardXp: 160 },
   { id: 'daily_build_8', title: 'Siper Kur', desc: '8 yapı inşa et', icon: '🧱', key: 'buildings', target: 8, rewardCoins: 240, rewardXp: 180 },
-  { id: 'daily_kills_3', title: 'İlk Av', desc: '3 düşman oyuncuyu alt et', icon: '⚔️', key: 'kills', target: 3, rewardCoins: 260, rewardXp: 200 },
+  { id: 'daily_kills_3', title: 'İlk Av', desc: '3 düşman oyuncuyu alt et', icon: '⚔️', key: 'pvpKills', target: 3, rewardCoins: 260, rewardXp: 200 },
   { id: 'daily_wood_900', title: 'Orman Maratonu', desc: '900 odun topla', icon: '🌲', key: 'wood', target: 900, rewardCoins: 650, rewardXp: 500 },
   { id: 'daily_gold_500', title: 'Altın Damarı', desc: '500 altın çıkar', icon: '💰', key: 'gold', target: 500, rewardCoins: 850, rewardXp: 700 },
   { id: 'daily_wolves_35', title: 'Kurt Sürücüsü', desc: '35 vahşi kurt avla', icon: '🐺', key: 'wolves', target: 35, rewardCoins: 760, rewardXp: 620 },
@@ -32133,9 +32727,10 @@ function _formatQuestTask(task, type) {
   var rewardXp = Number(task.rewardXp || 50);
 
   var pServer = Number(task.progress || 0);
-  var pLocal = Number(localProg[key] || 0);
+  var isAuthenticated = Boolean(localStorage.getItem('fb_auth_token'));
+  var pLocal = isAuthenticated ? 0 : Number(localProg[key] || 0);
   var currentProg = Math.min(target, Math.max(pServer, pLocal));
-  var isClaimed = Boolean(task.claimed || localClaimed[task.id]);
+  var isClaimed = Boolean(task.claimed || (!isAuthenticated && localClaimed[task.id]));
   var isDone = isClaimed || (currentProg >= target);
 
   return {
@@ -32378,7 +32973,7 @@ window._claimServerQuest = function(id, type){
   var rewardCoins = Number(quest.rewardCoins || 100);
   var rewardXp = Number(quest.rewardXp || 50);
 
-  function applyLocalClaim(coins, xp) {
+  function applyLocalClaim(coins, xp, authoritativeUser) {
     quest.claimed = true;
     quest.done = true;
     try {
@@ -32388,8 +32983,13 @@ window._claimServerQuest = function(id, type){
     } catch(e){}
 
     if (typeof player !== 'undefined' && player) {
-      player.gold = (player.gold || 0) + coins;
-      if (typeof player.xp !== 'undefined') player.xp += xp;
+      if (authoritativeUser) {
+        localStorage.setItem('fb_gold', String(Number(authoritativeUser.coins ?? authoritativeUser.gold ?? 0)));
+        if (typeof player.xp !== 'undefined') player.xp = Number(authoritativeUser.xp ?? player.xp);
+      } else {
+        player.gold = (player.gold || 0) + coins;
+        if (typeof player.xp !== 'undefined') player.xp += xp;
+      }
       if (typeof updateUI === 'function') updateUI();
       if (typeof updateXP === 'function') updateXP();
       if (typeof floatingTexts !== 'undefined' && Array.isArray(floatingTexts)) {
@@ -32414,6 +33014,15 @@ window._claimServerQuest = function(id, type){
     _renderQuests();
   }
 
+  if (!token) {
+    if (_GAME_MODE === 'offline') {
+      applyLocalClaim(rewardCoins, rewardXp);
+    } else if (typeof showToast === 'function') {
+      showToast('Görev ödülünü hesabına kaydetmek için giriş yapmalısın.', 4500, '#ffb347');
+    }
+    return;
+  }
+
   fetch('/api/quests/claim', {
     method: 'POST',
     headers: {
@@ -32422,7 +33031,12 @@ window._claimServerQuest = function(id, type){
     },
     body: JSON.stringify({ questId: id, questType: type })
   })
-  .then(function(response){ return response.ok ? response.json() : null; })
+  .then(function(response){
+    return response.json().then(function(data){
+      if (!response.ok) throw new Error(data && data.error ? data.error : 'Ödül sunucu tarafından onaylanmadı.');
+      return data;
+    });
+  })
   .then(function(data){
     if (data && data.ok) {
       if (data.user) {
@@ -32430,13 +33044,16 @@ window._claimServerQuest = function(id, type){
       }
       var c = Number(data.rewardCoins) || rewardCoins;
       var x = Number(data.rewardXp) || rewardXp;
-      applyLocalClaim(c, x);
+      applyLocalClaim(c, x, data.user || null);
     } else {
-      applyLocalClaim(rewardCoins, rewardXp);
+      throw new Error('Ödül sunucu tarafından onaylanmadı.');
     }
   })
-  .catch(function(){
-    applyLocalClaim(rewardCoins, rewardXp);
+  .catch(function(error){
+    if (typeof showToast === 'function') {
+      showToast((error && error.message) || 'Ödül alınamadı. Bağlantını kontrol edip tekrar dene.', 4500, '#ff6666');
+    }
+    _loadServerDailyQuests();
   });
 };
 
@@ -32478,7 +33095,7 @@ function _loadServerDailyQuests(){
           });
           localStorage.setItem('fb_claimed_quests', JSON.stringify(newClaimed));
           var prog = JSON.parse(localStorage.getItem('fb_quest_prog') || '{}');
-          ['wood', 'stone', 'gold', 'time', 'buildings', 'kills', 'wolves', 'bears', 'scorpions', 'spiders', 'kingKills'].forEach(function(k){
+          ['wood', 'stone', 'gold', 'time', 'buildings', 'kills', 'pvpKills', 'bosses', 'wolves', 'bears', 'scorpions', 'spiders', 'kingKills'].forEach(function(k){
             prog[k] = 0;
           });
           localStorage.setItem('fb_quest_prog', JSON.stringify(prog));
@@ -32497,6 +33114,21 @@ function _loadServerDailyQuests(){
     })
     .catch(function(){});
 }
+
+function _bindServerQuestProgress(socketRef){
+  if (!socketRef || socketRef._questProgressBound) return;
+  socketRef._questProgressBound = true;
+  socketRef.on('quest_progress_update', function(data){
+    if (!data || !Array.isArray(data.quests) || !Array.isArray(data.ultraQuests)) return;
+    _quests = data.quests.map(function(task){ return _formatQuestTask(task, 'daily'); });
+    _ultraQuests = data.ultraQuests.map(function(task){ return _formatQuestTask(task, 'ultra'); });
+    _renderQuests();
+  });
+}
+_bindServerQuestProgress(window._socket);
+window.addEventListener('worldboss-socket-ready', function(event){
+  _bindServerQuestProgress(event.detail);
+});
 
 setTimeout(_renderQuests, 300);
 setTimeout(_loadServerDailyQuests, 600);
@@ -32771,25 +33403,6 @@ setInterval(function(){
     <div id="entry-consent-actions">
       <button id="entry-consent-reject" class="entry-consent-btn" type="button">Reddet</button>
       <button id="entry-consent-accept" class="entry-consent-btn" type="button">Onayla ve Oyna</button>
-    </div>
-  </div>
-</div>
-
-<!-- ===== TUTORIAL OVERLAY ===== -->
-<div id="tutorial-overlay">
-  <div id="tutorial-card">
-    <div id="tutorial-step-num">ADIM 1/3</div>
-    <span id="tutorial-step-icon">🗺️</span>
-    <div id="tutorial-step-title">Harekete Geç!</div>
-    <div id="tutorial-step-desc">WASD ile hareket et, mouse ile nişan al.</div>
-    <div id="tutorial-dots">
-      <div class="tut-dot active"></div>
-      <div class="tut-dot"></div>
-      <div class="tut-dot"></div>
-    </div>
-    <div id="tutorial-btns">
-      <button class="tut-btn" id="tut-skip" onclick="window._tutClose&&window._tutClose()">Atla</button>
-      <button class="tut-btn" id="tut-next" onclick="window._tutNext&&window._tutNext()">Sonraki →</button>
     </div>
   </div>
 </div>
@@ -34029,26 +34642,26 @@ window.addEventListener('keydown',function(e){
 var _SEASON_MS=28*24*60*60*1000;
 var _curSeason=Math.floor(Date.now()/_SEASON_MS);
 var _BP_TIERS=[
-  {t:1, xp:100,  r:'🪵 +200 Odun Bonusu',    type:'msg'},
-  {t:2, xp:200,  r:'⭐ +500 Meta XP',          type:'xp',  v:500},
+  {t:1, xp:100,  r:'💰 +200 Altın',            type:'coins', v:200},
+  {t:2, xp:200,  r:'⭐ +500 Hesap XP',          type:'accountXp', v:500},
   {t:3, xp:350,  r:'💰 +300 Altın',            type:'gold', v:300},
-  {t:4, xp:550,  r:'🏅 Unvan: Kahraman',       type:'msg'},
-  {t:5, xp:800,  r:'⭐ +1000 Meta XP',         type:'xp',  v:1000},
-  {t:6, xp:1100, r:'❤️ +15 Maks Can Bonusu',  type:'msg'},
+  {t:4, xp:550,  r:'💰 +250 Altın',            type:'coins', v:250},
+  {t:5, xp:800,  r:'⭐ +1.000 Hesap XP',        type:'accountXp', v:1000},
+  {t:6, xp:1100, r:'💰 +350 Altın',            type:'coins', v:350},
   {t:7, xp:1450, r:'💰 +500 Altın',            type:'gold', v:500},
-  {t:8, xp:1850, r:'⭐ +1500 Meta XP',         type:'xp',  v:1500},
-  {t:9, xp:2300, r:'⚔️ +%5 Hasar Artışı',     type:'msg'},
-  {t:10,xp:2800, r:'🏅 Unvan: Mevsimsel',       type:'msg'},
-  {t:11,xp:3400, r:'⭐ +2000 Meta XP',         type:'xp',  v:2000},
+  {t:8, xp:1850, r:'⭐ +1.500 Hesap XP',        type:'accountXp', v:1500},
+  {t:9, xp:2300, r:'💰 +500 Altın',            type:'coins', v:500},
+  {t:10,xp:2800, r:'💰 +500 Altın',            type:'coins', v:500},
+  {t:11,xp:3400, r:'⭐ +2.000 Hesap XP',        type:'accountXp', v:2000},
   {t:12,xp:4100, r:'💰 +1000 Altın',           type:'gold', v:1000},
-  {t:13,xp:4900, r:'💨 +%5 Hız Artışı',       type:'msg'},
-  {t:14,xp:5800, r:'⭐ +3000 Meta XP',         type:'xp',  v:3000},
-  {t:15,xp:6800, r:'🏅 Unvan: Kristal',        type:'msg'},
+  {t:13,xp:4900, r:'💰 +700 Altın',            type:'coins', v:700},
+  {t:14,xp:5800, r:'⭐ +3.000 Hesap XP',        type:'accountXp', v:3000},
+  {t:15,xp:6800, r:'💰 +1.000 Altın',          type:'coins', v:1000},
   {t:16,xp:7900, r:'💰 +2000 Altın',           type:'gold', v:2000},
-  {t:17,xp:9100, r:'⭐ +5000 Meta XP',         type:'xp',  v:5000},
-  {t:18,xp:10400,r:'⚔️ +%10 Hasar Artışı',    type:'msg'},
-  {t:19,xp:11800,r:'🌙 Unvan: Gece Efendisi',  type:'msg'},
-  {t:20,xp:13300,r:'👑 Unvan: Sezon Şampiyonu',type:'msg'},
+  {t:17,xp:9100, r:'⭐ +5.000 Hesap XP',        type:'accountXp', v:5000},
+  {t:18,xp:10400,r:'💰 +1.200 Altın',          type:'coins', v:1200},
+  {t:19,xp:11800,r:'💰 +1.500 Altın',          type:'coins', v:1500},
+  {t:20,xp:13300,r:'💰 +3.000 Altın',          type:'coins', v:3000},
 ];
 
 var _bpData=(function(){
@@ -34059,9 +34672,54 @@ var _bpData=(function(){
   }}catch(e){}
   return null;
 })() || {s:_curSeason,xp:0,t:0,c:[]};
+var _bpOnline=Boolean(localStorage.getItem('fb_auth_token'));
+var _bpReady=!_bpOnline;
 function _saveBp(){
   _bpData.c = Array.from(new Set((Array.isArray(_bpData.c) ? _bpData.c : []).map(function(v){ return Number(v); }).filter(function(v){ return Number.isFinite(v); })));
   try{localStorage.setItem('fb_bp_v1',JSON.stringify(_bpData));}catch(e){}
+}
+
+function _bpApplyServerState(state){
+  if(!state||!Number.isFinite(Number(state.season))||!Number.isFinite(Number(state.xp)))return;
+  var previousSeason=Number(_bpData.s);
+  var previousXp=Math.max(0,Number(_bpData.xp)||0);
+  var legacyKey='fb_bp_legacy_v1_'+Number(state.season);
+  if(previousSeason===Number(state.season)&&previousXp>Number(state.xp)&&!localStorage.getItem(legacyKey)){
+    try{
+      localStorage.setItem(legacyKey,JSON.stringify(_bpData));
+      if(typeof showToast==='function')showToast('Eski Battle Pass ilerlemen yerel arşive alındı; yeni ilerleme sunucuda doğrulanır.',5000,'#ffb347');
+    }catch(e){}
+  }
+  _bpData.s=Number(state.season);
+  _bpData.xp=Math.max(0,Number(state.xp));
+  _bpData.c=Array.isArray(state.claimedTiers)?state.claimedTiers.map(Number):[];
+  _bpOnline=true;
+  _bpReady=true;
+  _saveBp();
+  _renderBpPanel();
+}
+
+function _bpLoadServerState(){
+  var token=localStorage.getItem('fb_auth_token')||'';
+  if(!token){_bpOnline=false;_bpReady=true;_renderBpPanel();return Promise.resolve(null);}
+  _bpOnline=true;
+  _bpReady=false;
+  _renderBpPanel();
+  return fetch('/api/battle-pass/state',{headers:{'Authorization':'Bearer '+token}})
+    .then(function(response){return response.json().then(function(data){if(!response.ok)throw new Error(data&&data.error?data.error:'Battle Pass yüklenemedi.');return data;});})
+    .then(function(data){
+      _bpApplyServerState(data);
+      if(data.user){
+        try{localStorage.setItem('fb_auth_user',JSON.stringify(data.user));localStorage.setItem('fb_gold',String(data.user.coins||0));}catch(e){}
+      }
+      return data;
+    })
+    .catch(function(error){
+      _bpReady=false;
+      _renderBpPanel();
+      if(typeof showToast==='function')showToast((error&&error.message)||'Battle Pass sunucuya bağlanamadı. Tekrar deneyin.',4500,'#ff6666');
+      return null;
+    });
 }
 
 function _bpUnlockedTier(){
@@ -34100,7 +34758,11 @@ function _renderBpPanel(){
     var cls = 'bp-tier-card' + (claimed ? ' claimed' : (unlocked ? ' unlocked' : ''));
 
     var actionHtml = '';
-    if (unlocked && !claimed) {
+    if(_bpOnline&&!_bpReady){
+      actionHtml='<span class="bp-action-locked">⏳ SUNUCU BEKLENİYOR</span>';
+    } else if(!_bpOnline&&_GAME_MODE==='online'&&unlocked&&!claimed){
+      actionHtml='<span class="bp-action-locked">🔒 HESAP GEREKLİ</span>';
+    } else if (unlocked && !claimed) {
       actionHtml = '<button type="button" class="bp-action-claim" onclick="window._bpClaim(' + bt.t + ')">🎁 ÖDÜLÜ AL</button>';
     } else if (claimed) {
       actionHtml = '<span class="bp-action-claimed">✅ ALINDI</span>';
@@ -34126,12 +34788,48 @@ window._bpClaim=function(tier){
   if (new Set((Array.isArray(_bpData.c) ? _bpData.c : []).map(function(v){ return Number(v); }).filter(Number.isFinite)).has(tierKey)) return;
   var bt=_BP_TIERS.find(function(b){return Number(b.t)===tierKey;});
   if(!bt||_bpData.xp<bt.xp)return;
-  _bpData.c.push(tierKey); _saveBp();
-  if(bt.type==='xp'){_meta.xp+=bt.v;_meta.lv=_metaLevelOf(_meta.xp);_saveMeta();}
-  else if(bt.type==='gold'){var g=parseInt(localStorage.getItem('fb_gold')||'0',10)+bt.v;localStorage.setItem('fb_gold',g);}
+  var token=localStorage.getItem('fb_auth_token')||'';
+  if(token){
+    if(!_bpReady)return;
+    fetch('/api/battle-pass/claim',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify({season:_bpData.s,tier:tierKey})
+    }).then(function(response){
+      return response.json().then(function(data){if(!response.ok)throw new Error(data&&data.error?data.error:'Battle Pass ödülü onaylanmadı.');return data;});
+    }).then(function(data){
+      if(!data||!data.ok)throw new Error('Battle Pass ödülü sunucu tarafından onaylanmadı.');
+      _bpApplyServerState(data);
+      if(data.user){
+        try{localStorage.setItem('fb_auth_user',JSON.stringify(data.user));localStorage.setItem('fb_gold',String(data.user.coins||0));}catch(e){}
+        if(typeof player!=='undefined'&&player&&data.user.xp!=null)player.xp=Number(data.user.xp);
+      }
+      if(typeof window._showAchPopup==='function')window._showAchPopup('🎫','Battle Pass Ödülü!',(data.reward&&data.reward.label)||bt.r);
+      _updateMetaHud();
+    }).catch(function(error){
+      if(typeof showToast==='function')showToast((error&&error.message)||'Ödül alınamadı. Tekrar deneyin.',4500,'#ff6666');
+      _bpLoadServerState();
+    });
+    return;
+  }
+  if(_GAME_MODE!=='offline'){
+    if(typeof showToast==='function')showToast('Battle Pass ödülünü hesabına kaydetmek için giriş yapmalısın.',4500,'#ffb347');
+    return;
+  }
+  _bpData.c.push(tierKey);_saveBp();
+  if(bt.type==='accountXp'){_meta.xp+=bt.v;_meta.lv=_metaLevelOf(_meta.xp);_saveMeta();}
+  else{var g=parseInt(localStorage.getItem('fb_gold')||'0',10)+bt.v;localStorage.setItem('fb_gold',g);}
   if(typeof window._showAchPopup==='function')window._showAchPopup('🎫','Battle Pass Ödülü!',bt.r);
   _renderBpPanel();_updateMetaHud();
 };
+
+function _bindBattlePassSocket(socketRef){
+  if(!socketRef||socketRef._battlePassBound)return;
+  socketRef._battlePassBound=true;
+  socketRef.on('battle_pass_update',function(state){_bpApplyServerState(state);});
+}
+_bindBattlePassSocket(window._socket);
+window.addEventListener('worldboss-socket-ready',function(event){_bindBattlePassSocket(event.detail);});
 
 window._openBpPanel=function(){
   var ach = document.getElementById('ach-panel');
@@ -34149,6 +34847,7 @@ window._openBpPanel=function(){
   if (willOpen) {
     _renderBpPanel();
     p.classList.add('show');
+    _bpLoadServerState();
     if (bd) bd.classList.add('show');
     if (typeof _bindPanelScroll === 'function') {
       _bindPanelScroll('bp-panel', 'bp-body');
@@ -34537,9 +35236,9 @@ function _angDiff(a,b){var d=a-b;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d
 // ── SHARED WORLD BOSSES ──────────────────────────────────────
 var CAMPS = [
   {
-    id: 'worldboss-scorpios', bossName: 'SCORPIOS • Akrep Kralı',
-    bx: 5200, by: 0, terR: 1500, bossR: 112, bossMaxHp: 18000,
-    bossDmg: 38, bossSpd: 1.75, col: '#8a4d19', out: '#321707', eyeCol: '#d7ff45',
+    id: 'worldboss-scorpios', bossName: 'SCORPIOS • Akrep Kralı', bossLevel: 50,
+    bx: 5200, by: 0, terR: 1500, bossR: 112, bossMaxHp: 25000,
+    bossDmg: 60, bossSpd: 1.75, col: '#8a4d19', out: '#321707', eyeCol: '#d7ff45',
     sprite: 'scorpios', frames: [8, 12, 16],
     spriteBounds: [[66,66,124,181],[60,64,136,186],[66,49,124,207]],
     skills: [{
@@ -34549,9 +35248,9 @@ var CAMPS = [
     }]
   },
   {
-    id: 'worldboss-goliath', bossName: 'GOLIATH • Kaya Devi',
-    bx: 0, by: -5200, terR: 1650, bossR: 132, bossMaxHp: 26000,
-    bossDmg: 52, bossSpd: 1.3, col: '#754326', out: '#27160e', eyeCol: '#fff0b5',
+    id: 'worldboss-goliath', bossName: 'GOLIATH • Kaya Devi', bossLevel: 65,
+    bx: 0, by: -5200, terR: 1650, bossR: 132, bossMaxHp: 40000,
+    bossDmg: 85, bossSpd: 1.3, col: '#754326', out: '#27160e', eyeCol: '#fff0b5',
     sprite: 'goliath', frames: [8, 12, 16],
     spriteBounds: [[60,64,136,104],[51,64,154,106],[48,58,184,117]],
     skills: [{
@@ -34589,7 +35288,7 @@ _loadWorldBossImage(_WORLD_BOSS_VFX, 'void-burn', 'bossassets/void-burn-vfx.webp
 _loadWorldBossImage(_WORLD_BOSS_VFX, 'rock-spike', 'bossassets/rock-spike-vfx.webp');
 CAMPS.forEach(function(c) {
   bossState[c.id] = {
-    x: c.bx, y: c.by, hp: c.bossMaxHp, maxHp: c.bossMaxHp, alive: true, respawnAt: 0,
+    x: c.bx, y: c.by, hp: c.bossMaxHp, maxHp: c.bossMaxHp, level: c.bossLevel, name: c.bossName, alive: true, respawnAt: 0,
     angle: 0, vx: 0, vy: 0, aggroed: false, castingSkill: null,
     skillCooldowns: Object.create(null), patrolA: Math.random() * Math.PI * 2,
     lastPlayerDmg: 0, lastHitSwingId: -1, dmgFlashFrames: 0, state: 'idle',
@@ -34895,10 +35594,16 @@ function _drawWorldBossBodies(ctx,currentPlayer,cullLeft,cullRight,cullTop,cullB
     var distance=Math.hypot(c.bx-currentPlayer.x,c.by-currentPlayer.y);
     if(distance>=c.terR+150)continue;
     ctx.save();
-    var hpPct=Math.max(0,bs.hp/c.bossMaxHp);
+    var hpPct=Math.max(0,bs.hp/(bs.maxHp||c.bossMaxHp));
     var bwb=R*2.4,bhb=11;
     var bxb=bs.x-bwb/2,byb=bs.y-R*1.95-14;
     _rr(ctx,bxb-2,byb-2,bwb+4,bhb+4,5);ctx.fillStyle='rgba(0,0,0,0.65)';ctx.fill();
+    ctx.save();
+    ctx.font='bold 15px sans-serif';ctx.textAlign='center';ctx.textBaseline='bottom';
+    ctx.lineWidth=4;ctx.strokeStyle='rgba(0,0,0,0.9)';ctx.fillStyle='#ffd76a';
+    var bossLabel='👑 [Lv.'+(bs.level||c.bossLevel||1)+'] '+(bs.name||c.bossName);
+    ctx.strokeText(bossLabel,bs.x,byb-5);ctx.fillText(bossLabel,bs.x,byb-5);
+    ctx.restore();
     _rr(ctx,bxb,byb,bwb,bhb,4);ctx.fillStyle='#2a0000';ctx.fill();
     var hcol=hpPct>0.5?'#ff3333':hpPct>0.25?'#ff8800':'#ffcc00';
     _rr(ctx,bxb,byb,Math.max(0,bwb*hpPct),bhb,4);ctx.fillStyle=hcol;ctx.fill();
@@ -35116,12 +35821,13 @@ function _refreshWorldBossBar(currentPlayer){
     return;
   }
   var hp=Math.max(0,nearest.boss.hp||0);
-  var pct=Math.max(0,Math.min(1,hp/nearest.camp.bossMaxHp));
+  var maxHp=nearest.boss.maxHp||nearest.camp.bossMaxHp;
+  var pct=Math.max(0,Math.min(1,hp/maxHp));
   if(_bossBarFill)_bossBarFill.style.width=(pct*100)+'%';
   if(_bossBarHpText){
     var bossLvl = (nearest.boss && (nearest.boss.level || nearest.boss.lvl)) || (nearest.camp.id === 'goliath' ? 65 : 50);
     _bossBarHpText.textContent=nearest.boss.alive
-      ? '👑 [Lv.' + bossLvl + '] ' + nearest.camp.bossName + '  ' + Math.ceil(hp) + ' / ' + nearest.camp.bossMaxHp + ' HP'
+      ? '👑 [Lv.' + bossLvl + '] ' + (nearest.boss.name||nearest.camp.bossName) + '  ' + Math.ceil(hp) + ' / ' + maxHp + ' HP'
       : nearest.camp.bossName+' • '+Math.max(0,Math.ceil((nearest.boss.respawnAt-Date.now())/1000))+'s';
   }
   _bossBarEl.style.display='';
@@ -35144,7 +35850,10 @@ function _applyWorldBossStates(states){
     boss.vx=Number(state.vx)||0;
     boss.vy=Number(state.vy)||0;
     boss.angle=Number(state.angle)||0;
-    boss.hp=Math.max(0,Math.min(boss.maxHp||Infinity,Number(state.hp)||0));
+    boss.maxHp=Math.max(1,Number(state.maxHp)||boss.maxHp||1);
+    boss.level=Math.max(1,Number(state.level||state.lvl)||boss.level||1);
+    boss.name=String(state.name||boss.name||'Boss');
+    boss.hp=Math.max(0,Math.min(boss.maxHp,Number(state.hp)||0));
     boss.alive=Boolean(state.alive);
     boss.aggroed=Boolean(state.aggroed);
     boss.state=state.state||'idle';
@@ -35221,6 +35930,7 @@ function _bindWorldBossSocket(socket){
   });
   socket.on('world_boss_reward',function(data){
     if(!data)return;
+    _trackQuestProgress('bosses',1);
     if(typeof window._showAchPopup==='function'){
       window._showAchPopup('🏆',data.name+' Ödülü','+'+data.gold+' altın • +'+data.xp+' XP');
     }
@@ -35338,6 +36048,13 @@ function _drawWeaponSlot(ctx, kind, tier, scytheId){
 
 function _drawBuildingSlot(slotCtx, type){
   _drawSlotBase(slotCtx);
+  const tierIcon = document.createElement('canvas');
+  tierIcon.width = 40;
+  tierIcon.height = 40;
+  if (typeof _drawBuildTierIcon === 'function' && _drawBuildTierIcon(tierIcon, type, 0, 28)) {
+    slotCtx.drawImage(tierIcon, 0, 0, 40, 40);
+    return;
+  }
   let spriteName = null;
   switch (type) {
     case 3: spriteName = 'spike'; break;
@@ -37169,52 +37886,73 @@ renderInventoryIcons(true);
 
     const grid = document.getElementById('bm-cards-grid');
     if (grid) {
-      grid.innerHTML = itemList.map((item, index) => {
-        const itemOwned = isItemOwned(_bmCurrentTab, item);
+      const catalogState = _bmCurrentTab + ':' + itemList.map(item =>
+        (isItemOwned(_bmCurrentTab, item) ? '1' : '0') +
+        (isItemEquipped(_bmCurrentTab, item) ? '1' : '0')
+      ).join('');
+      const rebuildCatalog = grid.dataset.catalogState !== catalogState;
+      if (rebuildCatalog) {
+        const scrollTop = grid.scrollTop;
+        grid.innerHTML = itemList.map(item => {
+          const itemOwned = isItemOwned(_bmCurrentTab, item);
+          const itemEquipped = isItemEquipped(_bmCurrentTab, item);
+          const isSelected = (_bmCurrentTab === 'helmet' ? item.id === _bmSelectedTierOrId : item.tier === Number(_bmSelectedTierOrId));
+
+          let reqSummary = `Lv.${item.level}`;
+          if (item.gold > 0) reqSummary += ` • ${_resourceIconMarkup('gold')} ${item.gold}`;
+          if (item.diamond > 0) reqSummary += ` • ${_resourceIconMarkup('diamond')} ${item.diamond}`;
+          if (item.amethyst > 0) reqSummary += ` • ${_resourceIconMarkup('amethyst')} ${item.amethyst}`;
+          if (item.redite > 0) reqSummary += ` • ${_resourceIconMarkup('redite')} ${item.redite}`;
+
+          let statusText = 'KİLİTLİ';
+          if (itemEquipped) statusText = 'KUŞANILDI';
+          else if (itemOwned) statusText = 'SAHİPSİN';
+
+          const tierLabel = _bmCurrentTab === 'helmet' ? (item.rarityName ? item.rarityName.slice(0,3).toUpperCase() : 'EFS') : `TİER ${item.tier}`;
+
+          return `
+            <div class="bm-card ${isSelected ? 'selected' : ''} ${itemEquipped ? 'equipped' : ''}"
+                 onclick="window.selectBlacksmithItem('${_bmCurrentTab}', ${_bmCurrentTab === 'helmet' ? `'${item.id}'` : item.tier})"
+                 ondblclick="window.onBlacksmithActionClick()"
+                 title="${item.name}">
+              <span class="bm-card-tier-tag" style="background:${item.color || '#f97316'};">${tierLabel}</span>
+              <span class="bm-card-status-badge">${statusText}</span>
+              <div class="bm-card-thumb-box">
+                ${_bmCurrentTab === 'helmet' ? `
+                  <img class="bm-card-thumb-img" src="../helmetsassets/${item.file.replace(/\.png$/i, '.webp')}" onerror="this.onerror=null;this.src='../helmetsassets/${item.file}'" alt="${item.name}" loading="eager" />
+                ` : `
+                  <canvas id="bm-thumb-${_bmCurrentTab}-${item.tier}" width="80" height="120" class="bm-card-thumb-canvas"></canvas>
+                `}
+              </div>
+              <div class="bm-card-name" style="${itemEquipped ? 'color:#86efac;' : (isSelected ? 'color:#fed7aa;' : '')}">${item.shortName}</div>
+              <div class="bm-card-reqs" style="${itemEquipped ? 'color:#86efac;' : ''}">
+                ${itemEquipped ? 'Kuşanıldı' : (itemOwned ? 'Sahipsin' : reqSummary)}
+              </div>
+            </div>
+          `;
+        }).join('');
+        grid.dataset.catalogState = catalogState;
+        grid.scrollTop = scrollTop;
+      }
+
+      itemList.forEach((item, index) => {
+        const card = grid.children[index];
+        if (!card) return;
         const itemEquipped = isItemEquipped(_bmCurrentTab, item);
         const isSelected = (_bmCurrentTab === 'helmet' ? item.id === _bmSelectedTierOrId : item.tier === Number(_bmSelectedTierOrId));
-
-        let reqSummary = `Lv.${item.level}`;
-        if (item.gold > 0) reqSummary += ` • ${_resourceIconMarkup('gold')} ${item.gold}`;
-        if (item.diamond > 0) reqSummary += ` • ${_resourceIconMarkup('diamond')} ${item.diamond}`;
-        if (item.amethyst > 0) reqSummary += ` • ${_resourceIconMarkup('amethyst')} ${item.amethyst}`;
-        if (item.redite > 0) reqSummary += ` • ${_resourceIconMarkup('redite')} ${item.redite}`;
-
-        let statusText = 'KİLİTLİ';
-        if (itemEquipped) statusText = 'KUŞANILDI';
-        else if (itemOwned) statusText = 'SAHİPSİN';
-
-        const tierLabel = _bmCurrentTab === 'helmet' ? (item.rarityName ? item.rarityName.slice(0,3).toUpperCase() : 'EFS') : `TİER ${item.tier}`;
-
-        return `
-          <div class="bm-card ${isSelected ? 'selected' : ''} ${itemEquipped ? 'equipped' : ''}"
-               onclick="window.selectBlacksmithItem('${_bmCurrentTab}', ${_bmCurrentTab === 'helmet' ? `'${item.id}'` : item.tier})"
-               ondblclick="window.onBlacksmithActionClick()"
-               title="${item.name}">
-            <span class="bm-card-tier-tag" style="background:${item.color || '#f97316'};">${tierLabel}</span>
-            <span class="bm-card-status-badge">${statusText}</span>
-            <div class="bm-card-thumb-box">
-              ${_bmCurrentTab === 'helmet' ? `
-                <img class="bm-card-thumb-img" src="../helmetsassets/${item.file.replace(/\.png$/i, '.webp')}" onerror="this.onerror=null;this.src='../helmetsassets/${item.file}'" alt="${item.name}" loading="eager" />
-              ` : `
-                <canvas id="bm-thumb-${_bmCurrentTab}-${item.tier}" width="80" height="120" class="bm-card-thumb-canvas"></canvas>
-              `}
-            </div>
-            <div class="bm-card-name" style="${itemEquipped ? 'color:#86efac;' : (isSelected ? 'color:#fed7aa;' : '')}">${item.shortName}</div>
-            <div class="bm-card-reqs" style="${itemEquipped ? 'color:#86efac;' : ''}">
-              ${itemEquipped ? 'Kuşanıldı' : (itemOwned ? 'Sahipsin' : reqSummary)}
-            </div>
-          </div>
-        `;
-      }).join('');
+        card.classList.toggle('selected', isSelected);
+        card.classList.toggle('equipped', itemEquipped);
+        const name = card.querySelector('.bm-card-name');
+        if (name) name.style.color = itemEquipped ? '#86efac' : (isSelected ? '#fed7aa' : '');
+      });
 
       // Draw canvas thumbnails for axes and swords
-      if (_bmCurrentTab === 'axe') {
+      if (rebuildCatalog && _bmCurrentTab === 'axe') {
         itemList.forEach(item => {
           const cv = document.getElementById(`bm-thumb-axe-${item.tier}`);
           if (cv) drawThumbAxe(cv, item.tier);
         });
-      } else if (_bmCurrentTab === 'sword') {
+      } else if (rebuildCatalog && _bmCurrentTab === 'sword') {
         itemList.forEach(item => {
           const cv = document.getElementById(`bm-thumb-sword-${item.tier}`);
           if (cv) drawThumbSword(cv, item.tier);
@@ -38065,6 +38803,16 @@ renderInventoryIcons(true);
         window.renderInventoryModal();
       }
     }
+  };
+
+  window.applyServerCombatStats = function(data = {}) {
+    const s = window.fbCombatStats;
+    s.meleeLevel = Math.max(1, Math.min(100, Number(data.meleeLevel) || 1));
+    s.meleeXp = Math.max(0, Number(data.meleeXp) || 0);
+    s.defenceLevel = Math.max(1, Math.min(100, Number(data.defenceLevel) || 1));
+    s.defenceXp = Math.max(0, Number(data.defenceXp) || 0);
+    saveCombatStats();
+    window.updateCombatStatsUI();
   };
 
   window.addMeleeXp = function(amount) {

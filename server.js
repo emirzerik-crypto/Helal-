@@ -586,6 +586,7 @@ const SOCKET_EVENT_LIMITS = {
   world_boss_hit_req: [20, 1000], world_boss_turret_hit_req: [20, 1000],
   place_building: [25, 1000], building_hit: [20, 1000], build_hp_update: [20, 1000], build_tier_update: [60, 1000], build_repair: [4, 1000],
   chat: [4, 2000], quick_chat: [8, 2000], eat_apple: [12, 1000],
+  sync_combat_stats: [2, 1000],
   craft_blacksmith_item: [15, 1000], equip_blacksmith_item: [10, 1000], helmet_equip: [5, 1000],
   scythe_purchase: [5, 1000], scythe_equip: [10, 1000],
   loot_inventory_init: [3, 10000], loot_item_action: [12, 1000]
@@ -846,33 +847,32 @@ const DAILY_QUEST_POOL = [
   { id: 'daily_gold_100', title: 'Parlayan Damar', desc: '100 altın çıkar', icon: '🪙', key: 'gold', target: 100, rewardCoins: 220, rewardXp: 150, difficulty: 'easy' },
   { id: 'daily_survive_4', title: 'İlk Nöbet', desc: 'Toplam 4 dakika hayatta kal', icon: '⏱️', key: 'time', target: 4, rewardCoins: 220, rewardXp: 160, difficulty: 'easy' },
   { id: 'daily_build_8', title: 'Siper Kur', desc: '8 yapı inşa et', icon: '🧱', key: 'buildings', target: 8, rewardCoins: 240, rewardXp: 180, difficulty: 'easy' },
-  { id: 'daily_kills_3', title: 'İlk Av', desc: '3 düşman oyuncuyu alt et', icon: '⚔️', key: 'kills', target: 3, rewardCoins: 260, rewardXp: 200, difficulty: 'easy' },
+  { id: 'daily_kills_3', title: 'İlk Av', desc: '3 düşman oyuncuyu alt et', icon: '⚔️', key: 'pvpKills', target: 3, rewardCoins: 260, rewardXp: 200, difficulty: 'easy' },
   { id: 'daily_wood_900', title: 'Orman Maratonu', desc: '900 odun topla', icon: '🌲', key: 'wood', target: 900, rewardCoins: 650, rewardXp: 500, difficulty: 'medium' },
   { id: 'daily_stone_700', title: 'Kaya Ustası', desc: '700 taş topla', icon: '⛏️', key: 'stone', target: 700, rewardCoins: 700, rewardXp: 560, difficulty: 'medium' },
   { id: 'daily_gold_500', title: 'Altın Damarı', desc: '500 altın çıkar', icon: '💰', key: 'gold', target: 500, rewardCoins: 850, rewardXp: 700, difficulty: 'medium' },
   { id: 'daily_survive_12', title: 'Uzun Nöbet', desc: 'Toplam 12 dakika hayatta kal', icon: '⌛', key: 'time', target: 12, rewardCoins: 800, rewardXp: 720, difficulty: 'medium' },
   { id: 'daily_build_30', title: 'Kale Mühendisi', desc: '30 yapı inşa et', icon: '🏗️', key: 'buildings', target: 30, rewardCoins: 900, rewardXp: 760, difficulty: 'medium' },
-  { id: 'daily_kills_12', title: 'Arena Takibi', desc: '12 düşman oyuncuyu alt et', icon: '🗡️', key: 'kills', target: 12, rewardCoins: 1100, rewardXp: 900, difficulty: 'medium' },
+  { id: 'daily_kills_12', title: 'Arena Takibi', desc: '8 düşman oyuncuyu alt et', icon: '🗡️', key: 'pvpKills', target: 8, rewardCoins: 1100, rewardXp: 900, difficulty: 'medium' },
   { id: 'daily_wolves_35', title: 'Kurt Sürücüsü', desc: '35 vahşi kurt avla', icon: '🐺', key: 'wolves', target: 35, rewardCoins: 760, rewardXp: 620, difficulty: 'medium' },
   { id: 'daily_bears_12', title: 'Ayı Avcısı', desc: '12 orman ayısını alt et', icon: '🐻', key: 'bears', target: 12, rewardCoins: 1000, rewardXp: 850, difficulty: 'medium' },
-  { id: 'daily_kills_35', title: 'Kızıl Arena', desc: '35 düşman oyuncuyu alt et', icon: '🩸', key: 'kills', target: 35, rewardCoins: 2600, rewardXp: 2200, difficulty: 'hard' },
-  { id: 'daily_kills_60', title: 'Avcıların Avcısı', desc: '60 düşman oyuncuyu alt et', icon: '☠️', key: 'kills', target: 60, rewardCoins: 4300, rewardXp: 3600, difficulty: 'hard' },
-  { id: 'daily_kills_100', title: 'Arena Fırtınası', desc: '100 düşman oyuncuyu alt et', icon: '🔥', key: 'kills', target: 100, rewardCoins: 7200, rewardXp: 6000, difficulty: 'hard' },
-  { id: 'daily_survive_30', title: 'Karanlık Nöbet', desc: 'Toplam 30 dakika hayatta kal', icon: '🌙', key: 'time', target: 30, rewardCoins: 3000, rewardXp: 2800, difficulty: 'hard' },
-  { id: 'daily_wood_3000', title: 'Orman Yutan', desc: '3.000 odun topla', icon: '🌳', key: 'wood', target: 3000, rewardCoins: 2800, rewardXp: 2500, difficulty: 'hard' },
-  { id: 'daily_stone_2500', title: 'Dağ Söken', desc: '2.500 taş topla', icon: '⛰️', key: 'stone', target: 2500, rewardCoins: 3000, rewardXp: 2700, difficulty: 'hard' },
-  { id: 'daily_gold_2000', title: 'Hazine Lordu', desc: '2.000 altın çıkar', icon: '👑', key: 'gold', target: 2000, rewardCoins: 3800, rewardXp: 3300, difficulty: 'hard' },
-  { id: 'daily_build_100', title: 'Sınır Kalesi', desc: '100 yapı inşa et', icon: '🏰', key: 'buildings', target: 100, rewardCoins: 3200, rewardXp: 2900, difficulty: 'hard' },
-  { id: 'daily_wolves_120', title: 'Sürülerin Sonu', desc: '120 vahşi kurt avla', icon: '🐺', key: 'wolves', target: 120, rewardCoins: 2400, rewardXp: 2100, difficulty: 'hard' },
-  { id: 'daily_bears_45', title: 'Ayıların Kâbusu', desc: '45 orman ayısını alt et', icon: '🐻', key: 'bears', target: 45, rewardCoins: 3600, rewardXp: 3200, difficulty: 'hard' },
-  { id: 'daily_scorpions_70', title: 'Zehir Tahtı', desc: '70 akrebi yok et', icon: '🦂', key: 'scorpions', target: 70, rewardCoins: 3400, rewardXp: 3000, difficulty: 'hard' },
-  { id: 'daily_spiders_80', title: 'Mağara Fatihi', desc: '80 zehirli örümceği yok et', icon: '🕷️', key: 'spiders', target: 80, rewardCoins: 3500, rewardXp: 3100, difficulty: 'hard' },
-  { id: 'daily_king_5', title: 'Taht Avcısı', desc: '5 ödül kralını alt et', icon: '♛', key: 'kingKills', target: 5, rewardCoins: 5000, rewardXp: 4500, difficulty: 'hard' },
-  { id: 'daily_build_180', title: 'Orman İmparatorluğu', desc: '180 yapı inşa et', icon: '🛡️', key: 'buildings', target: 180, rewardCoins: 5600, rewardXp: 5000, difficulty: 'hard' }
+  { id: 'daily_kills_35', title: 'Kızıl Arena', desc: '12 düşman oyuncuyu alt et', icon: '🩸', key: 'pvpKills', target: 12, rewardCoins: 2600, rewardXp: 2200, difficulty: 'hard' },
+  { id: 'daily_kills_60', title: 'Avcıların Avcısı', desc: '15 düşman oyuncuyu alt et', icon: '☠️', key: 'pvpKills', target: 15, rewardCoins: 3300, rewardXp: 2800, difficulty: 'hard' },
+  { id: 'daily_survive_30', title: 'Karanlık Nöbet', desc: 'Toplam 20 dakika hayatta kal', icon: '🌙', key: 'time', target: 20, rewardCoins: 2200, rewardXp: 1900, difficulty: 'hard' },
+  { id: 'daily_wood_3000', title: 'Orman Yutan', desc: '1.200 odun topla', icon: '🌳', key: 'wood', target: 1200, rewardCoins: 1800, rewardXp: 1500, difficulty: 'hard' },
+  { id: 'daily_stone_2500', title: 'Dağ Söken', desc: '1.000 taş topla', icon: '⛰️', key: 'stone', target: 1000, rewardCoins: 1800, rewardXp: 1500, difficulty: 'hard' },
+  { id: 'daily_gold_2000', title: 'Hazine Lordu', desc: '1.000 altın çıkar', icon: '👑', key: 'gold', target: 1000, rewardCoins: 2200, rewardXp: 1800, difficulty: 'hard' },
+  { id: 'daily_build_100', title: 'Sınır Kalesi', desc: '40 yapı inşa et', icon: '🏰', key: 'buildings', target: 40, rewardCoins: 1800, rewardXp: 1500, difficulty: 'hard' },
+  { id: 'daily_wolves_120', title: 'Sürülerin Sonu', desc: '20 vahşi kurt avla', icon: '🐺', key: 'wolves', target: 20, rewardCoins: 1600, rewardXp: 1300, difficulty: 'hard' },
+  { id: 'daily_bears_45', title: 'Ayıların Kâbusu', desc: '10 orman ayısını alt et', icon: '🐻', key: 'bears', target: 10, rewardCoins: 1800, rewardXp: 1500, difficulty: 'hard' },
+  { id: 'daily_scorpions_70', title: 'Zehir Tahtı', desc: '12 akrebi yok et', icon: '🦂', key: 'scorpions', target: 12, rewardCoins: 1800, rewardXp: 1500, difficulty: 'hard' },
+  { id: 'daily_spiders_80', title: 'Mağara Fatihi', desc: '12 zehirli örümceği yok et', icon: '🕷️', key: 'spiders', target: 12, rewardCoins: 1800, rewardXp: 1500, difficulty: 'hard' },
+  { id: 'daily_boss_1', title: 'Birlikte Daha Güçlü', desc: 'Bir dünya boss savaşına katkı ver', icon: '🐉', key: 'bosses', target: 1, rewardCoins: 2400, rewardXp: 2000, difficulty: 'hard' },
+  { id: 'daily_build_180', title: 'Orman İmparatorluğu', desc: '80 yapı inşa et', icon: '🛡️', key: 'buildings', target: 80, rewardCoins: 2800, rewardXp: 2400, difficulty: 'hard' }
 ];
 
 const ULTRA_QUESTS = [
-  { id: 'ultra_kills_500', title: 'Savaş Tanrısı', desc: '500 düşman oyuncuyu PvP’de alt et', icon: '⚔️', key: 'kills', target: 500, rewardCoins: 30000, rewardXp: 24000, difficulty: 'ultra' },
+  { id: 'ultra_kills_500', title: 'Savaş Tanrısı', desc: '500 düşman oyuncuyu PvP’de alt et', icon: '⚔️', key: 'pvpKills', target: 500, rewardCoins: 30000, rewardXp: 24000, difficulty: 'ultra' },
   { id: 'ultra_time_600', title: 'Sonsuz Nöbet', desc: 'Toplam 10 saat hayatta kal', icon: '⌛', key: 'time', target: 600, rewardCoins: 24000, rewardXp: 20000, difficulty: 'ultra' },
   { id: 'ultra_gold_100000', title: 'Altın İmparatorluğu', desc: 'Kaynaklardan toplam 100.000 altın çıkar', icon: '💰', key: 'gold', target: 100000, rewardCoins: 35000, rewardXp: 28000, difficulty: 'ultra' },
   { id: 'ultra_buildings_1000', title: 'Büyük Orman Kalesi', desc: '1.000 savunma yapısı inşa et', icon: '🏰', key: 'buildings', target: 1000, rewardCoins: 28000, rewardXp: 22000, difficulty: 'ultra' },
@@ -884,6 +884,30 @@ const ULTRA_QUESTS = [
 const DAILY_REWARDS = [25, 40, 60, 90, 130, 180, 250];
 const MATCH_XP_RATE = 0.04;
 const QUEST_XP_RATE = 0.2;
+const BATTLE_PASS_SEASON_MS = 28 * 24 * 60 * 60 * 1000;
+const BATTLE_PASS_TIERS = Object.freeze([
+  { tier: 1, xp: 100, type: 'coins', value: 200, label: '+200 Altın' },
+  { tier: 2, xp: 200, type: 'accountXp', value: 500, label: '+500 Hesap XP' },
+  { tier: 3, xp: 350, type: 'coins', value: 300, label: '+300 Altın' },
+  { tier: 4, xp: 550, type: 'coins', value: 250, label: '+250 Altın' },
+  { tier: 5, xp: 800, type: 'accountXp', value: 1000, label: '+1.000 Hesap XP' },
+  { tier: 6, xp: 1100, type: 'coins', value: 350, label: '+350 Altın' },
+  { tier: 7, xp: 1450, type: 'coins', value: 500, label: '+500 Altın' },
+  { tier: 8, xp: 1850, type: 'accountXp', value: 1500, label: '+1.500 Hesap XP' },
+  { tier: 9, xp: 2300, type: 'coins', value: 500, label: '+500 Altın' },
+  { tier: 10, xp: 2800, type: 'coins', value: 500, label: '+500 Altın' },
+  { tier: 11, xp: 3400, type: 'accountXp', value: 2000, label: '+2.000 Hesap XP' },
+  { tier: 12, xp: 4100, type: 'coins', value: 1000, label: '+1.000 Altın' },
+  { tier: 13, xp: 4900, type: 'coins', value: 700, label: '+700 Altın' },
+  { tier: 14, xp: 5800, type: 'accountXp', value: 3000, label: '+3.000 Hesap XP' },
+  { tier: 15, xp: 6800, type: 'coins', value: 1000, label: '+1.000 Altın' },
+  { tier: 16, xp: 7900, type: 'coins', value: 2000, label: '+2.000 Altın' },
+  { tier: 17, xp: 9100, type: 'accountXp', value: 5000, label: '+5.000 Hesap XP' },
+  { tier: 18, xp: 10400, type: 'coins', value: 1200, label: '+1.200 Altın' },
+  { tier: 19, xp: 11800, type: 'coins', value: 1500, label: '+1.500 Altın' },
+  { tier: 20, xp: 13300, type: 'coins', value: 3000, label: '+3.000 Altın' }
+]);
+const BATTLE_PASS_MAX_XP = BATTLE_PASS_TIERS[BATTLE_PASS_TIERS.length - 1].xp;
 const LEVEL_REWARD_BASE_COINS = 25;
 const LEVEL_REWARD_STEP_COINS = 5;
 const XP_RESET_VERSION = 3;
@@ -1181,15 +1205,16 @@ function buildDailyQuestSnapshot(identity, timestamp = Date.now()) {
   return {
     dayKey,
     expiresAt: dailyQuestExpiry(timestamp),
+    progress: {},
     tasks: selected.map(quest => ({ ...quest, progress: 0, claimed: false }))
   };
 }
 
 function syncQuestProgressToTasks(user, daily, ultra) {
   const questProgress = user && typeof user.questProgress === 'object' ? user.questProgress : {};
+  const dailyProgress = user && typeof user.dailyQuestProgress === 'object' ? user.dailyQuestProgress : {};
   for (const task of daily?.tasks || []) {
-    const runningTotal = Math.max(0, Number(questProgress[task.key] || 0));
-    task.progress = Math.min(task.target, Math.max(Number(task.progress || 0), runningTotal));
+    task.progress = Math.min(task.target, Math.max(0, Number(dailyProgress[task.key] || 0)));
   }
   for (const task of ultra?.tasks || []) {
     const runningTotal = Math.max(0, Number(questProgress[task.key] || 0));
@@ -1199,24 +1224,45 @@ function syncQuestProgressToTasks(user, daily, ultra) {
 }
 
 function ensureDailyQuests(user, identity = 'guest') {
+  if (!user || typeof user !== 'object') {
+    throw new TypeError('Daily quest state requires a user object.');
+  }
   const today = dailyQuestDayKey();
+  const previousTasks = Array.isArray(user.dailyQuests?.tasks) ? user.dailyQuests.tasks : [];
+  const schemaChanged = previousTasks.some(task => {
+    const current = DAILY_QUEST_POOL.find(quest => quest.id === task?.id);
+    return !current || current.key !== task.key || current.target !== task.target;
+  });
   const hasRemovedChestQuest = Array.isArray(user.dailyQuests?.tasks)
     && user.dailyQuests.tasks.some(task => task?.key === 'airdrops' || task?.key === 'chests' || String(task?.id || '').includes('airdrop'));
   if (!user.dailyQuests || user.dailyQuests.dayKey !== today || !Array.isArray(user.dailyQuests.tasks) || user.dailyQuests.tasks.length !== 10 || hasRemovedChestQuest) {
     user.dailyQuests = buildDailyQuestSnapshot(identity);
+    user.dailyQuestProgress = {};
+  } else if (schemaChanged) {
+    const claimed = new Map(previousTasks.map(task => [task.id, Boolean(task.claimed)]));
+    user.dailyQuests = buildDailyQuestSnapshot(identity);
+    user.dailyQuests.tasks.forEach(task => { task.claimed = claimed.get(task.id) || false; });
+    user.dailyQuestProgress = {};
+  } else if (!user.dailyQuestProgress || typeof user.dailyQuestProgress !== 'object') {
+    user.dailyQuestProgress = {};
+    user.dailyQuests.progress = {};
   }
   syncQuestProgressToTasks(user, user.dailyQuests, user.ultraQuests);
   return user.dailyQuests;
 }
 
 function ensureUltraQuests(user) {
-  if (!user.ultraQuests || !Array.isArray(user.ultraQuests.tasks) || user.ultraQuests.tasks.length !== ULTRA_QUESTS.length) {
+  const schemaChanged = Array.isArray(user.ultraQuests?.tasks)
+    && user.ultraQuests.tasks.some(task => ULTRA_QUESTS.find(quest => quest.id === task.id)?.key !== task.key);
+  if (!user.ultraQuests || !Array.isArray(user.ultraQuests.tasks) || user.ultraQuests.tasks.length !== ULTRA_QUESTS.length || schemaChanged) {
     const previous = new Map((user.ultraQuests?.tasks || []).map(task => [task.id, task]));
     user.ultraQuests = {
       tasks: ULTRA_QUESTS.map(quest => ({
         ...quest,
-        progress: Math.min(quest.target, Number(previous.get(quest.id)?.progress || 0)),
-        claimed: Boolean(previous.get(quest.id)?.claimed)
+        progress: previous.get(quest.id)?.key === quest.key
+          ? Math.min(quest.target, Number(previous.get(quest.id)?.progress || 0))
+          : 0,
+        claimed: previous.get(quest.id)?.key === quest.key && Boolean(previous.get(quest.id)?.claimed)
       }))
     };
   }
@@ -1225,34 +1271,61 @@ function ensureUltraQuests(user) {
 }
 
 function applyDailyQuestProgress(user, deltas = {}) {
+  const daily = ensureDailyQuests(user, usernameKey(user.username));
   const normalizedDeltas = {};
   for (const [key, rawValue] of Object.entries(deltas || {})) {
     const delta = Math.min(1000000, Math.max(0, Number(rawValue) || 0));
     if (delta > 0) normalizedDeltas[key] = delta;
   }
   user.questProgress = { ...(user.questProgress || {}) };
+  user.dailyQuestProgress = { ...(user.dailyQuestProgress || {}) };
   for (const [key, delta] of Object.entries(normalizedDeltas)) {
     user.questProgress[key] = Math.max(0, Number(user.questProgress[key]) || 0) + delta;
+    user.dailyQuestProgress[key] = Math.max(0, Number(user.dailyQuestProgress[key]) || 0) + delta;
   }
-  const daily = ensureDailyQuests(user, usernameKey(user.username));
+  daily.progress = { ...user.dailyQuestProgress };
   const ultra = ensureUltraQuests(user);
-  for (const task of daily.tasks) {
-    const key = task.key;
-    const total = Math.max(0, Number(user.questProgress[key] || 0));
-    task.progress = Math.min(task.target, Math.max(Number(task.progress || 0), total));
-  }
-  for (const task of ultra.tasks) {
-    const key = task.key;
-    const total = Math.max(0, Number(user.questProgress[key] || 0));
-    task.progress = Math.min(task.target, Math.max(Number(task.progress || 0), total));
-  }
+  syncQuestProgressToTasks(user, daily, ultra);
   return daily;
 }
 
 function recordServerQuestProgress(player, deltas = {}) {
   if (!player?._authUser || !deltas || typeof deltas !== 'object') return;
-  applyDailyQuestProgress(player._authUser, deltas);
+  const daily = applyDailyQuestProgress(player._authUser, deltas);
+  const ultra = ensureUltraQuests(player._authUser);
   saveAccountData();
+  io.to(player.id).emit('quest_progress_update', {
+    quests: daily.tasks,
+    ultraQuests: ultra.tasks
+  });
+}
+
+function battlePassSeason(now = Date.now()) {
+  return Math.floor(now / BATTLE_PASS_SEASON_MS);
+}
+
+function ensureBattlePass(user, now = Date.now()) {
+  const season = battlePassSeason(now);
+  const saved = user.battlePass;
+  if (!saved || Number(saved.season) !== season) {
+    user.battlePass = { season, xp: 0, claimedTiers: [] };
+  } else {
+    user.battlePass = {
+      season,
+      xp: Math.min(BATTLE_PASS_MAX_XP, Math.max(0, Math.floor(Number(saved.xp) || 0))),
+      claimedTiers: Array.isArray(saved.claimedTiers)
+        ? [...new Set(saved.claimedTiers.map(Number).filter(tier => Number.isInteger(tier) && BATTLE_PASS_TIERS.some(item => item.tier === tier)))]
+        : []
+    };
+  }
+  return user.battlePass;
+}
+
+function grantBattlePassMatchXp(user, kills, timeSeconds, score, now = Date.now()) {
+  const state = ensureBattlePass(user, now);
+  const matchXp = Math.max(5, Math.floor(kills) * 80 + Math.floor(timeSeconds / 60) * 25 + Math.floor(Math.max(0, score) / 20));
+  state.xp = Math.min(BATTLE_PASS_MAX_XP, state.xp + matchXp);
+  return state;
 }
 
 function questMobKey(mob) {
@@ -1362,7 +1435,9 @@ function loadAccountData() {
           equippedItems: {},
           lootBag: sanitizeLootBag(u.lootBag),
           lootEquipment: {},
+          battlePass: (u.battlePass && typeof u.battlePass === 'object') ? u.battlePass : null,
           questProgress: (u.questProgress && typeof u.questProgress === 'object') ? { ...u.questProgress } : {},
+          dailyQuestProgress: (u.dailyQuestProgress && typeof u.dailyQuestProgress === 'object') ? { ...u.dailyQuestProgress } : {},
           claimedQuests: Array.isArray(u.claimedQuests) ? [...new Set(u.claimedQuests)] : [],
           dailyQuests: (u.dailyQuests && typeof u.dailyQuests === 'object') ? u.dailyQuests : null,
           ultraQuests: (u.ultraQuests && typeof u.ultraQuests === 'object') ? u.ultraQuests : null,
@@ -1669,6 +1744,7 @@ process.on('SIGTERM', async () => { await saveAccountData(true); process.exit(0)
 
 function publicUser(user) {
   const rInfo = rankInfo(user.xp || 0);
+  const battlePass = ensureBattlePass(user);
   return {
     id: user.id,
     username: user.username,
@@ -1695,6 +1771,7 @@ function publicUser(user) {
     coins: user.coins ?? 0,
     gold: user.coins ?? 0,
     diamonds: Math.max(0, Number(user.diamonds) || 0),
+    battlePass,
     questProgress: user.questProgress || {},
     claimedQuests: user.claimedQuests || [],
     ultraQuests: user.ultraQuests || null,
@@ -1825,8 +1902,24 @@ function sendJson(response, status, body) {
 function readJson(request) {
   return new Promise((resolve, reject) => {
     let body = '';
-    request.on('data', chunk => { body += chunk; if (body.length > 10 * 1024 * 1024) reject(new Error('payload too large')); });
-    request.on('end', () => { try { resolve(body ? JSON.parse(body) : {}); } catch { reject(new Error('invalid json')); } });
+    const maxBytes = 10 * 1024 * 1024;
+    let bodyBytes = 0;
+    let tooLarge = false;
+    request.on('data', chunk => {
+      if (tooLarge) return;
+      bodyBytes += chunk.length;
+      if (bodyBytes > maxBytes) {
+        tooLarge = true;
+        body = '';
+        reject(new Error('payload too large'));
+        return;
+      }
+      body += chunk;
+    });
+    request.on('end', () => {
+      if (tooLarge) return;
+      try { resolve(body ? JSON.parse(body) : {}); } catch { reject(new Error('invalid json')); }
+    });
     request.on('error', reject);
   });
 }
@@ -1854,6 +1947,12 @@ function recordDeathScore(name, score, gold, kills, timeAlive, userObj, updateUs
     const runXp = Math.max(0, Math.round((numKills * 60 + Math.min(numTime * 2, 600) + (numScore > 0 ? Math.floor(Math.sqrt(numScore) * 8) : 0)) * MATCH_XP_RATE));
     user.xp = (user.xp || 0) + runXp;
     user.rankId = rankInfo(user.xp).rankId;
+    const battlePass = grantBattlePassMatchXp(user, numKills, numTime, numScore);
+    for (const livePlayer of players.values()) {
+      if (livePlayer._authUser && usernameKey(livePlayer._authUser.username) === usernameKey(user.username)) {
+        io.to(livePlayer.id).emit('battle_pass_update', battlePass);
+      }
+    }
     if (user.referredBy) {
       updateReferredFriendProgress(user, 0, numKills, numTime);
     }
@@ -2490,13 +2589,21 @@ async function handleApi(request, response, requestPath) {
     return true;
   }
   if (requestPath === '/api/health' && request.method === 'GET') {
-    const databaseOk = !databaseLastError;
+    const databaseOk = Boolean(sqliteDb) && !databaseLastError;
     sendJson(response, databaseOk ? 200 : 503, { ok: databaseOk, database: Boolean(sqliteDb), online: io.engine.clientsCount });
     return true;
   }
 
   let body = {};
-  if (request.method !== 'GET') { try { body = await readJson(request); } catch { sendJson(response, 400, { error: 'Geçersiz istek.' }); return true; } }
+  if (request.method !== 'GET') {
+    try {
+      body = await readJson(request);
+    } catch (error) {
+      const status = error.message === 'payload too large' ? 413 : 400;
+      sendJson(response, status, { error: status === 413 ? 'İstek gövdesi çok büyük.' : 'Geçersiz istek.' });
+      return true;
+    }
+  }
 
   if (requestPath === '/api/auth/register' && request.method === 'POST') {
     if (authRateLimited(request, 'register')) { response.writeHead(429, { 'Content-Type': 'application/json; charset=utf-8', 'Retry-After': '3600' }); response.end(JSON.stringify({ error: 'Çok fazla kayıt denemesi. Lütfen daha sonra tekrar deneyin.' })); return true; }
@@ -2709,8 +2816,105 @@ async function handleApi(request, response, requestPath) {
     });
     return true;
   }
+  if (requestPath === '/api/battle-pass/state' && request.method === 'GET') {
+    if (!user) {
+      sendJson(response, 401, { error: 'Battle Pass ilerlemesini kaydetmek için giriş yapmalısınız.' });
+      return true;
+    }
+    const state = ensureBattlePass(user);
+    saveAccountData();
+    sendJson(response, 200, {
+      ok: true,
+      season: state.season,
+      xp: state.xp,
+      maxXp: BATTLE_PASS_MAX_XP,
+      claimedTiers: state.claimedTiers,
+      tiers: BATTLE_PASS_TIERS.map(tier => ({ ...tier, claimed: state.claimedTiers.includes(tier.tier) })),
+      user: publicUser(user)
+    });
+    return true;
+  }
+  if (requestPath === '/api/battle-pass/claim' && request.method === 'POST') {
+    if (authRateLimited(request, 'battle_pass_claim')) {
+      sendJson(response, 429, { error: 'Çok fazla istek. Lütfen biraz bekleyin.' });
+      return true;
+    }
+    if (!user) {
+      sendJson(response, 401, { error: 'Battle Pass ödülü için giriş yapmalısınız.' });
+      return true;
+    }
+    const lockKey = `battle-pass:${usernameKey(user.username)}`;
+    if (claimLocks.has(lockKey)) {
+      sendJson(response, 409, { error: 'İşlem devam ediyor, lütfen bekleyin.' });
+      return true;
+    }
+    claimLocks.add(lockKey);
+    try {
+      const state = ensureBattlePass(user);
+      const tierNumber = Number(body.tier);
+      const requestedSeason = Number(body.season);
+      if (!Number.isInteger(tierNumber) || !Number.isInteger(requestedSeason)) {
+        sendJson(response, 400, { error: 'Geçersiz Battle Pass ödül isteği.' });
+        return true;
+      }
+      if (requestedSeason !== state.season) {
+        sendJson(response, 409, { error: 'Sezon değişti. Battle Pass yenilendi.', season: state.season, xp: state.xp, claimedTiers: state.claimedTiers });
+        return true;
+      }
+      const tier = BATTLE_PASS_TIERS.find(item => item.tier === tierNumber);
+      if (!tier) {
+        sendJson(response, 400, { error: 'Geçersiz Battle Pass seviyesi.' });
+        return true;
+      }
+      if (state.claimedTiers.includes(tierNumber)) {
+        sendJson(response, 409, { error: 'Bu Battle Pass ödülü zaten alındı.', tier: tierNumber, user: publicUser(user) });
+        return true;
+      }
+      if (state.xp < tier.xp) {
+        sendJson(response, 400, { error: 'Bu Battle Pass ödülü henüz açılmadı.', tier: tierNumber, user: publicUser(user) });
+        return true;
+      }
+      if ((tier.type === 'coins' && (Number(user.coins) || 0) >= MAX_ACCOUNT_COINS) ||
+          (tier.type === 'accountXp' && (Number(user.xp) || 0) >= MAX_ACCOUNT_XP)) {
+        sendJson(response, 409, { error: 'Hesap bakiyesi bu ödülü alabilmek için üst sınıra ulaştı.' });
+        return true;
+      }
+
+      state.claimedTiers.push(tierNumber);
+      let granted = tier.value;
+      if (tier.type === 'coins') {
+        const updatedCoins = Math.min(MAX_ACCOUNT_COINS, (Number(user.coins) || 0) + tier.value);
+        granted = updatedCoins - (Number(user.coins) || 0);
+        user.coins = updatedCoins;
+        user.gold = updatedCoins;
+      } else {
+        const updatedXp = Math.min(MAX_ACCOUNT_XP, (Number(user.xp) || 0) + tier.value);
+        granted = updatedXp - (Number(user.xp) || 0);
+        user.xp = updatedXp;
+        user.rankId = rankInfo(updatedXp).rankId;
+        for (const livePlayer of players.values()) {
+          if (livePlayer._authUser && usernameKey(livePlayer._authUser.username) === usernameKey(user.username)) {
+            livePlayer.xp = updatedXp;
+            io.to(livePlayer.id).emit('self_state', { xp: updatedXp });
+          }
+        }
+      }
+      saveAccountData(true);
+      sendJson(response, 200, {
+        ok: true,
+        tier: tierNumber,
+        reward: { type: tier.type, amount: granted, label: tier.label },
+        season: state.season,
+        xp: state.xp,
+        claimedTiers: state.claimedTiers,
+        user: publicUser(user)
+      });
+      return true;
+    } finally {
+      claimLocks.delete(lockKey);
+    }
+  }
   if (requestPath === '/api/quests/list' && request.method === 'GET') {
-    const questOwner = user || { dailyQuests: null, ultraQuests: null, questProgress: {} };
     if (user) {
       user.questProgress = { ...(user.questProgress || {}) };
       const daily = ensureDailyQuests(user, usernameKey(user.username));
@@ -2720,9 +2924,9 @@ async function handleApi(request, response, requestPath) {
       sendJson(response, 200, { dayKey: daily.dayKey, expiresAt: daily.expiresAt, serverNow: Date.now(), quests: daily.tasks, ultraQuests: ultra.tasks, user: publicUser(user) });
       return true;
     }
-    const daily = ensureDailyQuests(questOwner, `guest:${requestClientKey(request)}`);
+    const daily = buildDailyQuestSnapshot(`guest:${requestClientKey(request)}`);
     const ultra = { tasks: ULTRA_QUESTS.map(quest => ({ ...quest, progress: 0, claimed: false })) };
-    sendJson(response, 200, { dayKey: daily.dayKey, expiresAt: daily.expiresAt, serverNow: Date.now(), quests: daily.tasks, ultraQuests: ultra.tasks, user: null });
+    sendJson(response, 200, { dayKey: daily.dayKey, expiresAt: daily.expiresAt, serverNow: Date.now(), quests: daily.tasks, ultraQuests: ultra.tasks, user: null, guestLocalOnly: true });
     return true;
   }
   if (requestPath === '/api/quests/claim' && request.method === 'POST') {
@@ -2760,10 +2964,16 @@ async function handleApi(request, response, requestPath) {
         quest.claimed = true;
         const earnedQuestXp = Math.max(1, Math.round(Number(quest.rewardXp || 0) * QUEST_XP_RATE));
         const rewardCoins = Math.max(1, Math.round(Number(quest.rewardCoins || 0) * 1.35));
-        user.xp = (user.xp || 0) + earnedQuestXp;
-        user.coins = (user.coins || 0) + rewardCoins;
+        user.xp = Math.min(MAX_ACCOUNT_XP, (user.xp || 0) + earnedQuestXp);
+        user.coins = Math.min(MAX_ACCOUNT_COINS, (user.coins || 0) + rewardCoins);
         user.gold = user.coins;
         user.rankId = rankInfo(user.xp).rankId;
+        for (const livePlayer of players.values()) {
+          if (livePlayer._authUser && usernameKey(livePlayer._authUser.username) === usernameKey(user.username)) {
+            livePlayer.xp = user.xp;
+            io.to(livePlayer.id).emit('self_state', { xp: livePlayer.xp });
+          }
+        }
         saveAccountData(true);
         sendJson(response, 200, {
           ok: true,
@@ -2772,36 +2982,13 @@ async function handleApi(request, response, requestPath) {
           rewardCoins,
           rewardXp: earnedQuestXp,
           dailyQuests: daily,
+          ultraQuests: ultra,
           user: publicUser(user)
         });
         return true;
       } else {
-        // Guest claiming support - validated against guest daily quest state
-        const guestKey = `guest:${requestClientKey(request)}`;
-        const daily = ensureDailyQuests(null, guestKey);
-        const quest = (questType === 'ultra' ? ULTRA_QUESTS : daily.tasks).find(q => q.id === questId);
-        if (!quest) {
-          sendJson(response, 400, { error: 'Geçersiz görev.' });
-          return true;
-        }
-        if (quest.claimed) {
-          sendJson(response, 400, { error: 'Bu ödül zaten alınmış.' });
-          return true;
-        }
-        if (Number(quest.progress || 0) < Number(quest.target || 1)) {
-          sendJson(response, 400, { error: 'Görev henüz tamamlanmadı.' });
-          return true;
-        }
-        quest.claimed = true;
-        const earnedQuestXp = Math.max(1, Math.round(Number(quest.rewardXp || 0) * QUEST_XP_RATE));
-        const rewardCoins = Math.max(1, Math.round(Number(quest.rewardCoins || 0) * 1.35));
-        sendJson(response, 200, {
-          ok: true,
-          message: `${quest.title} tamamlandı! +${rewardCoins} Altın ve +${earnedQuestXp} XP kazandınız!`,
-          claimedQuestId: questId,
-          rewardCoins,
-          rewardXp: earnedQuestXp,
-          guest: true
+        sendJson(response, 401, {
+          error: 'Görev ödüllerini sunucuya kaydetmek için bir hesaba giriş yapmalısınız.'
         });
         return true;
       }
@@ -3727,7 +3914,7 @@ const worldBossStates = new Map(WORLD_BOSS_DEFS.map(def => [def.id, {
   vx: 0, vy: 0, angle: 0, hp: def.maxHp, maxHp: def.maxHp,
   alive: true, aggroed: false, state: 'idle', attackUntil: 0,
   hitFlashUntil: 0, lastAttackAt: 0, nextSkillAt: Date.now() + 5000,
-  casting: null, respawnAt: 0, targetId: null
+  casting: null, respawnAt: 0, targetId: null, contributors: new Map()
 }]));
 
 function publicWorldBosses() {
@@ -3765,6 +3952,13 @@ function worldBossSkillHitsPlayer(def, boss, cast, target) {
   return false;
 }
 
+function recordWorldBossContribution(boss, player, damage) {
+  if (!boss.contributors) boss.contributors = new Map();
+  const current = boss.contributors.get(player.id) || { damage: 0 };
+  current.damage += Math.max(0, Number(damage) || 0);
+  boss.contributors.set(player.id, current);
+}
+
 function defeatWorldBoss(def, boss, attacker, now) {
   boss.alive = false;
   boss.aggroed = false;
@@ -3777,22 +3971,51 @@ function defeatWorldBoss(def, boss, attacker, now) {
   const gold = def.rewardGold;
   const xp = Math.max(1, Math.round(def.rewardXp * Math.max(0.1, Number(adminConfig.xpRate) || 1)));
   const score = def.rewardScore;
-
-  if (attacker) {
-    attacker.gold = Math.min(MAX_ACCOUNT_COINS, (attacker.gold || 0) + gold);
-    attacker.xp = Math.min(MAX_ACCOUNT_XP, (attacker.xp || 0) + xp);
-    attacker.score = Math.min(MAX_ACCOUNT_SCORE, (attacker.score || 0) + score);
-    attacker.sc = attacker.score;
-    attacker.kills = (attacker.kills || 0) + 1;
-    if (attacker._authUser) {
-      attacker._authUser.xp = attacker.xp;
-      attacker._authUser.rankId = rankInfo(attacker.xp).rankId;
+  const minimumDamage = Math.max(1, Math.ceil(def.maxHp * 0.02));
+  const participants = [...(boss.contributors || new Map()).entries()]
+    .map(([playerId, contribution]) => ({ player: players.get(playerId), damage: contribution.damage }))
+    .filter(entry => entry.player && !entry.player.isBot && entry.damage >= minimumDamage);
+  if (attacker && !attacker.isBot && !participants.some(entry => entry.player.id === attacker.id)) {
+    participants.push({ player: attacker, damage: Math.max(1, boss.contributors?.get(attacker.id)?.damage || 1) });
+  }
+  if (!participants.length) {
+    broadcastWorldBossStates();
+    io.emit('world_boss_defeated', {
+      id: def.id, name: def.name, killer: attacker?.name || 'Oyuncular',
+      respawnAt: boss.respawnAt
+    });
+    return;
+  }
+  const totalDamage = participants.reduce((total, entry) => total + entry.damage, 0);
+  let paidGold = 0, paidXp = 0, paidScore = 0;
+  participants.forEach((entry, index) => {
+    const isLastHitter = entry.player.id === attacker?.id;
+    const share = totalDamage > 0 ? entry.damage / totalDamage : 1 / participants.length;
+    const rewardGold = index === participants.length - 1 ? gold - paidGold : Math.floor(gold * share);
+    const rewardXp = index === participants.length - 1 ? xp - paidXp : Math.floor(xp * share);
+    const rewardScore = index === participants.length - 1 ? score - paidScore : Math.floor(score * share);
+    paidGold += rewardGold;
+    paidXp += rewardXp;
+    paidScore += rewardScore;
+    const lastHitBonus = isLastHitter ? Math.floor(gold * 0.1) : 0;
+    const player = entry.player;
+    player.gold = Math.min(MAX_ACCOUNT_COINS, (player.gold || 0) + rewardGold + lastHitBonus);
+    player.xp = Math.min(MAX_ACCOUNT_XP, (player.xp || 0) + rewardXp);
+    player.score = Math.min(MAX_ACCOUNT_SCORE, (player.score || 0) + rewardScore + lastHitBonus);
+    player.sc = player.score;
+    player.kills = (player.kills || 0) + 1;
+    if (player._authUser) {
+      player._authUser.xp = player.xp;
+      player._authUser.rankId = rankInfo(player.xp).rankId;
     }
-    recordServerQuestProgress(attacker, { kills: 1, gold });
-    persistPlayerScore(attacker);
-    io.to(attacker.id).emit('self_state', { g: attacker.gold, xp: attacker.xp, sc: attacker.score, k: attacker.kills });
-    io.to(attacker.id).emit('world_boss_reward', { id: def.id, name: def.name, gold, xp, score });
-    awardLoot(attacker, def.level, true);
+    recordServerQuestProgress(player, { bosses: 1, gold: rewardGold + lastHitBonus });
+    persistPlayerScore(player);
+    io.to(player.id).emit('self_state', { g: player.gold, xp: player.xp, sc: player.score, k: player.kills });
+    io.to(player.id).emit('world_boss_reward', {
+      id: def.id, name: def.name, gold: rewardGold + lastHitBonus, xp: rewardXp,
+      score: rewardScore + lastHitBonus, contribution: entry.damage, lastHit: isLastHitter
+    });
+    awardLoot(player, def.level, true);
   }
 
   broadcastWorldBossStates();
@@ -3858,7 +4081,7 @@ setInterval(() => {
     if (!boss.alive) {
       if (boss.respawnAt > 0 && now >= boss.respawnAt) {
         boss.x = def.x; boss.y = def.y; boss.homeX = def.x; boss.homeY = def.y;
-        boss.vx = 0; boss.vy = 0; boss.hp = def.maxHp;
+        boss.vx = 0; boss.vy = 0; boss.hp = def.maxHp; boss.contributors = new Map();
         boss.alive = true; boss.aggroed = false; boss.state = 'idle';
         boss.attackUntil = 0; boss.hitFlashUntil = 0; boss.lastAttackAt = 0;
         boss.nextSkillAt = now + 5000; boss.casting = null;
@@ -3880,7 +4103,7 @@ setInterval(() => {
       });
       for (const target of players.values()) {
         if (!isPlayerCombatEligible(target) || !worldBossSkillHitsPlayer(def, boss, cast, target)) continue;
-        const result = applyMobDamage({ id: def.id, typeName: def.name }, target, def.skill.damage);
+        const result = applyMobDamage({ id: def.id, typeName: def.name, level: def.level }, target, def.skill.damage);
         if (!result) continue;
         io.emit('world_boss_attack', {
           id: def.id, targetId: target.id, x: cast.x, y: cast.y,
@@ -3924,14 +4147,16 @@ setInterval(() => {
           boss.lastAttackAt = now;
           boss.attackUntil = now + 520;
           boss.state = 'attack';
-          const result = applyMobDamage({ id: def.id, typeName: def.name }, target, def.damage);
-          io.emit('world_boss_attack', {
-            id: def.id, targetId: target.id, x: boss.x, y: boss.y,
-            angle: boss.angle, dmg: result?.dmg || def.damage
-          });
-          if ((target.hp ?? 0) <= 0) {
-            onPlayerDeath(target.id);
-            io.emit('player_dead', { id: target.id });
+          const result = applyMobDamage({ id: def.id, typeName: def.name, level: def.level }, target, def.damage);
+          if (result) {
+            io.emit('world_boss_attack', {
+              id: def.id, targetId: target.id, x: boss.x, y: boss.y,
+              angle: boss.angle, dmg: result.dmg
+            });
+            if ((target.hp ?? 0) <= 0) {
+              onPlayerDeath(target.id);
+              io.emit('player_dead', { id: target.id });
+            }
           }
         }
       }
@@ -4201,6 +4426,7 @@ function compactMobTick(mob) {
     enraged: Boolean(mob.isEnraged),
     isBoss: Boolean(mob.isBoss),
     isPeaceful: Boolean(mob.isPeaceful),
+    typeName: mob.typeName || 'Canavar',
   };
 }
 
@@ -5034,6 +5260,7 @@ function applyMobSpikeDamage(mob, spike, now) {
       owner.gold = (owner.gold || 0) + rewardGold;
       owner.score = (owner.score || 0) + rewardGold * 3;
       persistPlayerScore(owner);
+      awardLoot(owner, mob.level || mob.lvl || 1, Boolean(mob.isBoss));
     }
   }
   return true;
@@ -5196,7 +5423,8 @@ const serverResources = previewWorldResources.map((resource, idx) => ({
   hp: resource.hp || (resource.type === 'wood' ? 700 : resource.type === 'stone' ? 850 : 500),
   maxHp: resource.maxHp || (resource.type === 'wood' ? 700 : resource.type === 'stone' ? 850 : 500),
   destroyed: false,
-  lastHitBy: new Map()
+  lastHitBy: new Map(),
+  lastHitSwingBy: new Map()
 }));
 
 for (const resource of serverResources) {
@@ -5744,7 +5972,7 @@ function applyMobDamage(mob, target, damage, isWeb = false) {
   // Oyuncuya Defence XP kazandır
   const defXpGain = Math.max(6, Math.round(appliedDamage * 0.55));
   if (targetSocket) {
-    targetSocket.emit('combat_xp_gain', { type: 'defence', amount: defXpGain, from: mob.typeName || 'Canavar' });
+    awardCombatXp(target, 'defence', defXpGain, { from: mob.typeName || 'Canavar' });
   }
   const hpAt = target.hpAt;
   const hpSeq = target.hpSeq;
@@ -5763,6 +5991,35 @@ function applyMobDamage(mob, target, damage, isWeb = false) {
     io.to(target.id).emit('self_state', { hp: target.hp, hpSeq, hpAt });
   }
   return payload;
+}
+
+function awardCombatXp(player, type, amount, details = {}) {
+  if (!player || (type !== 'melee' && type !== 'defence')) return;
+  const levelKey = type === 'melee' ? 'meleeLevel' : 'defenceLevel';
+  const xpKey = type === 'melee' ? 'meleeXp' : 'defenceXp';
+  const level = Math.max(1, Math.min(100, Number(player[levelKey]) || 1));
+  let xp = Math.max(0, Number(player[xpKey]) || 0) + Math.max(1, Math.round((Number(amount) || 0) * 0.15));
+  let nextLevel = level;
+  const maxXpForLevel = currentLevel => Math.floor((type === 'melee' ? 360 * Math.pow(1.4, currentLevel - 1) : 440 * Math.pow(1.42, currentLevel - 1)));
+  while (xp >= maxXpForLevel(nextLevel) && nextLevel < 100) {
+    xp -= maxXpForLevel(nextLevel);
+    nextLevel++;
+  }
+  player[levelKey] = nextLevel;
+  player[xpKey] = xp;
+  if (player._authUser) {
+    player._authUser[levelKey] = nextLevel;
+    player._authUser[xpKey] = xp;
+  }
+  const targetSocket = io.sockets.sockets.get(player.id);
+  if (!targetSocket) return;
+  targetSocket.emit('combat_xp_gain', { ...details, type, amount });
+  targetSocket.emit('combat_stats_state', {
+    meleeLevel: Math.max(1, Number(player.meleeLevel) || 1),
+    meleeXp: Math.max(0, Number(player.meleeXp) || 0),
+    defenceLevel: Math.max(1, Number(player.defenceLevel) || 1),
+    defenceXp: Math.max(0, Number(player.defenceXp) || 0)
+  });
 }
 
 function isPlayerCombatEligible(player, socketMap = io?.sockets?.sockets) {
@@ -5908,6 +6165,12 @@ function applySpikeDamageToTarget(target, spike, now = Date.now(), fromPush = fa
       stealDeathLoot(owner, target);
       owner.kills = (owner.kills || 0) + 1;
       owner.score = (owner.score || 0) + 150;
+      if (!owner.isBot && !target.isBot) {
+        recordServerQuestProgress(owner, {
+          pvpKills: 1,
+          ...(BOUNTY_EVENT_ENABLED && currentBountyId && target.id === currentBountyId ? { kingKills: 1 } : {})
+        });
+      }
       if (BOUNTY_EVENT_ENABLED && currentBountyId && target.id === currentBountyId) {
         const bountyBonus = 300;
         owner.gold = (owner.gold || 0) + bountyBonus;
@@ -5975,14 +6238,23 @@ function applySpikeDamageToMob(mob, spike, attacker, now = Date.now()) {
     attacker.gold = (attacker.gold || 0) + rewardGold;
     attacker.xp = (attacker.xp || 0) + rewardXp;
     attacker.score = (attacker.score || 0) + rewardScore;
+    attacker.kills = (attacker.kills || 0) + 1;
+    applyLoadoutStats(attacker);
+    attacker.hpSeq = (attacker.hpSeq || 0) + 1;
+    attacker.hpAt = Date.now();
     const mobQuestKey = questMobKey(mob);
     recordServerQuestProgress(attacker, { kills: 1, ...(mobQuestKey ? { [mobQuestKey]: 1 } : {}), gold: rewardGold });
     persistPlayerScore(attacker);
     const attackerSocket = io.sockets.sockets.get(attacker.id);
     if (attackerSocket) {
-      attackerSocket.emit('self_state', { g: attacker.gold, xp: attacker.xp, sc: attacker.score });
+      attackerSocket.emit('self_state', {
+        hp: attacker.hp, maxHp: attacker.maxHp, baseMaxHp: attacker._loadoutBaseMaxHp,
+        hpSeq: attacker.hpSeq, hpAt: attacker.hpAt,
+        g: attacker.gold, xp: attacker.xp, sc: attacker.score, k: attacker.kills
+      });
       attackerSocket.emit('mob_kill_reward', { xp: rewardXp, gold: rewardGold, score: rewardScore, typeName: mob.typeName });
     }
+    awardLoot(attacker, mob.level || mob.lvl || 1, Boolean(mob.isBoss));
     setTimeout(() => { if (players.size > 0) ensureMobs(); }, 4000 + Math.random() * 2000);
   }
   return true;
@@ -7845,8 +8117,10 @@ setInterval(() => {
     const s = io.sockets.sockets.get(id);
     if (s && s.connected) {
       s.emit('self_state', {
-        hp: p.hp, hpSeq: p.hpSeq || 0, hpAt: p.hpAt || 0,
+        hp: p.hp, maxHp: p.maxHp, baseMaxHp: p._loadoutBaseMaxHp,
+        hpSeq: p.hpSeq || 0, hpAt: p.hpAt || 0,
         sc: p.score, g: p.gold, xp: p.xp, seq: p.stateSeq || 0,
+        k: p.kills || 0,
         wood: p.wood, stone: p.stone, apples: p.apples,
         x: p.x, y: p.y, a: p.angle || 0
       });
@@ -7864,11 +8138,14 @@ setInterval(() => {
       y: p.y,
       a: p.angle || 0,
       hp: p.hp,
+      maxHp: p.maxHp,
+      baseMaxHp: p._loadoutBaseMaxHp,
       hpSeq: p.hpSeq || 0,
       hpAt: p.hpAt || Date.now(),
       sc: p.score,
       g: p.gold,
       xp: p.xp,
+      k: p.kills || 0,
       wood: p.wood,
       stone: p.stone,
       apples: p.apples,
@@ -8114,6 +8391,10 @@ io.on('connection', (socket) => {
       hpSeq: 0,
       gold: initialGold,
       xp: initialXp,
+      meleeLevel: Math.max(1, Math.min(100, Number(authUser?.meleeLevel) || 1)),
+      meleeXp: Math.max(0, Number(authUser?.meleeXp) || 0),
+      defenceLevel: Math.max(1, Math.min(100, Number(authUser?.defenceLevel) || 1)),
+      defenceXp: Math.max(0, Number(authUser?.defenceXp) || 0),
       kills: authUser ? Math.max(0, Number(authUser.kills) || 0) : 0,
       score: initialScore,
       sc: initialScore,
@@ -8319,111 +8600,50 @@ io.on('connection', (socket) => {
 
   socket.on('respawn', () => {
     let player = players.get(socket.id);
+    if (!player || ((player.hp ?? 0) > 0 && !player._dead)) return;
     const spawnPt = getBeginnerVillageSpawn();
     onPlayerDeath(socket.id);
-    if (!player) {
-      const authUser = socket.data?.authUser || null;
-      const rank = authUser ? rankInfo(authUser.xp || 0) : rankInfo(0);
-      player = {
-        id: socket.id,
-        name: authUser?.username || 'forestbrawl',
-        hp: 250,
-        maxHp: 250,
-        baseMaxHp: 250,
-        score: 0,
-        sc: 0,
-        gold: 0,
-        xp: authUser?.xp || 0,
-        kills: 0,
-        wood: 0,
-        stone: 0,
-        apples: 5,
-        diamond: 0,
-        amethyst: 0,
-        redite: 0,
-        ownedAxes: [0],
-        ownedSwords: [0],
-        ownedHelmets: [],
-        ownedScythes: [],
-        lootBag: sanitizeLootBag(authUser?.lootBag),
-        lootEquipment: sanitizeLootEquipment(authUser?.lootEquipment, sanitizeLootBag(authUser?.lootBag)),
-        weapon: 1,
-        designWeapon: 'sword',
-        loadoutSet: 'sunforge',
-        axeTier: 0,
-        swordTier: 0,
-        skin: 'wolf',
-        rk: rank.visualRankId,
-        rankId: rank.rankId,
-        visualRankId: rank.visualRankId,
-        rankName: rank.name,
-        profileCosmetics: authUser?.equippedItems ? {
-          avatarId: authUser.equippedItems.profil_avatar || 'wolf',
-          effectId: authUser.equippedItems.profil_efekt || authUser.equippedItems.efektler || 'effect_none',
-          frameId: authUser.equippedItems.profil_cerceve || 'frame_woodland'
-        } : { avatarId: 'wolf', effectId: 'effect_none', frameId: 'frame_woodland' },
-        x: spawnPt.x,
-        y: spawnPt.y,
-        vx: 0,
-        vy: 0,
-        angle: 0,
-        stateSeq: 0,
-        hpSeq: 0,
-        stateAt: Date.now(),
-        matchStartKills: authUser ? Math.max(0, Number(authUser.kills) || 0) : 0,
-        matchStartScore: 0,
-        matchStartGold: 0,
-        matchStartedAt: Date.now(),
-        _matchFinalized: false,
-        _dead: false,
-        _authUser: authUser
-      };
-      players.set(socket.id, player);
-    } else {
-      player.hp = player.maxHp ?? 250;
-      player.x = spawnPt.x;
-      player.y = spawnPt.y;
-      player.vx = 0;
-      player.vy = 0;
-      player.score = 0;
-      player.sc = 0;
-      player.gold = 0;
-      player.matchStartKills = player._authUser ? Math.max(0, Number(player._authUser.kills) || 0) : 0;
-      player.matchStartScore = 0;
-      player.matchStartGold = 0;
-      player.matchStartedAt = Date.now();
-      player._matchFinalized = false;
-      player.xp = player._authUser ? Math.max(0, Number(player._authUser.xp) || 0) : Math.max(0, Number(player.xp) || 0);
-      player.rankId = player._authUser ? rankInfo(player.xp).rankId : player.rankId;
-      player.rankName = player._authUser ? rankInfo(player.xp).name : player.rankName;
-      player.wood = 0;
-      player.stone = 0;
-      player.diamond = 0;
-      player.amethyst = 0;
-      player.redite = 0;
-      player.axeTier = 0;
-      player.swordTier = 0;
-      player.ownedAxes = [0];
-      player.ownedSwords = [0];
-      player.helmetSkin = '';
-      player.ownedHelmets = [];
-      player.apples = 5;
-      player.weapon = 1;
-      player.trappedBy = null;
-      player.hpSeq = 0;
-      player.hpAt = Date.now();
-      player.visibleMobIds = new Set();
-      player.visiblePlayerIds = new Set();
-      player.stateAt = Date.now();
-      player._dead = false;
-      if (player._guestId) reconnectSessions.delete(player._guestId);
-    }
-    if (player) {
-      const loadout = sanitizePlayerLoadout(player.role, player.helmet);
-      player.role = loadout.role;
-      player.helmet = loadout.helmet;
-      applyLoadoutStats(player);
-    }
+    player.hp = player.maxHp ?? 250;
+    player.x = spawnPt.x;
+    player.y = spawnPt.y;
+    player.vx = 0;
+    player.vy = 0;
+    player.score = 0;
+    player.sc = 0;
+    player.gold = 0;
+    player.matchStartKills = player._authUser ? Math.max(0, Number(player._authUser.kills) || 0) : 0;
+    player.matchStartScore = 0;
+    player.matchStartGold = 0;
+    player.matchStartedAt = Date.now();
+    player._matchFinalized = false;
+    player.xp = player._authUser ? Math.max(0, Number(player._authUser.xp) || 0) : Math.max(0, Number(player.xp) || 0);
+    player.rankId = player._authUser ? rankInfo(player.xp).rankId : player.rankId;
+    player.rankName = player._authUser ? rankInfo(player.xp).name : player.rankName;
+    player.wood = 0;
+    player.stone = 0;
+    player.diamond = 0;
+    player.amethyst = 0;
+    player.redite = 0;
+    player.axeTier = 0;
+    player.swordTier = 0;
+    player.ownedAxes = [0];
+    player.ownedSwords = [0];
+    player.helmetSkin = '';
+    player.ownedHelmets = [];
+    player.apples = 5;
+    player.weapon = 1;
+    player.trappedBy = null;
+    player.hpSeq = 0;
+    player.hpAt = Date.now();
+    player.visibleMobIds = new Set();
+    player.visiblePlayerIds = new Set();
+    player.stateAt = Date.now();
+    player._dead = false;
+    if (player._guestId) reconnectSessions.delete(player._guestId);
+    const loadout = sanitizePlayerLoadout(player.role, player.helmet);
+    player.role = loadout.role;
+    player.helmet = loadout.helmet;
+    applyLoadoutStats(player);
     socket.emit('own_respawn', { x: spawnPt.x, y: spawnPt.y });
     socket.emit('self_state', { x: spawnPt.x, y: spawnPt.y, hp: player.hp, hpSeq: 0, hpAt: player.hpAt, sc: player.score, g: player.gold, wood: player.wood, stone: player.stone, apples: player.apples, diamond: player.diamond || 0, amethyst: player.amethyst || 0, redite: player.redite || 0, seq: player.stateSeq || 0 });
     socket.emit('buildings_sync', { buildings: Object.fromEntries(buildings) });
@@ -8781,8 +9001,14 @@ io.on('connection', (socket) => {
       player.lootBag = sanitizeLootBag(data.bag);
       player.lootEquipment = sanitizeLootEquipment(data.equipped, player.lootBag);
       applyLoadoutStats(player);
+      player.hpSeq = (player.hpSeq || 0) + 1;
+      player.hpAt = Date.now();
     }
     emitLootInventory(player, socket);
+    socket.emit('self_state', {
+      hp: player.hp, maxHp: player.maxHp, baseMaxHp: player._loadoutBaseMaxHp,
+      hpSeq: player.hpSeq || 0, hpAt: player.hpAt || Date.now()
+    });
   });
 
   socket.on('loot_item_action', (data = {}) => {
@@ -8841,6 +9067,8 @@ io.on('connection', (socket) => {
 
     persistLootInventory(player);
     applyLoadoutStats(player);
+    player.hpSeq = (player.hpSeq || 0) + 1;
+    player.hpAt = Date.now();
     socket.emit('loot_item_action_result', { ok: true, action });
     emitLootInventory(player, socket);
     socket.emit('self_state', { hp: player.hp, maxHp: player.maxHp, baseMaxHp: player._loadoutBaseMaxHp, hpSeq: player.hpSeq || 0, hpAt: player.hpAt || Date.now() });
@@ -8918,8 +9146,8 @@ io.on('connection', (socket) => {
       applyPlayerDamage(target, finalPvpDmg);
 
       // Melee XP saldırgana, Defence XP hedefe
-      socket.emit('combat_xp_gain', { type: 'melee', amount: Math.max(6, Math.round(finalPvpDmg * 0.45)), hitId: targetId });
-      io.to(targetId).emit('combat_xp_gain', { type: 'defence', amount: Math.max(6, Math.round(finalPvpDmg * 0.55)), from: attacker.name || 'Oyuncu' });
+      awardCombatXp(attacker, 'melee', Math.max(6, Math.round(finalPvpDmg * 0.45)), { hitId: targetId });
+      awardCombatXp(target, 'defence', Math.max(6, Math.round(finalPvpDmg * 0.55)), { from: attacker.name || 'Oyuncu' });
 
       // Knockback / Geri itme
       const kbForce = isScythe ? 16 : 11;
@@ -8938,6 +9166,12 @@ io.on('connection', (socket) => {
         target.kills = target.kills || 0;
         attacker.kills = (attacker.kills || 0) + 1;
         attacker.score = (attacker.score || 0) + 150;
+        if (!attacker.isBot && !target.isBot) {
+          recordServerQuestProgress(attacker, {
+            pvpKills: 1,
+            ...(BOUNTY_EVENT_ENABLED && currentBountyId && targetId === currentBountyId ? { kingKills: 1 } : {})
+          });
+        }
         if (BOUNTY_EVENT_ENABLED && currentBountyId && targetId === currentBountyId) {
           const bountyBonus = 300;
           attacker.gold = (attacker.gold || 0) + bountyBonus;
@@ -9008,8 +9242,8 @@ io.on('connection', (socket) => {
     applyPlayerDamage(target, damage);
 
     // Melee XP saldırgana, Defence XP hedefe
-    socket.emit('combat_xp_gain', { type: 'melee', amount: Math.max(6, Math.round(damage * 0.45)), hitId: data.targetId });
-    io.to(data.targetId).emit('combat_xp_gain', { type: 'defence', amount: Math.max(6, Math.round(damage * 0.55)), from: attacker.name || 'Oyuncu' });
+    awardCombatXp(attacker, 'melee', Math.max(6, Math.round(damage * 0.45)), { hitId: data.targetId });
+    awardCombatXp(target, 'defence', Math.max(6, Math.round(damage * 0.55)), { from: attacker.name || 'Oyuncu' });
 
     // Knockback / Geri itme
     const hitAngle = Number.isFinite(Number(data.angle)) ? Number(data.angle) : Math.atan2((Number(target.y)||0) - (Number(attacker.y)||0), (Number(target.x)||0) - (Number(attacker.x)||0));
@@ -9033,6 +9267,12 @@ io.on('connection', (socket) => {
       target.kills = target.kills || 0;
       attacker.kills = (attacker.kills || 0) + 1;
       attacker.score = (attacker.score || 0) + 150;
+      if (!attacker.isBot && !target.isBot) {
+        recordServerQuestProgress(attacker, {
+          pvpKills: 1,
+          ...(BOUNTY_EVENT_ENABLED && currentBountyId && data.targetId === currentBountyId ? { kingKills: 1 } : {})
+        });
+      }
       if (BOUNTY_EVENT_ENABLED && currentBountyId && data.targetId === currentBountyId) {
         const bountyBonus = 300;
         attacker.gold = (attacker.gold || 0) + bountyBonus;
@@ -9094,6 +9334,12 @@ io.on('connection', (socket) => {
       target.kills = target.kills || 0;
       attacker.kills = (attacker.kills || 0) + 1;
       attacker.score = (attacker.score || 0) + 150;
+      if (!attacker.isBot && !target.isBot) {
+        recordServerQuestProgress(attacker, {
+          pvpKills: 1,
+          ...(BOUNTY_EVENT_ENABLED && currentBountyId && data.targetId === currentBountyId ? { kingKills: 1 } : {})
+        });
+      }
       if (BOUNTY_EVENT_ENABLED && currentBountyId && data.targetId === currentBountyId) {
         const bountyBonus = 300;
         attacker.gold = (attacker.gold || 0) + bountyBonus;
@@ -9198,12 +9444,24 @@ io.on('connection', (socket) => {
     const idx = Number(data.idx);
     const resource = Number.isInteger(idx) ? serverResources[idx] : null;
     if (!player || !resource || resource.destroyed || player.hp <= 0) return;
-    const distance = Math.hypot((Number(player.x) || 0) - resource.x, (Number(player.y) || 0) - resource.y);
-    if (distance > 480) return;
+    const swingId = Number(data.swingId);
     const now = Date.now();
+    if (!Number.isFinite(swingId) || swingId !== player.lastSwingId || now - (player.lastSwingAt || 0) > 350 || !player.isAttacking) return;
+    if (player.weapon !== 1 && player.weapon !== 2) return;
+    const previousSwing = resource.lastHitSwingBy.get(socket.id);
+    if (previousSwing === swingId) return;
+    const distance = Math.hypot((Number(player.x) || 0) - resource.x, (Number(player.y) || 0) - resource.y);
+    const weapon = Number(player.weapon) === 2 ? 2 : 1;
+    const attackRange = weapon === 2 ? 140 : 128;
+    if (distance > attackRange + resource.radius) return;
+    const attackAngle = Number(player.lastAttackAngle);
+    let angleDiff = Math.abs(Math.atan2(resource.y - player.y, resource.x - player.x) - attackAngle);
+    if (angleDiff > Math.PI) angleDiff = 2 * Math.PI - angleDiff;
+    const attackSpread = weapon === 2 ? Math.PI / 3.25 : Math.PI / 2.57;
+    if (!Number.isFinite(attackAngle) || angleDiff > attackSpread) return;
     if (now - (resource.lastHitBy.get(socket.id) || 0) < 80) return;
     resource.lastHitBy.set(socket.id, now);
-    const weapon = Number(player.weapon) === 2 ? 2 : 1;
+    resource.lastHitSwingBy.set(socket.id, swingId);
     const tier = Math.max(0, Math.min(11, Number(weapon === 2 ? player.swordTier : player.axeTier) || 0));
     const resourceYield = ResourceYield.calculateResourceYield(resource.type, weapon === 1 ? 'axe' : 'sword', tier);
     const damage = Math.round((weapon === 2 ? 30 : 22) * [1, 1.5, 2.2, 3.5, 5, 8, 10, 13, 16, 19, 23, 28][tier]);
@@ -9250,7 +9508,6 @@ io.on('connection', (socket) => {
         break;
       case 'crystal':
         gainedXp = 45;
-        player.xp = (player.xp || 0) + gainedXp;
         gainedScore = 30;
         break;
       case 'hive':
@@ -9261,19 +9518,19 @@ io.on('connection', (socket) => {
         gainedDiamond = resourceYield.diamond;
         gainedXp = 25;
         gainedScore = 30;
-        socket.emit('combat_xp_gain', { type: 'melee', amount: 8, targetName: '💎 Elmas' });
+        awardCombatXp(player, 'melee', 8, { targetName: '💎 Elmas' });
         break;
       case 'amethyst':
         gainedAmethyst = resourceYield.amethyst;
         gainedXp = 50;
         gainedScore = 60;
-        socket.emit('combat_xp_gain', { type: 'melee', amount: 16, targetName: '🔮 Ametist' });
+        awardCombatXp(player, 'melee', 16, { targetName: '🔮 Ametist' });
         break;
       case 'redite':
         gainedRedite = resourceYield.redite;
         gainedXp = 100;
         gainedScore = 150;
-        socket.emit('combat_xp_gain', { type: 'melee', amount: 35, targetName: '👑 Kadim Redite' });
+        awardCombatXp(player, 'melee', 35, { targetName: '👑 Kadim Redite' });
         break;
       default:
         gainedWood = resourceYield.wood;
@@ -9288,6 +9545,7 @@ io.on('connection', (socket) => {
     player.amethyst = (player.amethyst || 0) + gainedAmethyst;
     player.redite = (player.redite || 0) + gainedRedite;
     player.score = (player.score || 0) + gainedScore;
+    player.xp = (player.xp || 0) + gainedXp;
     recordServerQuestProgress(player, { wood: gainedWood, stone: gainedStone, gold: gainedGold });
 
     if (player._authUser && gainedGold > 0) {
@@ -9299,6 +9557,7 @@ io.on('connection', (socket) => {
       player._authUser.xp = (player._authUser.xp || 0) + gainedXp;
       player._authUser.rankId = rankInfo(player._authUser.xp).rankId;
     }
+    if (gainedXp > 0) player.rankId = rankInfo(player.xp).rankId;
 
     socket.emit('res_reward', {
       wood: player.wood,
@@ -9635,9 +9894,17 @@ io.on('connection', (socket) => {
     const now = Date.now();
     if (now - (socket._lastChatAt || 0) < 500) return;
     socket._lastChatAt = now;
-    const cleanMsg = String(data.msg || '').trim().slice(0, 120);
+    const cleanMsg = String(data.msg || '').replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 120);
     if (!cleanMsg) return;
-    io.emit('chat', { name: players.get(socket.id)?.name || 'Oyuncu', msg: cleanMsg, id: socket.id });
+    const player = players.get(socket.id);
+    const message = {
+      name: player?.name || 'Oyuncu',
+      level: player ? calculatePlayerLevel(player) : 1,
+      msg: cleanMsg,
+      id: socket.id,
+      at: now
+    };
+    io.emit('chat', message);
   });
   socket.on('quick_chat', (data = {}) => {
     if (socketEventRateLimited(socket, 'quick_chat')) return;
@@ -9647,6 +9914,7 @@ io.on('connection', (socket) => {
     io.emit('quick_chat', {
       id: socket.id,
       name: player.name || 'Oyuncu',
+      level: calculatePlayerLevel(player),
       idx,
       x: Number(player.x) || 0,
       y: Number(player.y) || 0,
@@ -9660,21 +9928,35 @@ io.on('connection', (socket) => {
     if (player && player.hp > 0 && player.apples > 0 && player.hp < (player.maxHp ?? 250)) {
       player.apples--;
       player.hp = Math.min(player.maxHp ?? 250, (player.hp ?? 0) + 30);
+    }
+    if (player) {
+      player.level = calculatePlayerLevel(player);
+      applyLoadoutStats(player);
       player.hpSeq = (player.hpSeq || 0) + 1;
       player.hpAt = Date.now();
     }
-    socket.emit('self_state', { hp: player?.hp ?? 250, hpSeq: player?.hpSeq || 0, hpAt: player?.hpAt || Date.now(), apples: player?.apples || 0 });
+    socket.emit('self_state', {
+      hp: player?.hp ?? 250, maxHp: player?.maxHp ?? 250,
+      baseMaxHp: player?._loadoutBaseMaxHp,
+      hpSeq: player?.hpSeq || 0, hpAt: player?.hpAt || Date.now(),
+      apples: player?.apples || 0
+    });
   });
 
-  socket.on('sync_combat_stats', (data = {}) => {
+  socket.on('sync_combat_stats', () => {
+    if (socketEventRateLimited(socket, 'sync_combat_stats')) return;
     const player = players.get(socket.id);
     if (!player) return;
-    if (Number.isFinite(data.meleeLevel)) player.meleeLevel = Math.max(1, Math.min(100, Number(data.meleeLevel) | 0));
-    if (Number.isFinite(data.defenceLevel)) player.defenceLevel = Math.max(1, Math.min(100, Number(data.defenceLevel) | 0));
     player.level = calculatePlayerLevel(player);
     applyLoadoutStats(player);
     player.hpSeq = (player.hpSeq || 0) + 1;
     player.hpAt = Date.now();
+    socket.emit('combat_stats_state', {
+      meleeLevel: Math.max(1, Number(player.meleeLevel) || 1),
+      meleeXp: Math.max(0, Number(player.meleeXp) || 0),
+      defenceLevel: Math.max(1, Number(player.defenceLevel) || 1),
+      defenceXp: Math.max(0, Number(player.defenceXp) || 0)
+    });
     socket.emit('self_state', {
       hp: player.hp, maxHp: player.maxHp, baseMaxHp: player._loadoutBaseMaxHp,
       hpSeq: player.hpSeq, hpAt: player.hpAt
@@ -9769,7 +10051,7 @@ io.on('connection', (socket) => {
 
       // Oyuncuya Melee XP kazandır!
       const meleeXpGain = Math.max(5, Math.round(dmg * 0.45));
-      socket.emit('combat_xp_gain', { type: 'melee', amount: meleeXpGain, hitId: mob.id, targetLvl: mobLvl });
+      awardCombatXp(attacker, 'melee', meleeXpGain, { hitId: mob.id, targetLvl: mobLvl });
     }
 
     mob.hp = Math.max(0, mob.hp - dmg);
@@ -9806,6 +10088,10 @@ io.on('connection', (socket) => {
       attacker.gold = (attacker.gold || 0) + rewardGold;
       attacker.xp = (attacker.xp || 0) + rewardXp;
       attacker.score = (attacker.score || 0) + rewardScore;
+      attacker.kills = (attacker.kills || 0) + 1;
+      applyLoadoutStats(attacker);
+      attacker.hpSeq = (attacker.hpSeq || 0) + 1;
+      attacker.hpAt = Date.now();
       const mobQuestKey = questMobKey(mob);
       recordServerQuestProgress(attacker, { kills: 1, ...(mobQuestKey ? { [mobQuestKey]: 1 } : {}), gold: rewardGold });
       if (attacker._authUser) {
@@ -9813,7 +10099,11 @@ io.on('connection', (socket) => {
         attacker._authUser.rankId = rankInfo(attacker._authUser.xp).rankId;
       }
       persistPlayerScore(attacker);
-      socket.emit('self_state', { g: attacker.gold, xp: attacker.xp, sc: attacker.score });
+      socket.emit('self_state', {
+        hp: attacker.hp, maxHp: attacker.maxHp, baseMaxHp: attacker._loadoutBaseMaxHp,
+        hpSeq: attacker.hpSeq, hpAt: attacker.hpAt,
+        g: attacker.gold, xp: attacker.xp, sc: attacker.score, k: attacker.kills
+      });
       socket.emit('mob_kill_reward', {
         xp: rewardXp,
         gold: rewardGold,
@@ -9873,9 +10163,11 @@ io.on('connection', (socket) => {
     damage = Math.max(1, Math.round(damage * lvlFactor * (1 + (meleeLvl - 1) * 0.022)));
 
     // Melee XP
-    socket.emit('combat_xp_gain', { type: 'melee', amount: Math.max(10, Math.round(damage * 0.5)), bossId });
+    awardCombatXp(attacker, 'melee', Math.max(10, Math.round(damage * 0.5)), { bossId });
 
-    boss.hp = Math.max(0, boss.hp - damage);
+    const appliedDamage = Math.min(damage, boss.hp);
+    recordWorldBossContribution(boss, attacker, appliedDamage);
+    boss.hp = Math.max(0, boss.hp - appliedDamage);
     boss.hitFlashUntil = now + 140;
     boss.aggroed = true;
     boss.targetId = attacker.id;
@@ -9888,7 +10180,7 @@ io.on('connection', (socket) => {
     } else {
       io.emit('world_boss_hit', {
         id: bossId, x: boss.x, y: boss.y, hp: boss.hp, maxHp: boss.maxHp,
-        dmg: damage, attackerId: attacker.id, attackerName: attacker.name || 'Oyuncu'
+        dmg: appliedDamage, attackerId: attacker.id, attackerName: attacker.name || 'Oyuncu'
       });
     }
   });
@@ -9910,7 +10202,9 @@ io.on('connection', (socket) => {
     if (now - (turret.lastBossHitAt || 0) < shotCooldownMs) return;
     turret.lastBossHitAt = now;
     const damage = turretProjectileDamage(turret);
-    boss.hp = Math.max(0, boss.hp - damage);
+    const appliedDamage = Math.min(damage, boss.hp);
+    recordWorldBossContribution(boss, attacker, appliedDamage);
+    boss.hp = Math.max(0, boss.hp - appliedDamage);
     boss.hitFlashUntil = now + 140;
     boss.aggroed = true;
     boss.targetId = attacker.id;
@@ -9923,7 +10217,7 @@ io.on('connection', (socket) => {
     } else {
       io.emit('world_boss_hit', {
         id: bossId, x: boss.x, y: boss.y, hp: boss.hp, maxHp: boss.maxHp,
-        dmg: damage, attackerId: attacker.id, attackerName: attacker.name || 'Oyuncu'
+        dmg: appliedDamage, attackerId: attacker.id, attackerName: attacker.name || 'Oyuncu'
       });
     }
   });
@@ -9940,10 +10234,6 @@ io.on('connection', (socket) => {
     if (spikeDistance > 280 || mobDistance > (Number(spike.radius) || 34) + (Number(mob.radius) || 36) + 24) return;
     applySpikeDamageToMob(mob, spike, attacker);
   });
-
-  for (const event of ['kill_streak', 'server_announce', 'boss_telegraph']) {
-    socket.on(event, (data) => relayToOthers(socket, event, { ...(data || {}), fromId: socket.id }));
-  }
 
   function normalizeBuilding(data, owner, id) {
     const type = Number(data.type);
@@ -10230,6 +10520,10 @@ io.on('connection', (socket) => {
 
   socket.on('disconnect', () => {
     for (const key of mobHitCooldowns.keys()) if (key.startsWith(`${socket.id}:`)) mobHitCooldowns.delete(key);
+    for (const resource of serverResources) {
+      resource.lastHitBy.delete(socket.id);
+      resource.lastHitSwingBy.delete(socket.id);
+    }
     const player = players.get(socket.id);
     const guestId = String(player?._guestId || '').slice(0, 80);
     if (player && guestId && player.hp > 0 && !player._dead) {
@@ -10254,7 +10548,7 @@ io.on('connection', (socket) => {
       onPlayerDeath(socket.id);
       if (guestId) reconnectSessions.delete(guestId);
     }
-    if (player && (player.score > 0 || player.gold > 0 || player.kills > 0)) {
+    if (player && (player.score > 0 || player.gold > 0 || player.kills > 0 || player._authUser)) {
       syncLivePlayerProgress(player);
       persistPlayerScore(player);
       saveAccountData(true);

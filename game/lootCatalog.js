@@ -66,7 +66,7 @@
   ));
 
   const ITEM_BY_ID = Object.freeze(Object.fromEntries(ITEMS.map(item => [item.id, item])));
-  const DROP_CHANCES = Object.freeze({ mob: 0.025, boss: 0.08 });
+  const DROP_CHANCES = Object.freeze({ mob: 0.1, boss: 0.35 });
   const RARITY_WEIGHTS = Object.freeze({
     mob: Object.freeze({ common: 0.91, rare: 0.075, epic: 0.015 }),
     boss: Object.freeze({ rare: 0.62, epic: 0.32, legendary: 0.06 })

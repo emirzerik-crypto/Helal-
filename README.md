@@ -87,6 +87,7 @@ See `.env.example` for all available options:
 ### Building Tiers
 - Source artwork lives in `tier1builds/` through `tier6builds/`
 - `npm run build:assets` aligns the layered artwork and generates optimized WebP sprites in `buildassets/tier-sprites/`
+- Inventory build icons and the upgrade panel tier previews use those generated tier sprites, including each structure's layered parts.
 - Structure tiers improve durability and their role-specific effect; server validation keeps multiplayer upgrades authoritative
 - The upgrade panel supports desktop, mobile portrait, and mobile landscape layouts
 

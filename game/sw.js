@@ -1,4 +1,4 @@
-const CACHE_NAME = 'forestbrawl-shell-v25';
+const CACHE_NAME = 'forestbrawl-shell-v35';
 const APP_SHELL = [
   './',
   './index.html',
