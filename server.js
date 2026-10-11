@@ -5842,7 +5842,9 @@ function createMob(prefBiome = null, nearX = null, nearY = null) {
     xpReward: scaledXp, goldReward: scaledGold,
     isPeaceful: Boolean(type.isPeaceful),
     isBoss: Boolean(type.isBoss),
-    nextAttackAt: 0, wanderAngle: angle, angle, targetId: null, chaseUntil: 0,
+    nextAttackAt: 0, wanderAngle: angle, wanderTargetAngle: angle,
+    nextWanderTurnAt: Date.now() + 2500 + Math.random() * 2500,
+    angle, targetId: null, chaseUntil: 0,
     state: 'walk', stateSeq: 0, stateAt: Date.now(),
     chaseStartedAt: 0, ignoreTargetId: null, ignoreTargetUntil: 0,
   };
@@ -6035,8 +6037,7 @@ function isPlayerCombatEligible(player, socketMap = io?.sockets?.sockets) {
 function isMobTargetEligible(mob, candidate, socketMap = io?.sockets?.sockets) {
   if (!mob || !candidate) return false;
   if (!isPlayerCombatEligible(candidate, socketMap)) return false;
-  // Players inside village buffer zone (< 1400) cannot be targeted by mobs
-  if (Math.hypot(candidate.x || 0, candidate.y || 0) < 1400) return false;
+  if (isInsideSafeVillage(candidate.x, candidate.y)) return false;
   // Peaceful mobs (Hare, Deer) never auto-aggro unless provoked by player attack
   if (mob.isPeaceful && mob.targetId !== candidate.id) return false;
   const d = Math.hypot((candidate.x || 0) - (mob.x || 0), (candidate.y || 0) - (mob.y || 0));
@@ -6345,8 +6346,8 @@ function applyLoadoutStats(player) {
   player.baseMaxHp = baseMaxHp;
   player._loadoutBaseMaxHp = Math.max(130, Math.round(baseMaxHp * hpMultiplier));
   const bonusHp = helmetItemStats ? (helmetItemStats.maxHpBonus || 0) : 0;
-  const combatHpBonus = (calculatePlayerLevel(player) - 1) * 22
-    + (Math.max(1, Number(player.defenceLevel) || 1) - 1) * 6;
+  const combatHpBonus = (calculatePlayerLevel(player) - 1) * 2
+    + (Math.max(1, Number(player.defenceLevel) || 1) - 1);
   player.maxHp = Math.max(130, player._loadoutBaseMaxHp + bonusHp + combatHpBonus + lootStats.maxHp);
   const previousHpValue = Number(player.hp);
   const previousHp = Number.isFinite(previousHpValue) ? Math.max(0, previousHpValue) : previousMaxHp;
@@ -6951,9 +6952,7 @@ setInterval(() => {
       const distance = Math.sqrt(targetDistance) || 1;
       const spd = ((mob.speed || MOB_SPEED) * 0.5) * (mob.isEnraged ? 1.28 : 1.0);
       const targetAngle = Math.atan2(target.y - mob.y, target.x - mob.x);
-      const mobHash = (parseInt(String(mob.id).replace(/\D/g, ''), 10) || 0) % 5;
-      const flankOffset = (mobHash - 2) * 0.26;
-      mob.angle = distance > 80 ? (targetAngle + flankOffset) : targetAngle;
+      mob.angle = targetAngle;
       mob.vx = Math.cos(mob.angle) * spd;
       mob.vy = Math.sin(mob.angle) * spd;
 
@@ -7128,11 +7127,17 @@ setInterval(() => {
       const leash = mob.leashRadius || 550;
       const distFromHome = Math.hypot(mob.x - homeX, mob.y - homeY);
       if (distFromHome > leash * 0.8) {
-        // Outside territory leash: steer directly back toward home
-        mob.wanderAngle = Math.atan2(homeY - mob.y, homeX - mob.x);
-      } else if (Math.random() < 0.06) {
-        mob.wanderAngle += (Math.random() - 0.5) * 1.4;
+        mob.wanderTargetAngle = Math.atan2(homeY - mob.y, homeX - mob.x);
+      } else if (now >= (mob.nextWanderTurnAt || 0)) {
+        mob.wanderTargetAngle = mob.wanderAngle + (Math.random() - 0.5) * 1.2;
+        mob.nextWanderTurnAt = now + 2500 + Math.random() * 2500;
       }
+      const wanderTurn = Math.atan2(
+        Math.sin(mob.wanderTargetAngle - mob.wanderAngle),
+        Math.cos(mob.wanderTargetAngle - mob.wanderAngle)
+      );
+      const maxWanderTurn = 0.045 * tickScale;
+      mob.wanderAngle += Math.max(-maxWanderTurn, Math.min(maxWanderTurn, wanderTurn));
       const wspd = (mob.wanderSpeed || MOB_WANDER_SPEED) * 0.5;
 
       // Biome-aware wandering boundaries
@@ -10064,6 +10069,7 @@ io.on('connection', (socket) => {
     mob.vy = (mob.vy || 0) + Math.sin(pushAngle) * pushForce;
     mob.x += Math.cos(pushAngle) * (pushForce * 0.7);
     mob.y += Math.sin(pushAngle) * (pushForce * 0.7);
+    mob.angle = Math.atan2(sourceY - mob.y, sourceX - mob.x);
 
     mob.stateSeq = (mob.stateSeq || 0) + 1;
     broadcastMobEventNear(mob, 'mob_update', {

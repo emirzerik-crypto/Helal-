@@ -23730,7 +23730,9 @@ function drawEnemy(e) {
   }
 
   let targetAngle = e.angle;
-  if (e.state === 'attack' || (e.vx === 0 && e.vy === 0)) {
+  if (_connected && e._netId !== undefined) {
+    if (Number.isFinite(e._targetAngle)) targetAngle = e._targetAngle;
+  } else if (e.state === 'attack' || (e.vx === 0 && e.vy === 0)) {
     targetAngle = Math.atan2(player.y - e.y, player.x - e.x);
   } else if (e.vx !== 0 || e.vy !== 0) {
     targetAngle = Math.atan2(e.vy, e.vx);
@@ -26400,7 +26402,10 @@ function update(timestamp = 0) {
           e.vx = 0; e.vy = 0;
           e.x = e._capturedTrapX; e.y = e._capturedTrapY;
           e._targetX = e._capturedTrapX; e._targetY = e._capturedTrapY;
-          if (e._frozenAngle !== undefined) e.angle = e._frozenAngle;
+          if (e._frozenAngle !== undefined) {
+            e.angle = e._frozenAngle;
+            e._targetAngle = e._frozenAngle;
+          }
         } else {
           e._capturedByTrap = null; e._capturedTrapX = undefined; e._capturedTrapY = undefined; e._frozenAngle = undefined; e._capturedTrapTime = undefined;
         }
@@ -26420,7 +26425,7 @@ function update(timestamp = 0) {
           e._capturedTrapTime = now;
           e.vx = 0; e.vy = 0;
           e._targetX = e.x; e._targetY = e.y;
-          e._frozenAngle = (e.angle !== undefined ? e.angle : 0);
+          e._frozenAngle = (Number.isFinite(e._targetAngle) ? e._targetAngle : (e.angle !== undefined ? e.angle : 0));
           playSound(220, 0.08, 'sine', 0.22);
           if (_connected && _socket && e._netId && _otb._netId) {
             _socket.emit('mob_trap_hit', { mobId: e._netId, buildingId: _otb._netId, frozenAngle: e._frozenAngle });
@@ -26647,7 +26652,7 @@ function update(timestamp = 0) {
             e._capturedTrapX = e.x; e._capturedTrapY = e.y;
             e._capturedTrapTime = now;
             e.vx = 0; e.vy = 0;
-            e._frozenAngle = e.angle || 0;
+            e._frozenAngle = Number.isFinite(e._targetAngle) ? e._targetAngle : (e.angle || 0);
             const trapTier = b.tier || 0;
             const trapDmg = [35, 60, 90, 130, 180, 250][trapTier] || 35;
             e.hp = Math.max(0, e.hp - trapDmg);
@@ -26668,7 +26673,10 @@ function update(timestamp = 0) {
           if (e._capturedByTrap === _trapKey) {
             e.vx = 0; e.vy = 0;
             e.x = e._capturedTrapX; e.y = e._capturedTrapY;
-            if (e._frozenAngle !== undefined) e.angle = e._frozenAngle;
+            if (e._frozenAngle !== undefined) {
+              e.angle = e._frozenAngle;
+              e._targetAngle = e._frozenAngle;
+            }
             // FIX: Add DOT damage while trapped - deal damage every 1.5 seconds
             if (!e._trapDotTimer || now - e._trapDotTimer > 1500) {
               e._trapDotTimer = now;
@@ -30182,6 +30190,7 @@ function initMultiplayer() {
       if (m.lvl) already.level = m.lvl;
       if (m.level) already.level = m.level;
       already.angle = m.angle || 0;
+      already._targetAngle = already.angle;
       already._lastSeen = now;
       already._stateSeq = m.seq || already._stateSeq || 0;
       already._stateAt = m.ts || now;
@@ -30198,7 +30207,7 @@ function initMultiplayer() {
       hitFlash: 0, typeName: m.typeName||'🐺 Kurt',
       dmg: m.dmg||28, speed: 0, xpReward: m.xpReward||50, goldReward: m.goldReward||20,
       provoked: true, lastHit: 0, lastBuildHit: 0, lastSpikeHit: 0, lastResHit: 0, lastHitSwingId: -1,
-      angle: m.angle || 0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastPacketTime: now, _lastSeen: now, isBoss: m.isBoss||false
+      angle: m.angle || 0, _targetAngle: m.angle || 0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastPacketTime: now, _lastSeen: now, isBoss: m.isBoss||false
     });
   });
 
@@ -30243,7 +30252,7 @@ function initMultiplayer() {
           eyes: m.eyes||'#ffcc66', hitFlash: m.hitFlash||0, typeName: m.typeName||'🐺 Kurt',
           dmg: m.dmg||28, speed: 0, xpReward: m.xpReward||50, goldReward: m.goldReward||20,
           provoked: true, lastHit: 0, lastBuildHit: 0, lastSpikeHit: 0, lastResHit: 0, lastHitSwingId: -1,
-          angle: m.angle||0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastPacketTime: now, _lastSeen: now, isBoss: m.isBoss||false
+          angle: m.angle||0, _targetAngle: m.angle||0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastPacketTime: now, _lastSeen: now, isBoss: m.isBoss||false
         };
         enemies.push(newMob);
         _enemyLocalMap.set(m.id, newMob);
@@ -30281,8 +30290,8 @@ function initMultiplayer() {
       if (ex) {
         ex._targetX = x; ex._targetY = y;
         ex.vx = vx; ex.vy = vy; ex.hp = hp;
-        if (ang > -9000) ex.angle = ang;
-        else if (vx !== 0 || vy !== 0) ex.angle = Math.atan2(vy, vx);
+        if (ang > -9000) ex._targetAngle = ang;
+        else if (vx !== 0 || vy !== 0) ex._targetAngle = Math.atan2(vy, vx);
         ex._lastSeen = now;
       } else {
         const mobNum = parseInt(String(id).replace(/\D/g, '')) || 1;
@@ -30299,7 +30308,7 @@ function initMultiplayer() {
           eyes: tDef.eyes, hitFlash: 0, typeName: tDef.typeName,
           dmg: tDef.dmg, speed: 0, xpReward: 80, goldReward: 35,
           provoked: true, lastHit: 0, lastBuildHit: 0, lastSpikeHit: 0, lastResHit: 0, lastHitSwingId: -1,
-          angle: ang > -9000 ? ang : 0, _lastSeen: now, isBoss: false,
+          angle: ang > -9000 ? ang : 0, _targetAngle: ang > -9000 ? ang : 0, _lastSeen: now, isBoss: false,
           enraged: Boolean(hp && hp < tDef.maxHp * 0.4)
         };
         enemies.push(newMob);
@@ -30362,7 +30371,7 @@ function initMultiplayer() {
     }
     if (m.typeName) e.typeName = m.typeName;
     if (m.lvl || m.level) e.level = e.lvl = m.lvl || m.level;
-    if (typeof m.angle === 'number') e.angle = m.angle;
+    if (typeof m.angle === 'number') e._targetAngle = m.angle;
   });
 
   // ── Mob tuzak dondurma sync — sunucu otoriteli, tüm yakın oyuncular görür ──
@@ -30376,6 +30385,7 @@ function initMultiplayer() {
     e._capturedByTrap = buildingId;
     e._capturedTrapX = trapX; e._capturedTrapY = trapY;
     e._frozenAngle = (frozenAngle !== undefined ? frozenAngle : (e.angle || 0));
+    e._targetAngle = e._frozenAngle;
     e.vx = 0; e.vy = 0;
     e.x = trapX; e.y = trapY;
     e._targetX = trapX; e._targetY = trapY;
@@ -30467,7 +30477,7 @@ function initMultiplayer() {
         if (typeof ts === 'number') attackingMob._stateAt = ts;
         attackingMob.state = 'attack';
         attackingMob.attackTimer = 0;
-        if (typeof angle === 'number') attackingMob.angle = angle;
+        if (typeof angle === 'number') attackingMob._targetAngle = angle;
       }
     }
     if (id && !attackingMob) return;
@@ -30507,7 +30517,7 @@ function initMultiplayer() {
     if (mob) {
       mob.state = 'attack';
       mob.attackTimer = 0;
-      if (typeof angle === 'number') mob.angle = angle;
+      if (typeof angle === 'number') mob._targetAngle = angle;
     }
     const ax = typeof x === 'number' ? x : (mob ? mob.x : player.x);
     const ay = typeof y === 'number' ? y : (mob ? mob.y : player.y);
@@ -36343,7 +36353,7 @@ renderInventoryIcons(true);
     const bonusHp = (helmet.maxHpBonus || 0) + loot.maxHp;
     const combatStats = window.fbCombatStats || { defenceLevel: 1 };
     const playerLevel = typeof getPlayerLevel === 'function' ? getPlayerLevel(player) : 1;
-    const newMaxHp = Math.max(130, baseHp + bonusHp + (playerLevel - 1) * 22 + (combatStats.defenceLevel - 1) * 6);
+    const newMaxHp = Math.max(130, baseHp + bonusHp + (playerLevel - 1) * 2 + (combatStats.defenceLevel - 1));
     player.maxHp = newMaxHp;
     if (newMaxHp > oldMaxHp) {
       player.hp = Math.min(newMaxHp, (player.hp || baseHp) + (newMaxHp - oldMaxHp));
