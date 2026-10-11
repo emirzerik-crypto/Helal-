@@ -24996,7 +24996,7 @@ function drawPlayer() {
     const _nto = _NT_OBJ_POOL[_ntPoolIdx++];
     _nto.wx = rx; _nto.wy = ry - player.radius - 32;
     _nto.name = (player.clanTag ? '[' + player.clanTag + '] ' : '') + player.name; _nto.rankId = _myRankId ?? 0;
-    _nto.hpRatio = player.hp / player.maxHp; _nto.isOwn = true; _nto.level = getPlayerLevel(player);
+    _nto.hpRatio = player.hp / player.maxHp; _nto.isOwn = true; _nto.level = getAge(player.gold);
     _pendingNameTags.push(_nto);
   }
 
@@ -27819,7 +27819,6 @@ function update(timestamp = 0) {
   }
   if (!_isDying) drawPlayer();
   drawSpawnShield();
-  _drawLocalChatBubble();
 
   // Draw combat effects after actors so sprites and impact flashes remain visible.
   try {
@@ -27908,6 +27907,7 @@ function update(timestamp = 0) {
       _ntPoolIdx = 0; // reset pool index — pool objects are reused next frame
     }
   }
+  _drawLocalChatBubble();
 
   // Screen-space post-process layers
   drawRain();
@@ -29997,9 +29997,12 @@ function initMultiplayer() {
       }
     }
     const isMe = id === _mySocketId;
-    if (!isMe) {
+    if (isMe) {
+      player._chatMsg = msg || '';
+      player._chatExpiry = Date.now() + 5000;
+    } else {
       const op = _otherPlayers.get(id);
-      if (op) { op._chatMsg = msg || ''; op._chatExpiry = Date.now() + 4500; }
+      if (op) { op._chatMsg = msg || ''; op._chatExpiry = Date.now() + 5000; }
     }
     if (msg) pushKillFeed(`💬 ${name || 'Oyuncu'}: ${msg}`);
   });
@@ -30017,14 +30020,18 @@ function initMultiplayer() {
       _updateWorldChatUnread();
       _showWorldChatNotice(message);
     }
-    if (id === _mySocketId) return;
+    if (id === _mySocketId) {
+      player._chatMsg = chat.emoji + ' ' + chat.text;
+      player._chatExpiry = Date.now() + 5000;
+      return;
+    }
     const op = _otherPlayers.get(id);
     const chatX = Number.isFinite(Number(x)) ? Number(x) : op?.x;
     const chatY = Number.isFinite(Number(y)) ? Number(y) : op?.y;
     if (!Number.isFinite(chatX) || !Number.isFinite(chatY)) return;
     if (op) {
       op._chatMsg = chat.emoji + ' ' + chat.text;
-      op._chatExpiry = Date.now() + 4500;
+      op._chatExpiry = Date.now() + 5000;
     }
     floatingTexts.push({ x: chatX, y: chatY - 120, text: chat.emoji + ' ' + chat.text, alpha: 1, life: 120, color: '#ffffff', big: true });
     pushKillFeed('💬 ' + (name || op?.name || 'Oyuncu') + ': ' + chat.text);
@@ -31120,7 +31127,7 @@ document.addEventListener('keydown', (e) => {
       if (msg) {
         _socket.emit('chat', { msg });
         // Show local bubble
-        player._chatMsg = msg; player._chatExpiry = Date.now() + 4500;
+        player._chatMsg = msg; player._chatExpiry = Date.now() + 5000;
         pushKillFeed(`💬 ${player.name}: ${msg}`);
       }
       document.body.removeChild(_chatInput);
@@ -31425,7 +31432,7 @@ function drawOtherPlayers() {
         const _nto = _NT_OBJ_POOL[_ntPoolIdx++];
         _nto.wx = p.x; _nto.wy = p.y - 44; _nto.name = (p.clanTag ? '[' + p.clanTag + '] ' : '') + (p.name || '?');
         _nto.rankId = p.rankId ?? 0; _nto.hpRatio = _hpRatio; _nto.isOwn = false;
-        _nto.level = p.level || p.lvl || getAge(p.gold || 0);
+        _nto.level = getAge(p.gold || 0);
         _pendingNameTags.push(_nto);
       }
 
@@ -31537,20 +31544,86 @@ function drawOtherPlayers() {
 // ─── Chat bubble for LOCAL player ────────────────────────────────────────────
 function _drawLocalChatBubble() {
   if (!player._chatMsg || !player._chatExpiry || _nowMs >= player._chatExpiry) return;
-  const fade = Math.min(1, (player._chatExpiry - _nowMs) / 700);
-  const cmx = player.x, cmy = player.y - player.radius - 50;
+  const fade = Math.min(1, (player._chatExpiry - _nowMs) / 450);
+  const centerX = canvas.width / 2 + shakeX + ZOOM * (player.x - camX - canvas.width / 2);
+  const tagY = canvas.height / 2 + shakeY + ZOOM * (player.y - player.radius - 32 - camY - canvas.height / 2);
+  const tailY = tagY - 40;
+  const message = String(player._chatMsg).trim();
+  if (!message) return;
+
   ctx.save();
-  // BUG FIX: set font BEFORE measureText so bubble width matches rendered text
-  ctx.font = '11px Arial'; ctx.textAlign = 'center';
-  const cw = Math.max(60, ctx.measureText(player._chatMsg).width + 20);
-  ctx.globalAlpha = fade * 0.92;
-  ctx.fillStyle = '#fff'; ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1.5;
-  ctx.beginPath(); ctx.roundRect(cmx - cw/2, cmy - 18, cw, 24, 6); ctx.fill(); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(cmx-5, cmy+6); ctx.lineTo(cmx+5, cmy+6); ctx.lineTo(cmx, cmy+14); ctx.closePath(); ctx.fill();
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.font = 'bold 16px Arial';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  const maxTextWidth = 320;
+  const lines = [];
+  let line = '';
+  for (const word of message.split(/\s+/)) {
+    if (ctx.measureText(word).width > maxTextWidth) {
+      if (line) lines.push(line);
+      line = '';
+      for (const character of Array.from(word)) {
+        const candidate = line + character;
+        if (line && ctx.measureText(candidate).width > maxTextWidth) {
+          lines.push(line);
+          line = character;
+        } else {
+          line = candidate;
+        }
+      }
+    } else {
+      const candidate = line ? line + ' ' + word : word;
+      if (line && ctx.measureText(candidate).width > maxTextWidth) {
+        lines.push(line);
+        line = word;
+      } else {
+        line = candidate;
+      }
+    }
+  }
+  if (line) lines.push(line);
+
+  const lineHeight = 21;
+  const bubbleWidth = Math.max(88, Math.ceil(Math.max(...lines.map(text => ctx.measureText(text).width)) + 28));
+  const bubbleHeight = lines.length * lineHeight + 18;
+  const bubbleBottom = tailY - 8;
+  const bubbleTop = bubbleBottom - bubbleHeight;
+  const bubbleLeft = centerX - bubbleWidth / 2;
+
   ctx.globalAlpha = fade;
-  ctx.fillStyle = '#222'; ctx.font = '11px Arial'; ctx.textAlign = 'center';
-  ctx.fillText(player._chatMsg.length > 28 ? player._chatMsg.slice(0,27)+'…' : player._chatMsg, cmx, cmy - 2);
-  ctx.globalAlpha = 1;
+  ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+  ctx.shadowBlur = 8;
+  ctx.shadowOffsetY = 2;
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.98)';
+  ctx.strokeStyle = '#253b27';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(bubbleLeft, bubbleTop, bubbleWidth, bubbleHeight, 8);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.beginPath();
+  ctx.moveTo(centerX - 9, bubbleBottom - 1);
+  ctx.lineTo(centerX, tailY);
+  ctx.lineTo(centerX + 9, bubbleBottom - 1);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  ctx.shadowOffsetY = 0;
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.98)';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(centerX - 8, bubbleBottom);
+  ctx.lineTo(centerX + 8, bubbleBottom);
+  ctx.stroke();
+
+  ctx.fillStyle = '#172319';
+  lines.forEach((text, index) => {
+    ctx.fillText(text, centerX, bubbleTop + 9 + lineHeight * (index + 0.5));
+  });
   ctx.restore();
 }
 
