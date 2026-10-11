@@ -4016,7 +4016,7 @@ function defeatWorldBoss(def, boss, attacker, now) {
       score: rewardScore + lastHitBonus, contribution: entry.damage, lastHit: isLastHitter
     });
     awardLoot(player, def.level, true);
-  }
+  });
 
   broadcastWorldBossStates();
   io.emit('world_boss_defeated', {

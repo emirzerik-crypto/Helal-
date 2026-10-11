@@ -157,19 +157,29 @@ If deployment breaks:
 
 ```bash
 cd /path/to/h
+node --version  # Must be v22.5.0 or newer
 npm ci
-export AUTH_SECRET="$(openssl rand -hex 32)"
-export DATABASE_FILE="$PWD/forestbrawl.db"
-pm2 start server.js --name forestbrawl --update-env
+cp .env.example .env
+nano .env
+```
+
+Before starting, set non-empty production values in `.env` for `AUTH_SECRET`, `OWNER_USERNAME`, and `OWNER_PASSWORD`. Set `NODE_ENV=production`, `PORT=3000`, and `DATABASE_FILE` to a writable persistent path. Keep `.env` private and do not commit it. Generate a secret with `openssl rand -hex 32` and paste it into `.env`.
+
+Start or restart the PM2 service:
+
+```bash
+pm2 start ecosystem.config.cjs --update-env
 pm2 save
 ```
 
-Check the service and database:
+Check that the Node process responds locally before debugging Nginx:
 
 ```bash
 curl http://127.0.0.1:3000/api/health
-sqlite3 forestbrawl.db 'SELECT state_key, updated_at FROM game_state;'
+pm2 logs forestbrawl --lines 100
 ```
+
+If the local health check works but the public domain returns `502`, verify the Nginx upstream points to `http://127.0.0.1:3000` and inspect `pm2 logs forestbrawl` for startup or crash errors. The startup log must contain `listening on 0.0.0.0:3000`.
 
 - Render Docs: https://render.com/docs
 - Socket.IO: https://socket.io/docs/
