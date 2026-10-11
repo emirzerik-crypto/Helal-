@@ -1,16 +1,35 @@
-const CACHE_NAME = 'forestbrawl-shell-v10';
+const CACHE_NAME = 'forestbrawl-shell-v25';
 const APP_SHELL = [
   './',
   './index.html',
   './play.html',
   './manifest.json',
+  './lootCatalog.js',
+  './resourceYield.js',
+  './loot-icons.svg',
+  './asset/resource-icons/wood.png',
+  './asset/resource-icons/stone.png',
+  './asset/resource-icons/gold.png',
+  './asset/resource-icons/diamond.png',
+  './asset/resource-icons/amethyst.png',
+  './asset/resource-icons/redite.png',
   './originalicon.png',
   './asset/originalicon.png',
   './originalicon-192.png',
   './originalicon-512.png',
   './apple-touch-icon.png',
   './favicon-32.png',
-  './favicon-16.png'
+  './favicon-16.png',
+  './bossassets/scorpios-spritesheet.webp',
+  './bossassets/goliath-spritesheet.webp',
+  './bossassets/void-burn-vfx.webp',
+  './bossassets/rock-spike-vfx.webp',
+  './mobassets/wild-boar.webp',
+  './mobassets/forest-hornet.webp',
+  './mobassets/grizzly-bear.webp',
+  './mobassets/elder-wendigo.webp',
+  './mobassets/treant-boss.webp',
+  './mobassets/forest-mob-vfx.webp'
 ];
 
 self.addEventListener('install', event => {
@@ -50,7 +69,11 @@ self.addEventListener('fetch', event => {
           caches.open(CACHE_NAME).then(cache => cache.put(request, copy));
         }
         return response;
-      }).catch(() => caches.match(request).then(cached => cached || caches.match('./index.html')))
+      }).catch(() => caches.match(request).then(cached => {
+        if (cached) return cached;
+        if (url.pathname.includes('play.html')) return caches.match('./play.html');
+        return caches.match('./index.html');
+      }))
     );
     return;
   }
