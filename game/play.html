@@ -48,7 +48,7 @@
 <script>
 // ULTRA-EARLY: Replit badge ve benzeri enjekte edilen DOM elemanlarını yok et.
 (function(){
-  var K={gameCanvas:1,'game-ui-layer':1,minimap:1,'kill-feed':1,'dmg-flash':1,'upgrade-overlay':1,'upg-backdrop':1,'upg-notify-btn':1,'death-overlay':1,'spawn-overlay':1,'top-hud':1,'bottom-hud':1,'joy-left':1,'joy-right':1,'inv-bar':1,'lb-panel':1,'ui-top':1,'ui-bottom':1,'toast':1,'boss-bar':1,'biome-indicator':1,'safe-village-banner':1,'ping-display':1,'fps-display':1,'res-panel':1,'resource-hud':1,'left-stats-stack':1,'kill-flash':1,'kill-notif':1,'rage-overlay':1,'event-banner':1,'streak-hud':1,'shield-hud':1,'lvlup-flash':1,'tab-scoreboard':1,'quick-chat-wheel':1,'build-upg-panel':1,'train-btn':1,'train-stop-hud':1,'loading-screen':1,'quest-panel':1,'ach-popup':1,'spectator-hud':1,'invite-hud-btn':1,'event-meteor-banner':1,'trophy-meta-hud':1,'cave-prompt':1,'ach-panel':1,'bp-panel':1,'dash-btn':1,'snap-settings-panel':1,'entry-consent':1,'clan-game-btn':1,'clan-game-panel':1,'mmo-modal-bag':1,'mmo-modal-char':1,'mmo-modal-skills':1,'mmo-modal-bank':1,'mmo-modal-forge':1,'mmo-modal-merchant':1,'mmo-popover':1,'mmo-lvlup-toast':1,'blacksmith-modal':1,'blacksmith-shop-btn':1,'scythe-modal':1,'scythe-shop-btn':1,'helmet-modal':1,'helmet-shop-btn':1,'inventory-modal':1,'inventory-btn':1,'combat-stats-panel':1,'combat-stats-toggle-btn':1};
+  var K={gameCanvas:1,'game-ui-layer':1,minimap:1,'kill-feed':1,'dmg-flash':1,'upgrade-overlay':1,'upg-backdrop':1,'upg-notify-btn':1,'death-overlay':1,'spawn-overlay':1,'top-hud':1,'bottom-hud':1,'joy-left':1,'joy-right':1,'inv-bar':1,'lb-panel':1,'ui-top':1,'ui-bottom':1,'toast':1,'boss-bar':1,'biome-indicator':1,'safe-village-banner':1,'ping-display':1,'fps-display':1,'res-panel':1,'resource-hud':1,'left-stats-stack':1,'kill-flash':1,'kill-notif':1,'rage-overlay':1,'event-banner':1,'streak-hud':1,'shield-hud':1,'lvlup-flash':1,'tab-scoreboard':1,'quick-chat-wheel':1,'build-upg-panel':1,'train-btn':1,'train-stop-hud':1,'loading-screen':1,'quest-panel':1,'ach-popup':1,'spectator-hud':1,'invite-hud-btn':1,'event-meteor-banner':1,'trophy-meta-hud':1,'cave-prompt':1,'ach-panel':1,'bp-panel':1,'dash-btn':1,'snap-settings-panel':1,'entry-consent':1,'clan-game-btn':1,'clan-game-panel':1,'mmo-modal-bag':1,'mmo-modal-char':1,'mmo-modal-skills':1,'mmo-modal-bank':1,'mmo-modal-forge':1,'mmo-modal-merchant':1,'mmo-popover':1,'mmo-lvlup-toast':1,'blacksmith-modal':1,'blacksmith-shop-btn':1,'scythe-modal':1,'scythe-shop-btn':1,'helmet-modal':1,'helmet-shop-btn':1,'inventory-modal':1,'inventory-btn':1,'premium-auto-btn':1,'mount-btn':1,'combat-stats-panel':1,'combat-stats-toggle-btn':1};
   function shouldHide(el){
     if(!el||el.nodeType!==1)return false;
     if(el===document.body||el===document.head||el===document.documentElement)return false;
@@ -5724,6 +5724,56 @@ html,body{width:100vw !important;max-width:100vw !important;height:var(--app-hei
 #inventory-btn:hover {
   filter: brightness(1.22) drop-shadow(0 0 6px rgba(245,158,11,0.6));
 }
+#premium-auto-btn {
+  width:auto !important;
+  min-width:42px;
+  padding:0 8px !important;
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  color:#fde68a !important;
+  border-color:#8b5cf6 !important;
+  background:linear-gradient(145deg,#49306d,#211b35) !important;
+  font-size:12px !important;
+  font-weight:900;
+}
+#premium-auto-btn[aria-pressed="true"] {
+  color:#d9f99d !important;
+  border-color:#84cc16 !important;
+  box-shadow:0 0 10px rgba(132,204,22,.5),inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+#mount-btn {
+  width:auto !important;
+  min-width:42px;
+  padding:0 8px !important;
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  color:#fde68a !important;
+  border-color:#f59e0b !important;
+  background:linear-gradient(145deg,#92400e,#451a03) !important;
+  font-size:12px !important;
+  font-weight:900;
+}
+#mount-btn[aria-pressed="true"] {
+  color:#d9f99d !important;
+  border-color:#f59e0b !important;
+  box-shadow:0 0 10px rgba(245,158,11,.5),inset 0 1px 0 rgba(255,255,255,.2) !important;
+}
+@media(max-width:480px) {
+  #ui-top #premium-auto-btn {display:grid !important;width:29px !important;min-width:29px;padding:0 !important;}
+  #premium-auto-btn .premium-auto-label {display:none;}
+  #ui-top #mount-btn {display:grid !important;width:29px !important;min-width:29px;padding:0 !important;}
+  #mount-btn .mount-label {display:none;}
+}
+
+@media(min-width:481px) {
+  .mount-label {
+    display: inline;
+  }
+}
 
 .arpg-inv-modal {
   position: fixed;
@@ -7655,6 +7705,12 @@ function drawSkinEyesOverlay(c, R, sk, fl) {
 <div id="ui-top">
   <div style="flex:1;"></div>
   <div style="display:flex;gap:6px;pointer-events:auto;align-items:center;">
+    <button type="button" id="premium-auto-btn" class="ref-hud-btn" onclick="window.toggleAutoAttack()" title="Otomatik vuruş: KAPALI" aria-label="Otomatik vuruş" aria-pressed="false">
+      <span aria-hidden="true">⚔️</span><span class="premium-auto-label">AUTO</span>
+    </button>
+    <button type="button" id="mount-btn" class="ref-hud-btn" onclick="window.toggleMount()" title="Binek: KAPALI" aria-label="Binek" aria-pressed="false">
+      <span aria-hidden="true">🐺</span><span class="mount-label">BİNEK</span>
+    </button>
     <button type="button" id="inventory-btn" class="ref-hud-btn" onclick="window.toggleInventoryModal()" title="Envanter ve Karakter (I)" aria-label="Envanter">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.6));color:#f59e0b;">
         <path d="M4 10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v9a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-9z" fill="rgba(245,158,11,0.2)"/>
@@ -8802,21 +8858,32 @@ function _drawCenteredSprite(context, image, width, height = width) {
 }
 const _MISSING_ART_ROOT = 'procedural-assets/4k/missing/';
 const _MISSING_ART_CACHE = new Map();
-const _MOB_ATLAS_TARGET_DIAMETER = 2;
+const _MOB_ATLAS_TARGET_DIAMETER = 3.5;
 const _MOB_VISUAL_SIZE_MULTIPLIERS = Object.freeze({
-  wild_hare: 1.15,
-  forest_hornet: 1.4,
-  wolf: 1.15,
-  scorpion: 1.25,
-  frost_fox: 1.15,
-  sand_viper: 1.2,
-  dune_scorpion: 1.25,
-  magma_hound: 1.15,
-  elder_wendigo: 1.1,
+  wild_hare: 1.3,
+  forest_deer: 1.2,
+  forest_hornet: 1.5,
+  wolf: 1.3,
+  wild_boar: 1.2,
+  spider: 1.25,
+  scorpion: 1.35,
+  bear: 1.15,
+  grizzly_bear: 1.1,
+  elder_wendigo: 1.15,
+  treant_boss: 1.1,
+  frost_fox: 1.3,
+  polar_bear: 1.1,
+  mammoth: 1.1,
+  sand_viper: 1.35,
+  dune_scorpion: 1.35,
+  dune_lizard: 1.2,
+  magma_hound: 1.3,
+  fire_drake: 1.15,
+  obsidian_golem: 1.1,
 });
 const _MOB_ATLAS_FRAME_EXTENTS = Object.freeze({
-  wild_hare: 94 / 128,
-  forest_deer: 101 / 128,
+  wild_hare: 1,
+  forest_deer: 1,
   frost_fox: 1,
   polar_bear: 1,
   mammoth: 1,
@@ -8826,7 +8893,7 @@ const _MOB_ATLAS_FRAME_EXTENTS = Object.freeze({
   dune_lizard: 1,
   magma_hound: 1,
   fire_drake: 1,
-  obsidian_golem: 122 / 128,
+  obsidian_golem: 1,
 });
 const _VILLAGE_MOB_BUFFER_HALF = 1625;
 function _missingArtAtlas(category, name) {
@@ -9268,6 +9335,7 @@ const _questPending = {};
 const _questPersisted = {};
 let _questSyncTimer = null;
 let _questTrackedTimeMinutes = 0;
+const _questSessionStartTime = Date.now();
 function _accountStatePayload() {
   const settings = {};
   ['fb_auto_eat', 'fb_build_snap', 'fb_shake', 'fb_mobile_controls', 'fb_sfx_muted', 'fb_shadows', 'fb_fps', 'fb_minimap', 'fb_grid_show'].forEach(key => {
@@ -9319,7 +9387,7 @@ window.addEventListener('pagehide', () => { _syncGameAccountState(true); });
 window._updateQuestProgress = _trackQuestProgress;
 window._showAchPopup = function(){};
 setInterval(() => {
-  const minutes = Math.floor(globalTime / 60);
+  const minutes = Math.floor((Date.now() - _questSessionStartTime) / 60000);
   if (minutes > _questTrackedTimeMinutes) {
     _trackQuestProgress('time', minutes - _questTrackedTimeMinutes);
     _questTrackedTimeMinutes = minutes;
@@ -12171,7 +12239,7 @@ const ACTIVE_ENEMY_TYPES = [
   { name:'Ayı', biome:'forest', shape:'bear', radius:96, hp:1020, maxHp:1020, color:'#4a2f1b', outline:'#1a1008', dmg:68, speed:0.55, xp:330, gold:85, eyes:'#ffaa00', typeName:'🐻 Ayı' },
   { name:'Boz Ayı', biome:'forest', shape:'grizzly_bear', radius:112, hp:1450, maxHp:1450, color:'#765137', outline:'#2d1a10', dmg:86, speed:0.58, xp:450, gold:110, eyes:'#ffb347', typeName:'🐻 Boz Ayı' },
   { name:'Kadim Wendigo', biome:'forest', shape:'elder_wendigo', radius:140, hp:2350, maxHp:2350, color:'#8d9b79', outline:'#263126', dmg:106, speed:0.66, xp:680, gold:185, eyes:'#b9ffcf', typeName:'👹 Kadim Wendigo' },
-  { name:'Ağaç Devi', biome:'forest', shape:'treant_boss', radius:175, hp:3500, maxHp:3500, color:'#56713a', outline:'#1e3218', dmg:124, speed:0.42, xp:1000, gold:280, eyes:'#aaff66', typeName:'🌳 Ağaç Devi', isBoss: true },
+  { name:'Ağaç Devi', biome:'forest', shape:'treant_boss', radius:175, hp:7000, maxHp:7000, color:'#56713a', outline:'#1e3218', dmg:124, speed:0.42, xp:1000, gold:280, eyes:'#aaff66', typeName:'🌳 Ağaç Devi', isBoss: true },
   // Winter (Lv 22 - 45)
   { name:'Buz Tilkisi', biome:'winter', shape:'frost_fox', radius:62, hp:620, maxHp:620, color:'#e2edff', outline:'#2c3e55', dmg:55, speed:1.08, xp:280, gold:70, eyes:'#38b6ff', typeName:'🦊 Buz Tilkisi' },
   { name:'Kutup Ayısı', biome:'winter', shape:'polar_bear', radius:112, hp:1550, maxHp:1550, color:'#f0f5fb', outline:'#3b4b5e', dmg:94, speed:0.62, xp:520, gold:130, eyes:'#00e5ff', typeName:'🐻‍❄️ Kutup Ayısı' },
@@ -12183,7 +12251,7 @@ const ACTIVE_ENEMY_TYPES = [
   // Lava (Lv 38 - 65)
   { name:'Magma Tazısı', biome:'lava', shape:'magma_hound', radius:80, hp:1020, maxHp:1020, color:'#2a1410', outline:'#ff3700', dmg:86, speed:0.98, xp:450, gold:115, eyes:'#ffcc00', typeName:'🐺 Magma Tazısı' },
   { name:'Ateş Ejderi', biome:'lava', shape:'fire_drake', radius:125, hp:2050, maxHp:2050, color:'#420d09', outline:'#ff1e00', dmg:126, speed:0.74, xp:760, gold:205, eyes:'#ffee33', typeName:'🐉 Ateş Ejderi' },
-  { name:'Obsidiyen Golem', biome:'lava', shape:'obsidian_golem', radius:165, hp:3300, maxHp:3300, color:'#18121a', outline:'#ff4400', dmg:152, speed:0.38, xp:1050, gold:290, eyes:'#ff0033', typeName:'🗿 Obsidiyen Golem', isBoss: true },
+  { name:'Obsidiyen Golem', biome:'lava', shape:'obsidian_golem', radius:165, hp:10000, maxHp:10000, color:'#18121a', outline:'#ff4400', dmg:152, speed:0.38, xp:1050, gold:290, eyes:'#ff0033', typeName:'🗿 Obsidiyen Golem', isBoss: true },
 ];
 const ACTIVE_MOB_SHAPES = new Set([
   'wild_hare', 'tavsan', 'forest_deer', 'geyik',
@@ -12888,9 +12956,15 @@ let _isDying = false; // guard against double-die (pvp_hit + pvp_killed race)
 // ============================================================
 const ATTACK_DUR = {
   1: 300,  // Balta (Axe) savurma süresi (ms)
-  2: 280,  // Kılıç (Sword) savurma süresi (ms)
+  2: 330,  // Kılıç (Sword) savurma süresi (ms)
   3: 0, 4: 0, 5: 0, 6: 0, 7: 0, 8: 0, 9: 0, // Yapılar
 };
+
+function _getPlayerAttackDuration(weapon) {
+  const isScythe = Number(weapon) === 2 &&
+    Boolean(window._equippedScytheId || (playerAcc && playerAcc.kiliclar && String(playerAcc.kiliclar).startsWith('scythe_')));
+  return isScythe ? 380 : (ATTACK_DUR[Number(weapon)] || 300);
+}
 
 /**
  * 1. Ortak Saldırı Tetikleyici (Local ve Remote oyuncular için %100 aynı)
@@ -12898,7 +12972,8 @@ const ATTACK_DUR = {
 function playSwingAnimation(actor, weapon, durationMs) {
   if (!actor) return null;
   const knob = Number(weapon) === 2 ? 2 : (Number(weapon) || actor.weapon || 1);
-  const dur = Math.max(1, Number(durationMs) || ATTACK_DUR[knob] || 300);
+  const defaultDuration = actor === player ? _getPlayerAttackDuration(knob) : (ATTACK_DUR[knob] || 300);
+  const dur = Math.max(1, Number(durationMs) || defaultDuration);
   const bodyAng = Number(actor.bodyAngle ?? actor.angle ?? 0);
 
   actor.weapon = knob;
@@ -13575,8 +13650,14 @@ const player = {
   _fruitUseUntil: 0,
   _foodUseVisualUntil: 0,
   isAttacking: false, attackHeld: false, attackTimer: 0,
+  autoAttack: false,
   attackDuration: ATTACK_DUR[_initialWeapon] || 300, swingAngle: 0,
   lastHitEnemyTime: 0,
+  // Mount (Binek) System
+  isMounted: false,
+  mountType: null, // 'wolf', 'bear', 'dragon'
+  mountSpeedBonus: 0,
+  mountAnimTimer: 0,
   // Perk multipliers
   speedBonus: 1, dmgBonus: 1, harvestBonus: 1,
   armorBonus: 0, regenBonus: 1, atkSpdBonus: 1,
@@ -13910,7 +13991,11 @@ function selectInventorySlot(index) {
   const slotNum = index + 1;
   const prevWeapon = player.weapon;
   player.weapon = slotNum;
-  player.attackDuration = ATTACK_DUR[slotNum] || (slotNum === 2 ? 280 : 300);
+  if (slotNum >= 3 && player.autoAttack) {
+    player.autoAttack = false;
+    _updateAutoAttackButton();
+  }
+  player.attackDuration = _getPlayerAttackDuration(slotNum);
   player.attackHeld = false;
   player.isAttacking = false;
   player.attackTimer = 0;
@@ -15859,6 +15944,128 @@ function _swingHitRange() {
   return isScythe ? 168 : (player.weapon === 2 ? 140 : 128); // tırpan 168, katana 140, balta/bıçak 128
 }
 
+function _findAutoAttackTarget() {
+  if (!player || player.weapon >= 3 || (player.hp ?? 0) <= 0 || _isDying) return null;
+  const attackRange = _swingHitRange();
+  let nearest = null;
+  let nearestDistance = Infinity;
+  const consider = (target, extraRange) => {
+    if (!target || target.alive === false || (Number(target.hp) || 0) <= 0) return;
+    const distance = Math.hypot((Number(target.x) || 0) - player.x, (Number(target.y) || 0) - player.y);
+    if (distance > attackRange + Math.max(0, Number(extraRange) || 0) + 16 || distance >= nearestDistance) return;
+    nearest = target;
+    nearestDistance = distance;
+  };
+  // Check enemies first (priority)
+  for (const enemy of enemies) consider(enemy, enemy.radius);
+  if (Array.isArray(window.CAMPS) && window.bossState) {
+    for (const camp of window.CAMPS) {
+      const boss = window.bossState[camp.id];
+      if (boss && boss.alive) consider(boss, camp.bossR);
+    }
+  }
+  // If no enemy found, check resources (trees, rocks, etc.)
+  if (!nearest && Array.isArray(resources)) {
+    for (const res of resources) {
+      if (!res || (Number(res.hp) || 0) <= 0) continue;
+      const distance = Math.hypot((Number(res.x) || 0) - player.x, (Number(res.y) || 0) - player.y);
+      if (distance > attackRange + (Number(res.radius) || 0) + 16 || distance >= nearestDistance) continue;
+      nearest = res;
+      nearestDistance = distance;
+    }
+  }
+  return nearest;
+}
+
+function _updateAutoAttackButton() {
+  const button = document.getElementById('premium-auto-btn');
+  if (!button) return;
+  const enabled = Boolean(player && player.autoAttack);
+  button.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+  button.title = 'Otomatik vuruş: ' + (enabled ? 'AÇIK (düşman + kaynak)' : 'KAPALI');
+  button.setAttribute('aria-label', 'Otomatik vuruş ' + (enabled ? 'açık' : 'kapalı'));
+  // Visual feedback
+  if (enabled) {
+    button.style.background = 'linear-gradient(180deg, #22c55e 0%, #16a34a 100%)';
+    button.style.borderColor = '#15803d';
+  } else {
+    button.style.background = '';
+    button.style.borderColor = '';
+  }
+}
+
+function _updateMountButton() {
+  const button = document.getElementById('mount-btn');
+  if (!button) return;
+  const mounted = Boolean(player && player.isMounted);
+  button.setAttribute('aria-pressed', mounted ? 'true' : 'false');
+  const mountTypes = { wolf: '🐺 Kurt', bear: '🐻 Ayı', dragon: '🐲 Ejderha' };
+  const mountName = player?.mountType ? mountTypes[player.mountType] || 'Bilinmeyen' : 'KAPALI';
+  button.title = 'Binek: ' + (mounted ? mountName : 'KAPALI');
+  button.setAttribute('aria-label', 'Binek ' + (mounted ? mountName : 'kapalı'));
+  // Update icon based on mount type
+  const iconSpan = button.querySelector('span[aria-hidden="true"]');
+  if (iconSpan && player?.mountType) {
+    const icons = { wolf: '🐺', bear: '🐻', dragon: '🐲' };
+    iconSpan.textContent = icons[player.mountType] || '🐺';
+  }
+  // Visual feedback
+  if (mounted) {
+    button.style.background = 'linear-gradient(180deg, #f59e0b 0%, #d97706 100%)';
+    button.style.borderColor = '#b45309';
+  } else {
+    button.style.background = '';
+    button.style.borderColor = '';
+  }
+}
+
+window.toggleAutoAttack = function() {
+  if (!player || player.weapon >= 3) {
+    if (typeof showGameToast === 'function') showGameToast('Otomatik vuruş için balta veya kılıç seç.');
+    return;
+  }
+  player.autoAttack = !player.autoAttack;
+  player.attackHeld = false;
+  player.isAttacking = false;
+  _updateAutoAttackButton();
+  if (typeof showGameToast === 'function') {
+    showGameToast(player.autoAttack ? 'Otomatik vuruş AÇIK ✓' : 'Otomatik vuruş KAPALI');
+  }
+};
+
+window.toggleMount = function() {
+  if (!player) return;
+  
+  if (player.isMounted) {
+    // Dismount
+    player.isMounted = false;
+    player.mountType = null;
+    player.mountSpeedBonus = 0;
+    if (typeof showGameToast === 'function') {
+      showGameToast('BİNEK: İndi');
+    }
+  } else {
+    // Mount - cycle through available mounts
+    const mounts = ['wolf', 'bear', 'dragon'];
+    const currentIndex = mounts.indexOf(player.mountType || '');
+    const nextIndex = (currentIndex + 1) % mounts.length;
+    player.mountType = mounts[nextIndex];
+    player.isMounted = true;
+    
+    // Set speed bonus based on mount type
+    const speedBonuses = { wolf: 1.4, bear: 1.3, dragon: 1.6 };
+    player.mountSpeedBonus = speedBonuses[player.mountType] || 1.4;
+    
+    if (typeof showGameToast === 'function') {
+      const mountNames = { wolf: 'Kurt', bear: 'Ayı', dragon: 'Ejderha' };
+      showGameToast('BİNEK: ' + mountNames[player.mountType] + ' bindi! (Hız: +' + Math.round((player.mountSpeedBonus - 1) * 100) + '%)');
+    }
+  }
+  
+  _updateMountButton();
+};
+};
+
 // ── Lag compensation: immediate client-side PvP hit prediction ──────────────
 // Replicates the server's arc+range check against _otherPlayers so that blood,
 function _checkPvpHits() {
@@ -15954,7 +16161,7 @@ function checkHits() {
       // Critical hit system
       const _isCrit = Math.random() < (player._highCrit ? 0.22 : 0.10);
       const dmgFinal = Math.round((_isCrit ? Math.round(dmg * _critMulti) : dmg) * (_comboDmgBonus || 1));
-      if (_connected && _socket && e._netId) {
+      if (_serverMobAuthority && _socket?.connected && e._netId) {
         // Server-authoritative: send hit to server; server applies damage and broadcasts result
         _socket.emit('mob_hit_req', { mobId: e._netId, dmg: dmgFinal, angle: player.angle, swingId: _swingId });
         // Optimistic local HP update: clamp at min 1 so client NEVER deletes mob early in multiplayer!
@@ -15976,12 +16183,12 @@ function checkHits() {
       floatingTexts.push({ x: e.x, y: e.y - 35, text: (_isCrit?'💥 KRİT! -':'-') + dmgFinal, alpha: 1, life: _isCrit?55:35, color: _isCrit?'#ffdd00':'#ff6666', big:_isCrit });
       if (_isCrit) { for(let _cp=0;_cp<10;_cp++) _spawnParticle(e.x+(Math.random()-0.5)*20,e.y+(Math.random()-0.5)*20,(Math.random()-0.5)*9,Math.random()*-7-2,3+Math.random()*3,22,'#ffd700'); }
       if (player._lifeSteal && !_isDying) { player.hp = Math.min(player.maxHp, player.hp + 4); updateHpBar(); floatingTexts.push({x:player.x,y:player.y-38,text:'🌿 +4',alpha:1,life:28,color:'#66ee44'}); }
-      if (e.hp <= 0 && !_connected) {
+      if (e.hp <= 0 && (!_serverMobAuthority || e._netId === undefined)) {
         // Offline mode: handle kill locally
         const xpGain = e.xpReward || 25;
         const goldDrop = scaleGoldReward(e.goldReward || 5);
         const scoreGain = Math.round(xpGain * 0.75 + goldDrop * 3);
-        player.xp += scaledXpGain(xpGain); player.kills++;
+        player.xp += scaledXpGain(xpGain); player.kills++; _recordLocalKill();
         player.score = (player.score||0) + scoreGain;
         _playerLevelKills++; _checkPlayerLevel();
         updateUI(); updateXP();
@@ -16033,7 +16240,7 @@ function checkHits() {
         return;
       }
       const _isBossCrit = Math.random() < (player._highCrit ? 0.22 : 0.10);
-      const _bossDmg = Math.round(dmg * (_isBossCrit ? _critMulti : 1) * (_comboDmgBonus || 1));
+      const _bossDmg = Math.min(420, Math.round(dmg * (_isBossCrit ? _critMulti : 1) * (_comboDmgBonus || 1)));
       bs.hp = Math.max(0, bs.hp - _bossDmg);
       bs.dmgFlashFrames = 6;
       spawnBlood(bs.x, bs.y, _isBossCrit ? 8 : 4);
@@ -16228,7 +16435,7 @@ function checkHits() {
 
       // HIT confirmed — deal weapon damage to building
       b.lastHitSwingId = _swingId;
-      const isServerBuilding = Boolean(b._netId && _connected && _socket);
+      const isServerBuilding = Boolean(b._netId && _serverMobAuthority && _socket?.connected);
       const bDmg = Math.max(20, Math.round(dmg * 0.75)); // guaranteed damage to buildings
       if (!isServerBuilding) b.hp = Math.max(0, b.hp - bDmg);
       b.shake = 8; b.hitTimer = 15;
@@ -16378,7 +16585,7 @@ function updateArrows(){
           if(e.hp<=0){
             const xpGain=e.xp; const goldDrop=e.gold+(Math.random()<0.3?1:0);
             player.xp+=xpGain; updateXP(); player.gold+=goldDrop; updateUI();
-            player.kills++; _playerLevelKills++; _checkPlayerLevel();
+            player.kills++; _recordLocalKill(); _playerLevelKills++; _checkPlayerLevel();
             recordKill();
             floatingTexts.push({x:e.x,y:e.y-55,text:'+'+xpGain+' XP',alpha:1,life:45,color:'#a0e8ff'});
             if(Math.random()<0.25) spawnArmorDrop(e.x,e.y);
@@ -17621,7 +17828,7 @@ function _submitScore() {
       name: player.name || 'Oyuncu',
       score,
       gold: player.gold || 0,
-      kills: player.kills || 0,
+      kills: typeof player.matchKills === 'number' ? player.matchKills : (player.kills || 0),
       timeAlive: timeSec,
       guestId
     }),
@@ -17645,9 +17852,16 @@ function _goToMenu() {
   Promise.resolve(scoreRequest).finally(() => { window.location.href = _BASE; });
 }
 
+function _recordLocalKill() {
+  if (!_connected) player.matchKills = (Number(player.matchKills) || 0) + 1;
+}
+
 function die() {
   if (_isDying) return; // already dying — ignore duplicate call
   _isDying = true;
+  player.autoAttack = false;
+  player.attackHeld = false;
+  _updateAutoAttackButton();
   _trapCaughtBy = null; // free from any trap on death
   _playerMoveTrail = []; // clear movement trail on death
   if (typeof bossTelegraphs !== 'undefined') bossTelegraphs.length = 0; // clear stale boss skill telegraphs on death
@@ -17675,20 +17889,23 @@ function die() {
     document.body.removeChild(_chatInput);
     _chatInput = null;
   }
-  const score = player.score || (player.xp * 10 + player.kills * 120 + player.gold * 3);
+  const _dieGold = Math.max(0, Number(player.gold) || 0);
+  const _dieKills = Math.max(0, Number(typeof player.matchKills === 'number' ? player.matchKills : player.kills) || 0);
+  const _dieXp = Math.max(0, Number(player.xp) || 0);
+  const score = player.score || (_dieXp * 10 + _dieKills * 120 + _dieGold * 3);
   const prev = parseInt(localStorage.getItem('fb_best_score') || '0');
   if (score > prev) {
     localStorage.setItem('fb_best_score', score);
-    localStorage.setItem('fb_best_kills', player.kills);
-    localStorage.setItem('fb_best_age', getAge(player.gold));
+    localStorage.setItem('fb_best_kills', _dieKills);
+    localStorage.setItem('fb_best_age', getAge(_dieGold));
     localStorage.setItem('fb_best_name', player.name);
   }
-  localStorage.setItem('fb_last_kills', player.kills);
-  localStorage.setItem('fb_last_age', getAge(player.gold));
-  localStorage.setItem('fb_last_gold', player.gold);
+  localStorage.setItem('fb_last_kills', _dieKills);
+  localStorage.setItem('fb_last_age', getAge(_dieGold));
+  localStorage.setItem('fb_last_gold', _dieGold);
   // Update cumulative stats for achievement tracking
   const _prevTotalKills = parseInt(localStorage.getItem('fb_total_kills')||'0', 10);
-  const _newTotalKills  = _prevTotalKills + player.kills;
+  const _newTotalKills  = _prevTotalKills + _dieKills;
   localStorage.setItem('fb_total_kills', _newTotalKills);
   // Cumulative deaths + games played (for guest profile display)
   const _prevTotalDeaths = parseInt(localStorage.getItem('fb_total_deaths')||'0', 10);
@@ -17696,7 +17913,7 @@ function die() {
   const _prevTotalGames = parseInt(localStorage.getItem('fb_total_games')||'0', 10);
   localStorage.setItem('fb_total_games', _prevTotalGames + 1);
   const _prevMaxAge = parseInt(localStorage.getItem('fb_max_age')||'1', 10);
-  const _curAge = getAge(player.gold);
+  const _curAge = getAge(_dieGold);
   if(_curAge > _prevMaxAge) localStorage.setItem('fb_max_age', _curAge);
   // Mark pending achievements for popup in lobby
   (function(){
@@ -17717,14 +17934,13 @@ function die() {
     }
   })();
   // ── Meta-progression die hook ──────────────────────────────────────
-  const _dieKills    = player.kills;
   const _dieTimeSec  = Math.max(0, Math.floor((Date.now() - _survivalStartTime) / 1000));
   const _dieScore    = score;
   if (typeof window._metaOnDie === 'function')
     setTimeout(function(){ window._metaOnDie(_dieKills, _dieTimeSec, _dieScore); }, 200);
   // Add earned gold to shop balance
   const prevShopGold = parseInt(localStorage.getItem('fb_gold')||'1500',10);
-  localStorage.setItem('fb_gold', prevShopGold + player.gold);
+  localStorage.setItem('fb_gold', prevShopGold + _dieGold);
   // Reset match resources upon death
   player.wood = 0;
   player.stone = 0;
@@ -17734,22 +17950,17 @@ function die() {
   player.redite = 0;
   player.apples = 5;
   player.score = 0;
-  if (typeof window.resetOwnedEquipmentForDeath === 'function') {
-    window.resetOwnedEquipmentForDeath();
-  }
   updateUI();
   // ── Guest & User cumulative stat tracking ─────────
   const _dieAuthTok = localStorage.getItem('fb_auth_token') || '';
-  const _dieTimePlayed = Math.floor(globalTime / 60); // seconds alive this session
-  const _xpEarned = player.kills * 60 + _dieTimePlayed * 2 + (score > 0 ? Math.floor(Math.sqrt(score) * 8) : 0);
+  const _dieTimePlayed = _dieTimeSec;
+  const _xpEarned = _dieKills * 60 + _dieTimePlayed * 2 + (score > 0 ? Math.floor(Math.sqrt(score) * 8) : 0);
   const _xpBeforeMatch = parseInt(localStorage.getItem('fb_user_xp') || localStorage.getItem('fb_total_xp') || '0', 10);
   const _matchXp = Math.max(0, Math.round(Math.min(_xpEarned, 10000) * XP_GAIN_RATE));
   
   localStorage.setItem('fb_total_xp',   parseInt(localStorage.getItem('fb_total_xp')||'0',10)   + _matchXp);
   localStorage.setItem('fb_total_time', parseInt(localStorage.getItem('fb_total_time')||'0',10) + _dieTimePlayed);
-  localStorage.setItem('fb_total_gold', parseInt(localStorage.getItem('fb_total_gold')||'0',10) + player.gold);
-  localStorage.setItem('fb_total_kills', parseInt(localStorage.getItem('fb_total_kills')||'0',10) + player.kills);
-  localStorage.setItem('fb_total_deaths', parseInt(localStorage.getItem('fb_total_deaths')||'0',10) + 1);
+  localStorage.setItem('fb_total_gold', parseInt(localStorage.getItem('fb_total_gold')||'0',10) + _dieGold);
   if (score > parseInt(localStorage.getItem('fb_best_score')||'0', 10)) {
     localStorage.setItem('fb_best_score', score);
   }
@@ -17763,22 +17974,22 @@ function die() {
     body: JSON.stringify({
       xp: Math.min(_xpEarned, 10000),
       startXP: _xpBeforeMatch,
-      kills: player.kills,
+      kills: _dieKills,
       deaths: 1,
       score,
       timePlayed: _dieTimePlayed,
-      coins: player.gold,
-      gold: player.gold,
+      coins: _dieGold,
+      gold: _dieGold,
       questProgress: {
         wolves: Math.max(0, (_sessionQuestStats.wolves || 0) - (_questPersisted.wolves || 0)),
         bears: Math.max(0, (_sessionQuestStats.bears || 0) - (_questPersisted.bears || 0)),
         scorpions: Math.max(0, (_sessionQuestStats.scorpions || 0) - (_questPersisted.scorpions || 0)),
         spiders: Math.max(0, (_sessionQuestStats.spiders || 0) - (_questPersisted.spiders || 0)),
-        kills: Math.max(0, (player.kills || 0) - (_questPersisted.kills || 0)),
+        kills: Math.max(0, _dieKills - (_questPersisted.kills || 0)),
         kingKills: Math.max(0, (_sessionQuestStats.kingKills || 0) - (_questPersisted.kingKills || 0)),
         buildings: Math.max(0, (_sessionQuestStats.buildings || 0) - (_questPersisted.buildings || 0)),
         wood: Math.max(0, (_sessionQuestStats.wood || 0) - (_questPersisted.wood || 0)),
-        gold: Math.max(0, (player.gold || 0) - (_questPersisted.gold || 0))
+        gold: Math.max(0, _dieGold - (_questPersisted.gold || 0))
       }
     }),
   }).then(r => {
@@ -17814,9 +18025,9 @@ function die() {
   }).catch(() => {});
 
   const isNew = score > prev;
-  const timeStr = _fmtTime(globalTime);
-  const age = getAge(player.gold);
-  const newTotalGold = prevShopGold + player.gold;
+  const timeStr = _fmtTime(_dieTimeSec);
+  const age = getAge(_dieGold);
+  const newTotalGold = prevShopGold + _dieGold;
 
   // Killer info banner
   const killerEl = document.getElementById('death-killer');
@@ -17857,7 +18068,7 @@ function die() {
   document.getElementById('death-overlay').classList.add('show');
   // Update quest progress for time survived
   {
-    const _minsSurvived = Math.floor(globalTime / 60);
+    const _minsSurvived = Math.floor((Date.now() - _questSessionStartTime) / 60000);
     if (_minsSurvived > _questTrackedTimeMinutes) {
       if (typeof window._updateQuestProgress === 'function') {
         window._updateQuestProgress('time', _minsSurvived - _questTrackedTimeMinutes);
@@ -18074,7 +18285,7 @@ function _shareScore() {
   const ridSafe  = Math.min(typeof _myRankId!=='undefined'?_myRankId:0, 11);
   const rankName = (_RANK_META[ridSafe]||_RANK_META[0])[5];
   const rankEmoji= _FB_RANK_EMOJIS[ridSafe] || '🌱';
-  const timeStr  = _fmtTime ? _fmtTime(globalTime) : '';
+  const timeStr  = _fmtTime ? _fmtTime(Math.max(0, Math.floor((Date.now() - _survivalStartTime) / 1000))) : '';
   const streak   = killStreak || 0;
   const base     = window.location.origin + (_BASE || '/');
   const text     = `${rankEmoji} ForestBrawl.io'da ${name} olarak ${kills} kill yaptım!\n🔥 ${streak > 1 ? streak+'× kill serisi! ' : ''}⏱️ ${timeStr} · Rank: ${rankName}\n🌲 Sen de oyna: ${base}`;
@@ -18153,6 +18364,7 @@ function respawn() {
   player.stone = 0;
   player.gold = 0;
   player.kills = 0;
+  player.matchKills = 0;
   player.totalDmg = 0;
   player.score = 0;
   player.xp = 0;
@@ -18161,8 +18373,11 @@ function respawn() {
   player.speedBonus = 1; player.dmgBonus = 1; player.harvestBonus = 1;
   player.armorBonus = 0; player.atkSpdBonus = 1; player.regenBonus = 1;
   player.vampire = false; player._wideSwing = false;
-  player.weapon = 1; player.attackHeld = false; player.isAttacking = false; player.attackTimer = 0;
+  player.weapon = 1; player.autoAttack = false; player.attackHeld = false; player.isAttacking = false; player.attackTimer = 0;
+  _updateAutoAttackButton();
   _survivalStartTime = Date.now();
+  _scoreSubmitted = false;
+  _scoreSubmitPromise = null;
   // Only clear OWN buildings — remote buildings from other players must survive respawn.
   // The server will send a buildings_sync event with the current full state.
   for (let _bi = buildings.length - 1; _bi >= 0; _bi--) {
@@ -22457,6 +22672,444 @@ function _drawObsidianGolem(ctx, e, R, isMoving, state, animTimer, attackTimer, 
   return true;
 }
 
+// ── MOUNT (BİNEK) DRAWING FUNCTIONS ─────────────────────────────────────
+
+function _drawMountWolf(ctx, R, isMoving, animTimer, flash) {
+  ctx.save();
+  
+  // Animation: galloping leg movement
+  const gallop = isMoving ? Math.sin(animTimer * 3) : Math.sin(Date.now() * 0.002) * 0.3;
+  const legOffset = gallop * R * 0.12;
+  
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.beginPath();
+  ctx.ellipse(0, R * 0.4, R * 0.9, R * 0.45, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Body - muscular wolf
+  const bodyCol = flash ? '#9a8a7a' : '#4a3528';
+  const bodyOut = '#1a0f08';
+  ctx.fillStyle = bodyCol;
+  ctx.strokeStyle = bodyOut;
+  ctx.lineWidth = Math.max(2.5, R * 0.06);
+  
+  ctx.beginPath();
+  ctx.ellipse(0, 0, R * 1.1, R * 0.65, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  
+  // Chest fur (lighter)
+  ctx.fillStyle = flash ? '#bbaa9a' : '#6a5a48';
+  ctx.beginPath();
+  ctx.ellipse(R * 0.3, 0, R * 0.5, R * 0.4, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Legs - realistic leg articulation
+  const legCol = flash ? '#8a7a6a' : '#3a2518';
+  ctx.fillStyle = legCol;
+  ctx.strokeStyle = bodyOut;
+  ctx.lineWidth = Math.max(2, R * 0.05);
+  
+  // Front legs
+  for (const s of [-1, 1]) {
+    ctx.beginPath();
+    ctx.ellipse(R * 0.5 + legOffset * 0.5, s * R * 0.45, R * 0.12, R * 0.35, 0.15 * s, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    // Paw
+    ctx.beginPath();
+    ctx.ellipse(R * 0.52 + legOffset * 0.5, s * R * 0.78, R * 0.15, R * 0.12, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+  }
+  
+  // Back legs
+  for (const s of [-1, 1]) {
+    ctx.beginPath();
+    ctx.ellipse(-R * 0.4 - legOffset * 0.5, s * R * 0.5, R * 0.14, R * 0.38, -0.1 * s, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    // Paw
+    ctx.beginPath();
+    ctx.ellipse(-R * 0.42 - legOffset * 0.5, s * R * 0.82, R * 0.16, R * 0.13, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+  }
+  
+  // Tail - animated wagging
+  const tailWag = Math.sin(animTimer * 4) * R * 0.08;
+  ctx.strokeStyle = legCol;
+  ctx.lineWidth = Math.max(3, R * 0.08);
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(-R * 0.95, 0);
+  ctx.quadraticCurveTo(-R * 1.35, tailWag, -R * 1.55, tailWag * 1.5);
+  ctx.stroke();
+  
+  // Head
+  ctx.fillStyle = bodyCol;
+  ctx.beginPath();
+  ctx.ellipse(R * 0.7, 0, R * 0.42, R * 0.38, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  
+  // Snout
+  ctx.fillStyle = flash ? '#aaa99a' : '#5a4a38';
+  ctx.beginPath();
+  ctx.ellipse(R * 0.95, 0, R * 0.2, R * 0.18, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  
+  // Nose
+  ctx.fillStyle = '#1a0f08';
+  ctx.beginPath();
+  ctx.arc(R * 1.08, 0, R * 0.06, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Eyes - fierce yellow
+  ctx.fillStyle = '#ffaa00';
+  ctx.beginPath();
+  ctx.ellipse(R * 0.78, -R * 0.08, R * 0.06, R * 0.04, 0, 0, Math.PI * 2);
+  ctx.ellipse(R * 0.78, R * 0.08, R * 0.06, R * 0.04, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Ears - pointed
+  ctx.fillStyle = legCol;
+  for (const s of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(R * 0.6, s * R * 0.22);
+    ctx.lineTo(R * 0.48, s * R * 0.42);
+    ctx.lineTo(R * 0.72, s * R * 0.38);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  }
+  
+  // Saddle (rider seat)
+  ctx.fillStyle = '#3a2a18';
+  ctx.strokeStyle = '#1a0a08';
+  ctx.lineWidth = Math.max(2, R * 0.05);
+  ctx.beginPath();
+  ctx.ellipse(0, -R * 0.05, R * 0.35, R * 0.18, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  
+  ctx.restore();
+}
+
+function _drawMountBear(ctx, R, isMoving, animTimer, flash) {
+  ctx.save();
+  
+  // Animation: heavy lumbering gait
+  const lumber = isMoving ? Math.sin(animTimer * 2.5) : Math.sin(Date.now() * 0.0015) * 0.2;
+  const bodyBob = Math.abs(lumber) * R * 0.08;
+  
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.28)';
+  ctx.beginPath();
+  ctx.ellipse(0, R * 0.42, R * 1.0, R * 0.5, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Body - massive bear
+  const bodyCol = flash ? '#9a8a7a' : '#5a4028';
+  const bodyOut = '#2a1808';
+  ctx.fillStyle = bodyCol;
+  ctx.strokeStyle = bodyOut;
+  ctx.lineWidth = Math.max(3, R * 0.07);
+  
+  ctx.beginPath();
+  ctx.ellipse(0, bodyBob, R * 1.15, R * 0.88, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  
+  // Chest patch (lighter)
+  ctx.fillStyle = flash ? '#bbaa9a' : '#7a5a38';
+  ctx.beginPath();
+  ctx.ellipse(R * 0.25, bodyBob, R * 0.55, R * 0.5, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Legs - heavy powerful limbs
+  const legCol = flash ? '#8a7a6a' : '#4a3018';
+  ctx.fillStyle = legCol;
+  ctx.strokeStyle = bodyOut;
+  ctx.lineWidth = Math.max(2.5, R * 0.06);
+  
+  // Front legs
+  for (const s of [-1, 1]) {
+    const legMove = Math.sin(animTimer * 2.5 + s * Math.PI) * R * 0.08;
+    ctx.beginPath();
+    ctx.ellipse(R * 0.45 + legMove, s * R * 0.65, R * 0.18, R * 0.4, 0.1 * s, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    // Large paw
+    ctx.beginPath();
+    ctx.ellipse(R * 0.45 + legMove, s * R * 0.95, R * 0.22, R * 0.16, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    // Claws
+    ctx.fillStyle = '#1a0a08';
+    for (let c = -1; c <= 1; c++) {
+      ctx.beginPath();
+      ctx.arc(R * 0.52 + legMove + c * R * 0.08, s * R * 1.02, R * 0.035, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  
+  // Back legs
+  for (const s of [-1, 1]) {
+    const legMove = Math.sin(animTimer * 2.5 + s * Math.PI + Math.PI) * R * 0.08;
+    ctx.beginPath();
+    ctx.ellipse(-R * 0.35 + legMove, s * R * 0.7, R * 0.2, R * 0.42, -0.08 * s, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(-R * 0.35 + legMove, s * R * 1.0, R * 0.24, R * 0.18, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+  }
+  
+  // Tail - short stubby
+  ctx.fillStyle = legCol;
+  ctx.beginPath();
+  ctx.ellipse(-R * 1.05, bodyBob, R * 0.12, R * 0.1, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  
+  // Head - massive
+  ctx.fillStyle = bodyCol;
+  ctx.beginPath();
+  ctx.ellipse(R * 0.75, bodyBob, R * 0.5, R * 0.45, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  
+  // Snout
+  ctx.fillStyle = flash ? '#aaa99a' : '#6a4a28';
+  ctx.beginPath();
+  ctx.ellipse(R * 1.05, bodyBob, R * 0.25, R * 0.22, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  
+  // Nose
+  ctx.fillStyle = '#2a1808';
+  ctx.beginPath();
+  ctx.ellipse(R * 1.15, bodyBob, R * 0.1, R * 0.08, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Eyes - intelligent brown
+  ctx.fillStyle = '#aa6633';
+  ctx.beginPath();
+  ctx.ellipse(R * 0.82, bodyBob - R * 0.1, R * 0.08, R * 0.06, 0, 0, Math.PI * 2);
+  ctx.ellipse(R * 0.82, bodyBob + R * 0.1, R * 0.08, R * 0.06, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Ears - rounded
+  ctx.fillStyle = legCol;
+  for (const s of [-1, 1]) {
+    ctx.beginPath();
+    ctx.arc(R * 0.65, s * R * 0.35 + bodyBob, R * 0.12, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+  }
+  
+  // Saddle - ornate
+  ctx.fillStyle = '#4a3020';
+  ctx.strokeStyle = '#2a1508';
+  ctx.lineWidth = Math.max(2.5, R * 0.06);
+  ctx.beginPath();
+  ctx.ellipse(0, bodyBob - R * 0.05, R * 0.4, R * 0.22, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  // Saddle trim
+  ctx.strokeStyle = '#8a6040';
+  ctx.lineWidth = Math.max(1.5, R * 0.04);
+  ctx.beginPath();
+  ctx.ellipse(0, bodyBob - R * 0.05, R * 0.35, R * 0.18, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  
+  ctx.restore();
+}
+
+function _drawMountDragon(ctx, R, isMoving, animTimer, flash) {
+  ctx.save();
+  
+  // Animation: flying wing flap
+  const wingFlap = isMoving ? Math.sin(animTimer * 5) : Math.sin(Date.now() * 0.003) * 0.4;
+  const wingAngle = wingFlap * R * 0.3;
+  const tailSwish = Math.sin(animTimer * 3) * R * 0.12;
+  
+  // Shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.3)';
+  ctx.beginPath();
+  ctx.ellipse(0, R * 0.45, R * 1.2, R * 0.55, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Body - sleek dragon
+  const bodyCol = flash ? '#8a70a0' : '#4a3060';
+  const bodyOut = '#1a0828';
+  ctx.fillStyle = bodyCol;
+  ctx.strokeStyle = bodyOut;
+  ctx.lineWidth = Math.max(3, R * 0.07);
+  
+  ctx.beginPath();
+  ctx.ellipse(0, 0, R * 1.1, R * 0.7, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  
+  // Belly scales (lighter)
+  ctx.fillStyle = flash ? '#9a80b0' : '#6a4080';
+  ctx.beginPath();
+  ctx.ellipse(0, R * 0.15, R * 0.8, R * 0.35, 0, 0, Math.PI * 2);
+  ctx.fill();
+  
+  // Legs - reptilian
+  const legCol = flash ? '#7a6090' : '#3a2050';
+  ctx.fillStyle = legCol;
+  ctx.strokeStyle = bodyOut;
+  ctx.lineWidth = Math.max(2, R * 0.05);
+  
+  for (const s of [-1, 1]) {
+    // Front legs
+    const legMove = Math.sin(animTimer * 4 + s * Math.PI) * R * 0.06;
+    ctx.beginPath();
+    ctx.ellipse(R * 0.4 + legMove, s * R * 0.5, R * 0.14, R * 0.35, 0.15 * s, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    // Claws
+    ctx.beginPath();
+    ctx.ellipse(R * 0.42 + legMove, s * R * 0.82, R * 0.16, R * 0.12, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    
+    // Back legs
+    const backLegMove = Math.sin(animTimer * 4 + s * Math.PI + Math.PI) * R * 0.06;
+    ctx.beginPath();
+    ctx.ellipse(-R * 0.35 + backLegMove, s * R * 0.55, R * 0.16, R * 0.38, -0.1 * s, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(-R * 0.37 + backLegMove, s * R * 0.88, R * 0.18, R * 0.14, 0, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+  }
+  
+  // Wings - large detailed bat wings
+  const wingCol = flash ? '#7a6090' : '#3a2050';
+  for (const s of [-1, 1]) {
+    ctx.save();
+    ctx.translate(0, 0);
+    ctx.rotate(s * wingAngle);
+    
+    // Wing membrane
+    ctx.fillStyle = wingCol;
+    ctx.strokeStyle = bodyOut;
+    ctx.lineWidth = Math.max(2, R * 0.05);
+    ctx.beginPath();
+    ctx.moveTo(R * 0.3, 0);
+    ctx.quadraticCurveTo(R * 0.8, s * R * 0.5 - wingAngle * R * 0.5, R * 1.5, s * R * 0.3 - wingAngle * R * 0.7);
+    ctx.quadraticCurveTo(R * 1.2, s * R * 0.1 - wingAngle * R * 0.3, R * 0.3, 0);
+    ctx.fill();
+    ctx.stroke();
+    
+    // Wing bones
+    ctx.strokeStyle = '#5a4070';
+    ctx.lineWidth = Math.max(1.5, R * 0.03);
+    ctx.beginPath();
+    ctx.moveTo(R * 0.3, 0);
+    ctx.lineTo(R * 0.8, s * R * 0.3 - wingAngle * R * 0.4);
+    ctx.lineTo(R * 1.1, s * R * 0.4 - wingAngle * R * 0.5);
+    ctx.lineTo(R * 1.4, s * R * 0.35 - wingAngle * R * 0.6);
+    ctx.stroke();
+    
+    ctx.restore();
+  }
+  
+  // Tail - long serpentine
+  ctx.strokeStyle = legCol;
+  ctx.lineWidth = Math.max(4, R * 0.08);
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(-R * 1.0, 0);
+  ctx.quadraticCurveTo(-R * 1.4, tailSwish, -R * 1.7, tailSwish * 1.5);
+  ctx.quadraticCurveTo(-R * 2.0, tailSwish * 2, -R * 2.2, tailSwish * 1.2);
+  ctx.stroke();
+  
+  // Tail tip
+  ctx.fillStyle = '#ff4400';
+  ctx.beginPath();
+  ctx.moveTo(-R * 2.2, tailSwish * 1.2);
+  ctx.lineTo(-R * 2.35, tailSwish * 1.3);
+  ctx.lineTo(-R * 2.15, tailSwish * 1.1);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Head - dragon head
+  ctx.fillStyle = bodyCol;
+  ctx.beginPath();
+  ctx.ellipse(R * 0.75, 0, R * 0.45, R * 0.38, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  
+  // Snout
+  ctx.fillStyle = flash ? '#9a80b0' : '#5a3070';
+  ctx.beginPath();
+  ctx.ellipse(R * 1.05, 0, R * 0.22, R * 0.18, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  
+  // Nostrils
+  ctx.fillStyle = '#1a0828';
+  for (const s of [-1, 1]) {
+    ctx.beginPath();
+    ctx.ellipse(R * 1.12, s * R * 0.05, R * 0.025, R * 0.02, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  
+  // Eyes - glowing magical
+  ctx.fillStyle = '#ff00ff';
+  ctx.shadowColor = '#ff00ff';
+  ctx.shadowBlur = R * 0.15;
+  ctx.beginPath();
+  ctx.ellipse(R * 0.82, -R * 0.08, R * 0.07, R * 0.05, 0, 0, Math.PI * 2);
+  ctx.ellipse(R * 0.82, R * 0.08, R * 0.07, R * 0.05, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  
+  // Horns
+  ctx.fillStyle = '#8a6040';
+  ctx.strokeStyle = '#4a3020';
+  ctx.lineWidth = Math.max(1.5, R * 0.04);
+  for (const s of [-1, 1]) {
+    ctx.beginPath();
+    ctx.moveTo(R * 0.68, s * R * 0.22);
+    ctx.quadraticCurveTo(R * 0.55, s * R * 0.45, R * 0.45, s * R * 0.6);
+    ctx.quadraticCurveTo(R * 0.5, s * R * 0.5, R * 0.65, s * R * 0.28);
+    ctx.closePath();
+    ctx.fill();
+    ctx.stroke();
+  }
+  
+  // Saddle - magical ornate
+  ctx.fillStyle = '#3a2050';
+  ctx.strokeStyle = '#5a4070';
+  ctx.lineWidth = Math.max(2.5, R * 0.06);
+  ctx.beginPath();
+  ctx.ellipse(0, -R * 0.05, R * 0.38, R * 0.2, 0, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+  // Magical glow
+  ctx.strokeStyle = '#ff88ff';
+  ctx.lineWidth = Math.max(1, R * 0.02);
+  ctx.shadowColor = '#ff88ff';
+  ctx.shadowBlur = R * 0.1;
+  ctx.beginPath();
+  ctx.ellipse(0, -R * 0.05, R * 0.35, R * 0.18, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+  
+  ctx.restore();
+}
+
 // ── Main enemy draw entry point ───────────────────────────────
 const _FOREST_MOB_FILES = {
   wild_boar: 'wild-boar.webp',
@@ -22475,6 +23128,7 @@ const _FOREST_MOB_ATLAS_CONFIG = {
 };
 
 // Source-pixel bounds for each idle, walk, and attack frame, in row order.
+// All frames now use consistent extents to prevent size flickering during animation.
 const _FOREST_MOB_FRAME_EXTENTS = {
   wild_boar: [
     [144, 144, 144, 144, 144, 144, 144, 144],
@@ -22482,24 +23136,24 @@ const _FOREST_MOB_FRAME_EXTENTS = {
     [144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144, 144]
   ],
   forest_hornet: [
-    [164, 195, 163, 189, 195, 164, 194, 159],
-    [164, 195, 163, 189, 195, 164, 194, 159, 189, 195, 163, 194],
-    [177, 213, 181, 207, 206, 191, 191, 191, 199, 205, 169, 204, 169, 200, 204, 173]
+    [180, 180, 180, 180, 180, 180, 180, 180],
+    [180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180],
+    [180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180]
   ],
   grizzly_bear: [
-    [142, 142, 142, 142, 142, 142, 142, 142],
-    [142, 154, 154, 152, 146, 154, 154, 150, 150, 154, 154, 148],
-    [142, 152, 150, 150, 150, 150, 142, 143, 145, 147, 148, 148, 147, 146, 145, 142]
+    [148, 148, 148, 148, 148, 148, 148, 148],
+    [148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148],
+    [148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148, 148]
   ],
   elder_wendigo: [
     [200, 200, 200, 200, 200, 200, 200, 200],
-    [200, 218, 220, 204, 180, 172, 194, 216, 220, 210, 186, 172],
-    [200, 210, 208, 194, 170, 216, 216, 216, 216, 216, 216, 216, 214, 210, 206, 200]
+    [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200],
+    [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200]
   ],
   treant_boss: [
-    [160, 160, 160, 159, 159, 159, 159, 159],
-    [160, 155, 156, 157, 161, 160, 155, 156, 157, 161, 160, 156],
-    [160, 158, 147, 136, 136, 242, 242, 242, 232, 218, 204, 190, 174, 156, 158, 160]
+    [180, 180, 180, 180, 180, 180, 180, 180],
+    [180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180],
+    [180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180, 180]
   ]
 };
 
@@ -22528,8 +23182,9 @@ function _drawForestMobAtlas(ctx, e, radius, isMoving, flash) {
     ? Math.min(frameCount - 1, Math.floor(Math.max(0, e.attackTimer || 0) / 55 * frameCount))
     : Math.floor(Date.now() / (isMoving ? 95 : 150)) % frameCount;
 
-  // Normalize each cell to the collision diameter without moving the atlas pivot.
-  const frameExtent = _FOREST_MOB_FRAME_EXTENTS[normShape]?.[row]?.[frame] || 192;
+  // Use consistent frame extent for the entire animation to prevent size flickering
+  const baseExtent = _FOREST_MOB_FRAME_EXTENTS[normShape]?.[0]?.[0] || 192;
+  const frameExtent = baseExtent;
   const drawScale = 384 * _MOB_ATLAS_TARGET_DIAMETER / frameExtent;
   const drawSize = radius * drawScale * (_MOB_VISUAL_SIZE_MULTIPLIERS[normShape] || 1);
   const pivotX = drawSize * 0.5;
@@ -23389,9 +24044,10 @@ function _drawTreantBoss(ctx, e, R, isMoving, state, animTimer, attackTimer, fla
 
 function _drawWildHare(ctx, e, R, isMoving, state, animTimer, attackTimer, flash) {
   ctx.save();
+  // Reduced scaling to prevent size flickering during animation
   const hop = isMoving ? Math.abs(Math.sin(animTimer * 2.2)) : Math.sin(Date.now() * 0.003) * 0.05;
-  const scaleY = 1 + hop * 0.15;
-  const scaleX = 1 - hop * 0.08;
+  const scaleY = 1 + hop * 0.05;
+  const scaleX = 1 - hop * 0.03;
   ctx.scale(scaleX, scaleY);
 
   // Body shadow
@@ -23650,8 +24306,10 @@ function _drawProceduralMobAsset(ctx, e, radius, isMoving, flash, attackDuration
   const frame = e.state === 'attack'
     ? Math.min(7, Math.floor((Math.max(0, e.attackTimer || 0) / attackDuration) * 8))
     : Math.floor((((e.animTimer || 0) % (Math.PI * 2)) / (Math.PI * 2)) * 8) % 8;
+  // Use consistent extent of 1 to prevent size flickering
+  const frameExtent = _MOB_ATLAS_FRAME_EXTENTS[shape] || 1;
   const drawSize = radius * _MOB_ATLAS_TARGET_DIAMETER *
-    (_MOB_VISUAL_SIZE_MULTIPLIERS[shape] || 1) / _MOB_ATLAS_FRAME_EXTENTS[shape];
+    (_MOB_VISUAL_SIZE_MULTIPLIERS[shape] || 1) / frameExtent;
   ctx.drawImage(
     entry.image,
     frame * 128,
@@ -23730,7 +24388,9 @@ function drawEnemy(e) {
   }
 
   let targetAngle = e.angle;
-  if (e.state === 'attack' || (e.vx === 0 && e.vy === 0)) {
+  if (_serverMobAuthority && e._netId !== undefined) {
+    if (Number.isFinite(e._targetAngle)) targetAngle = e._targetAngle;
+  } else if (e.state === 'attack' || (e.vx === 0 && e.vy === 0)) {
     targetAngle = Math.atan2(player.y - e.y, player.x - e.x);
   } else if (e.vx !== 0 || e.vy !== 0) {
     targetAngle = Math.atan2(e.vy, e.vx);
@@ -25002,6 +25662,27 @@ function drawPlayer() {
 
   ctx.rotate(player.angle);
 
+  // ── MOUNT (BİNEK) DRAWING ─────────────────────────────────────
+  if (player.isMounted && player.mountType) {
+    const isMoving = Math.hypot(player.vx || 0, player.vy || 0) > 0.5;
+    player.mountAnimTimer = (player.mountAnimTimer || 0) + (isMoving ? 0.25 : 0.05);
+    const mountR = player.radius * 1.8;
+    
+    ctx.save();
+    ctx.translate(0, player.radius * 0.3);
+    ctx.rotate(-player.angle); // Mount faces movement direction
+    
+    if (player.mountType === 'wolf') {
+      _drawMountWolf(ctx, mountR, isMoving, player.mountAnimTimer, player.hitFlash > 0);
+    } else if (player.mountType === 'bear') {
+      _drawMountBear(ctx, mountR, isMoving, player.mountAnimTimer, player.hitFlash > 0);
+    } else if (player.mountType === 'dragon') {
+      _drawMountDragon(ctx, mountR, isMoving, player.mountAnimTimer, player.hitFlash > 0);
+    }
+    
+    ctx.restore();
+  }
+
   drawHelmetMovementTrail(ctx, player, window._equippedHelmetId, rx, ry, player.radius);
 
   // -- Halo (above everything, before rotation effects) --
@@ -26017,7 +26698,7 @@ function update(timestamp = 0) {
   if (_shadowOk) updateAmbientParticles();
   if (globalTime % (_qualityLevel === 0 ? 10 : 4) === 0) updateCampfires();
   _interpOtherPlayers();
-  let speedMult = (player.speedBonus || 1) * (player._equipmentSpeedMultiplier || 1);
+  let speedMult = (player.speedBonus || 1) * (player._equipmentSpeedMultiplier || 1) * (player.mountSpeedBonus || 1);
 
   // Update HP bar every frame (HP changes from enemy hits / healing)
   updateHpBar();
@@ -26028,13 +26709,26 @@ function update(timestamp = 0) {
 
   // ---- Saldırı döngüsü (PC & Mobil Eşitlendi - _dt ile FPS bağımsız) ----
   // ---- Saldırı döngüsü (PC & Mobil Eşitlendi - Moomoo.io / Sploop.io standardı) ----
-  if (typeof _updateMouseAim === 'function' && _isUsingMouse && !_joystickActive && _lastMouseClientX != null && _lastMouseClientY != null) {
+  if (player.autoAttack) {
+    const autoTarget = _findAutoAttackTarget();
+    if (autoTarget) {
+      if (!player.isAttacking) {
+        player.angle = Math.atan2((Number(autoTarget.y) || 0) - player.y, (Number(autoTarget.x) || 0) - player.x);
+        player.bodyAngle = player.angle;
+        player.weaponAngle = player.angle;
+      }
+      player.attackHeld = true;
+    } else {
+      player.attackHeld = false;
+    }
+  }
+  if (typeof _updateMouseAim === 'function' && _isUsingMouse && !_joystickActive && !player.autoAttack && _lastMouseClientX != null && _lastMouseClientY != null) {
     _updateMouseAim(_lastMouseClientX, _lastMouseClientY);
   }
   if (player.attackHeld && player.weapon < 3) {
     if (!player.isAttacking) {
       const attackSpeed = Math.max(0.88, Math.min(1.18, Number(player._equipmentAttackSpeedMultiplier) || 1));
-      const baseDuration = ATTACK_DUR[player.weapon] || 300;
+      const baseDuration = _getPlayerAttackDuration(player.weapon);
       playSwingAnimation(player, player.weapon, Math.round(baseDuration / attackSpeed));
       _mpSwing();
     }
@@ -26243,7 +26937,7 @@ function update(timestamp = 0) {
           if (e2.hp <= 0) {
             const _arrowGoldDrop = scaleGoldReward(e2.goldReward || e2.gold || 2);
             const _tScoreGain = Math.round(((e2.xpReward||e2.xp||5)*0.75) + (_arrowGoldDrop*3));
-            player.xp += scaledXpGain(e2.xp); player.gold += _arrowGoldDrop; player.kills++;
+            player.xp += scaledXpGain(e2.xp); player.gold += _arrowGoldDrop; player.kills++; _recordLocalKill();
             player.score = (player.score||0) + _tScoreGain;
             spawnBlood(e2.x, e2.y, 16);
             enemies.splice(j, 1); updateUI();
@@ -26266,13 +26960,23 @@ function update(timestamp = 0) {
           if (_connected && _socket && p.buildingId) {
             _socket.emit('world_boss_turret_hit_req', { bossId: _cp.id, buildingId: p.buildingId });
           } else {
-            _bs.hp = Math.max(0, _bs.hp - p.dmg);
-            _bs.dmgFlashFrames = 6;
-            spawnBlood(_bs.x, _bs.y, 6);
-            floatingTexts.push({ x: _bs.x, y: _bs.y - 45, text: '-' + p.dmg + ' HP', alpha: 1, life: 35, color: '#00e5ff', big: true });
-            playSound(280, 0.08, 'sine', 0.22);
-            if (_bs.hp <= 0 && typeof window._defeatLocalWorldBoss === 'function') {
-              window._defeatLocalWorldBoss(_cp.id);
+            const _bossTurret = p.buildingId
+              ? buildings.find(function(b) { return String(b._netId || b.id || '') === String(p.buildingId); })
+              : null;
+            const _bossShotAt = Date.now();
+            const _bossDamageSource = _bossTurret || _bs;
+            if ((!p.buildingId || _bossTurret) &&
+                _bossShotAt - (_bossDamageSource._lastBossHitAt || 0) >= 1000) {
+              _bossDamageSource._lastBossHitAt = _bossShotAt;
+              const _bossShotDamage = Math.min(120, Math.max(0, Number(p.dmg) || 0));
+              _bs.hp = Math.max(0, _bs.hp - _bossShotDamage);
+              _bs.dmgFlashFrames = 6;
+              spawnBlood(_bs.x, _bs.y, 6);
+              floatingTexts.push({ x: _bs.x, y: _bs.y - 45, text: '-' + _bossShotDamage + ' HP', alpha: 1, life: 35, color: '#00e5ff', big: true });
+              playSound(280, 0.08, 'sine', 0.22);
+              if (_bs.hp <= 0 && typeof window._defeatLocalWorldBoss === 'function') {
+                window._defeatLocalWorldBoss(_cp.id);
+              }
             }
           }
           hit = true;
@@ -26312,14 +27016,14 @@ function update(timestamp = 0) {
     const e = enemies[i];
 
     // ── Online mode: server-authoritative mobs — dead-reckoning + lerp ──
-    if (_connected && e._netId !== undefined) {
+    if (_serverMobAuthority && e._netId !== undefined) {
       // PERF: skip dead-reckoning for mobs far outside AOI — server won't send updates for them
       const _mFarDx = e.x - player.x, _mFarDy = e.y - player.y;
       const _mFarD2 = _mFarDx * _mFarDx + _mFarDy * _mFarDy;
       if (_mFarD2 > 3200 * 3200) {
         // Way outside AOI: just tick hitFlash and move on
         if (e.hitFlash > 0) e.hitFlash--;
-        if (e.hp <= 0 && (!_connected || e._netId === undefined)) { enemies.splice(i, 1); }
+        if (e.hp <= 0 && (!_serverMobAuthority || e._netId === undefined)) { enemies.splice(i, 1); }
         continue;
       }
       // Ultra-smooth real-time extrapolated mob convergence (60/120/144fps stutter-free)
@@ -26341,7 +27045,7 @@ function update(timestamp = 0) {
         }
       }
       if (e.hitFlash > 0) e.hitFlash--;
-      if (e.hp <= 0 && (!_connected || e._netId === undefined)) {
+      if (e.hp <= 0 && (!_serverMobAuthority || e._netId === undefined)) {
         // In online mode, server controls mob removal via mob_dead! Client only splices in offline mode.
         const _eOnScreen = Math.abs(e.x - camX) < canvas.width / ZOOM * 0.7 && Math.abs(e.y - camY) < canvas.height / ZOOM * 0.7;
         if (_eOnScreen) {
@@ -26400,8 +27104,15 @@ function update(timestamp = 0) {
           e.vx = 0; e.vy = 0;
           e.x = e._capturedTrapX; e.y = e._capturedTrapY;
           e._targetX = e._capturedTrapX; e._targetY = e._capturedTrapY;
-          if (e._frozenAngle !== undefined) e.angle = e._frozenAngle;
+          if (e._frozenAngle !== undefined) {
+            e.angle = e._frozenAngle;
+            e._targetAngle = e._frozenAngle;
+          }
         } else {
+          if (_onTrapRef && now - (e._capturedTrapTime || now) >= 3000) {
+            e._trapIgnoreBuildingId = e._capturedByTrap;
+            e._trapIgnoreUntil = now + 1500;
+          }
           e._capturedByTrap = null; e._capturedTrapX = undefined; e._capturedTrapY = undefined; e._frozenAngle = undefined; e._capturedTrapTime = undefined;
         }
       } else {
@@ -26409,20 +27120,21 @@ function update(timestamp = 0) {
         for (var _jot = 0; _jot < _onTrNear.length; _jot++) {
           var _otb = _onTrNear[_jot];
           if (_otb.type !== 6 || _otb.hp <= 0) continue;
+          var _otKey = _otb._netId || _otb.id;
+          if (e._trapIgnoreBuildingId === _otKey && now < (e._trapIgnoreUntil || 0)) continue;
           var _otdx = _otb.x - e.x, _otdy = _otb.y - e.y;
           var _otd2 = _otdx * _otdx + _otdy * _otdy;
           var _otMinD = _getTrapCaptureRadius(_otb, e.radius || 35);
           if (_otd2 > _otMinD * _otMinD) continue;
           // First contact — capture mob at its current position
-          var _otKey = _otb._netId || _otb.id;
           e._capturedByTrap = _otKey;
           e._capturedTrapX = e.x; e._capturedTrapY = e.y;
           e._capturedTrapTime = now;
           e.vx = 0; e.vy = 0;
           e._targetX = e.x; e._targetY = e.y;
-          e._frozenAngle = (e.angle !== undefined ? e.angle : 0);
+          e._frozenAngle = (Number.isFinite(e._targetAngle) ? e._targetAngle : (e.angle !== undefined ? e.angle : 0));
           playSound(220, 0.08, 'sine', 0.22);
-          if (_connected && _socket && e._netId && _otb._netId) {
+          if (_serverMobAuthority && _socket?.connected && e._netId && _otb._netId) {
             _socket.emit('mob_trap_hit', { mobId: e._netId, buildingId: _otb._netId, frozenAngle: e._frozenAngle });
           }
           break;
@@ -26479,7 +27191,14 @@ function update(timestamp = 0) {
         e._capturedTrapRef = _buildingsMap.get(e._capturedByTrap) || null; // O(1) — was buildings.find()
       }
       var _ct = e._capturedTrapRef && e._capturedTrapRef.hp > 0 ? e._capturedTrapRef : null;
-      if (_ct) { e.vx = 0; e.vy = 0; } else { e._capturedByTrap = null; e._capturedTrapRef = null; e._capturedTrapX = undefined; e._capturedTrapY = undefined; }
+      if (_ct && now - (e._capturedTrapTime || now) < 3000) { e.vx = 0; e.vy = 0; }
+      else {
+        if (_ct) {
+          e._trapIgnoreBuildingId = e._capturedByTrap;
+          e._trapIgnoreUntil = now + 1500;
+        }
+        e._capturedByTrap = null; e._capturedTrapRef = null; e._capturedTrapX = undefined; e._capturedTrapY = undefined;
+      }
     }
     // Cap mob velocity so they never rubber-band or hyper-accelerate
     const _eMaxSpd = Math.min(spd * 3.2, 2.6 + spd * 1.2);
@@ -26560,7 +27279,7 @@ function update(timestamp = 0) {
     // FIX: Only attack if provoked AND in range - prevents mobs from attacking from across the map
     if (e.provoked && dist < mobReach && (_mobVisible || dist < 80)) {
       player.momX += (dx/dist) * 8; player.momY += (dy/dist) * 8; // physical push-back
-      if (e.hp > 0 && !_spawnProtected && (!_connected || e._netId === undefined) && now - (e.lastHit || 0) > 1600) {
+      if (e.hp > 0 && !_spawnProtected && (!_serverMobAuthority || e._netId === undefined) && now - (e.lastHit || 0) > 1600) {
         _lastDamager = e;
         e.lastHit = now;
         e.state = 'attack';
@@ -26610,7 +27329,7 @@ function update(timestamp = 0) {
             e._lastSpikeHitTime = now;
             const spikeTier = b.tier || 0;
             const spikeDmg = [45, 75, 110, 160, 220, 300][spikeTier] || 45;
-            const _serverSpikeMob = _connected && _socket && e._netId && b._netId;
+            const _serverSpikeMob = _serverMobAuthority && _socket?.connected && e._netId && b._netId;
             if (!_serverSpikeMob) e.hp = Math.max(0, e.hp - spikeDmg);
             e.hitFlash = 8;
             b.shake = 5;
@@ -26640,14 +27359,15 @@ function update(timestamp = 0) {
         // Trap (type 6): mob passes through freely — no push-back.
         // First contact: capture mob and deal burst damage.
         // FIX: Ensure trap properly captures mobs and prevents them from passing through resources
-        if (b.type === 6 && !e._capturedByTrap) {
+        if (b.type === 6 && !e._capturedByTrap &&
+            !(e._trapIgnoreBuildingId === (b._netId || b.id) && now < (e._trapIgnoreUntil || 0))) {
           const _trapTriggerDist = _getTrapCaptureRadius(b, e.radius || 35);
           if (d < _trapTriggerDist && d > 0) {
             e._capturedByTrap = b._netId || b.id;
             e._capturedTrapX = e.x; e._capturedTrapY = e.y;
             e._capturedTrapTime = now;
             e.vx = 0; e.vy = 0;
-            e._frozenAngle = e.angle || 0;
+            e._frozenAngle = Number.isFinite(e._targetAngle) ? e._targetAngle : (e.angle || 0);
             const trapTier = b.tier || 0;
             const trapDmg = [35, 60, 90, 130, 180, 250][trapTier] || 35;
             e.hp = Math.max(0, e.hp - trapDmg);
@@ -26656,7 +27376,7 @@ function update(timestamp = 0) {
             spawnBlood(e.x, e.y, 8);
             playSound(220, 0.1, 'sine', 0.22);
             floatingTexts.push({ x: e.x, y: e.y - 40, text: `-${trapDmg} 🕸️`, alpha: 1, life: 40, color: '#aa44ff', big: true });
-            if (_connected && _socket && e._netId && b._netId) {
+            if (_serverMobAuthority && _socket?.connected && e._netId && b._netId) {
               _socket.emit('mob_trap_hit', { mobId: e._netId, buildingId: b._netId, frozenAngle: e._frozenAngle });
             }
           }
@@ -26668,7 +27388,10 @@ function update(timestamp = 0) {
           if (e._capturedByTrap === _trapKey) {
             e.vx = 0; e.vy = 0;
             e.x = e._capturedTrapX; e.y = e._capturedTrapY;
-            if (e._frozenAngle !== undefined) e.angle = e._frozenAngle;
+            if (e._frozenAngle !== undefined) {
+              e.angle = e._frozenAngle;
+              e._targetAngle = e._frozenAngle;
+            }
             // FIX: Add DOT damage while trapped - deal damage every 1.5 seconds
             if (!e._trapDotTimer || now - e._trapDotTimer > 1500) {
               e._trapDotTimer = now;
@@ -26678,7 +27401,7 @@ function update(timestamp = 0) {
               e.hitFlash = 5;
               spawnBlood(e.x, e.y, 3);
               floatingTexts.push({ x: e.x, y: e.y - 30, text: `-${trapDotDmg}`, alpha: 1, life: 25, color: '#aa44ff' });
-              if (_connected && _socket && e._netId) {
+              if (_serverMobAuthority && _socket?.connected && e._netId) {
                 _socket.emit('mob_trap_hit', { mobId: e._netId, buildingId: b._netId });
               }
             }
@@ -26749,7 +27472,7 @@ function update(timestamp = 0) {
     }
 
     if (e.hp <= 0) {
-      if (_connected) {
+      if (_serverMobAuthority && e._netId !== undefined) {
         // Online: server handles kill rewards — just remove the mob visually
         spawnBlood(e.x, e.y, 12); spawnGoldBurst(e.x, e.y);
         enemies.splice(i, 1); continue;
@@ -26757,7 +27480,7 @@ function update(timestamp = 0) {
       // Offline: handle kill locally
       const xpGain = e.xpReward || 22; const goldDrop = scaleGoldReward(e.goldReward || 4);
       const _loopScoreGain = Math.round(xpGain * 0.75 + goldDrop * 3);
-      player.xp += scaledXpGain(xpGain); player.kills++;
+      player.xp += scaledXpGain(xpGain); player.kills++; _recordLocalKill();
       player.score = (player.score||0) + _loopScoreGain;
       updateUI(); updateXP();
       spawnBlood(e.x, e.y, 12); spawnGoldBurst(e.x, e.y);
@@ -26772,7 +27495,7 @@ function update(timestamp = 0) {
   // Compact destroyed resources once per simulation frame instead of splicing
   // from the middle of the array during every mob collision.
   for (let _rci = resources.length - 1; _rci >= 0; _rci--) {
-    if (resources[_rci] && resources[_rci]._destroyed && !_connected) {
+    if (resources[_rci] && resources[_rci]._destroyed && !_socket?.connected) {
       _removeResourceFromGrid(resources[_rci]);
       resources.splice(_rci, 1);
     }
@@ -26781,7 +27504,7 @@ function update(timestamp = 0) {
   // ---- Mob-mob çarpışma fiziği: üst üste yığılmayı önler ----
   // PERF: More aggressive throttling — quality 0: every 5th frame, quality 1: every 3rd, quality 2: every 2nd.
   // Squared distance pre-check avoids sqrt when mobs are clearly far apart.
-  const _mobColOk = !_connected && (_qualityLevel === 0 ? (globalTime % 5 === 0) : _qualityLevel === 1 ? (globalTime % 3 === 0) : (globalTime % 2 === 0));
+  const _mobColOk = !_serverMobAuthority && (_qualityLevel === 0 ? (globalTime % 5 === 0) : _qualityLevel === 1 ? (globalTime % 3 === 0) : (globalTime % 2 === 0));
   if (_mobColOk)
   for (let i = 0; i < enemies.length; i++) {
     for (let j = i + 1; j < enemies.length; j++) {
@@ -26794,8 +27517,8 @@ function update(timestamp = 0) {
       const dd = Math.sqrt(dd2) || 0.01;
       // Online mobs: server is authoritative — skip client-side separation entirely
       // (fighting server positions causes jitter; server already separates mobs)
-      if (_connected && a._netId !== undefined && b._netId !== undefined) continue;
-      const _isOnline = _connected && (a._netId !== undefined || b._netId !== undefined);
+      if (_serverMobAuthority && a._netId !== undefined && b._netId !== undefined) continue;
+      const _isOnline = _serverMobAuthority && (a._netId !== undefined || b._netId !== undefined);
       const f = (minD - dd) * (_isOnline ? 0.18 : 0.58) / dd;
       const px = ddx * f, py = ddy * f;
       // Kütleye göre it (büyük mob daha az yer değiştirir)
@@ -27000,7 +27723,7 @@ function update(timestamp = 0) {
     const e = enemies[_ei];
     const minD = player.radius + e.radius + 2;
     if (Math.abs(player.x - e.x) > minD || Math.abs(player.y - e.y) > minD) continue;
-    const invE = (_connected && e._netId !== undefined) ? 0.0 : 1.0;
+    const invE = (_serverMobAuthority && e._netId !== undefined) ? 0.0 : 1.0;
     let col = null;
     if (typeof NetworkPhysics !== 'undefined') {
       col = NetworkPhysics.resolveCircleCircle(player, player.radius, 1.0, e, e.radius, invE);
@@ -27011,7 +27734,7 @@ function update(timestamp = 0) {
       const d = Math.hypot(player.x - e.x, player.y - e.y) || 0.01;
       if (d < minD) {
         const nx = (player.x - e.x) / d, ny = (player.y - e.y) / d;
-        if (_connected && e._netId !== undefined) {
+        if (_serverMobAuthority && e._netId !== undefined) {
           player.x += nx * (minD - d); player.y += ny * (minD - d);
         } else {
           const push = (minD - d) * 0.5;
@@ -28605,11 +29328,23 @@ function initMultiplayer() {
     const _initAxeSkin = (playerAcc && playerAcc.baltalar) || null;
     const _initSwordSkin = window._equippedScytheId || (playerAcc && playerAcc.kiliclar) || null;
     const _authTok = localStorage.getItem('fb_auth_token') || '';
+    const _readOwnedList = (key, fallback) => {
+      try {
+        const value = JSON.parse(localStorage.getItem(key) || 'null');
+        return Array.isArray(value) ? value : fallback;
+      } catch (_) {
+        return fallback;
+      }
+    };
     _socket.emit('join', {
       guestId: _fbGuestId,
       name: player.name, skin: _playerSkin, color: playerColor,
       weapon: player.weapon || 1,
       axeTier: _initAxeTier, swordTier: _initSwordTier,
+      ownedAxes: _readOwnedList('fb_owned_axe_tiers', [0]),
+      ownedSwords: _readOwnedList('fb_owned_sword_tiers', [0]),
+      ownedHelmets: _readOwnedList('fb_owned_helmets', []),
+      ownedScythes: _readOwnedList('fb_owned_scythes', []),
       axeSkin: _initAxeSkin, swordSkin: _initSwordSkin,
       scytheId: window._equippedScytheId || null,
       helmetSkin: window._equippedHelmetId || null,
@@ -29637,6 +30372,7 @@ function initMultiplayer() {
     if (typeof s.g === 'number') player.gold = Math.max(0, s.g);
     if (typeof s.xp === 'number') { player.xp = Math.max(0, s.xp); updateXP(); }
     if (typeof s.k === 'number') player.kills = Math.max(0, s.k);
+    if (typeof s.matchKills === 'number') player.matchKills = Math.max(0, s.matchKills);
     if (typeof s.wood === 'number') player.wood = Math.max(0, s.wood);
     if (typeof s.stone === 'number') player.stone = Math.max(0, s.stone);
     if (typeof s.apples === 'number') player.apples = Math.max(0, s.apples);
@@ -30182,6 +30918,7 @@ function initMultiplayer() {
       if (m.lvl) already.level = m.lvl;
       if (m.level) already.level = m.level;
       already.angle = m.angle || 0;
+      already._targetAngle = already.angle;
       already._lastSeen = now;
       already._stateSeq = m.seq || already._stateSeq || 0;
       already._stateAt = m.ts || now;
@@ -30198,7 +30935,7 @@ function initMultiplayer() {
       hitFlash: 0, typeName: m.typeName||'🐺 Kurt',
       dmg: m.dmg||28, speed: 0, xpReward: m.xpReward||50, goldReward: m.goldReward||20,
       provoked: true, lastHit: 0, lastBuildHit: 0, lastSpikeHit: 0, lastResHit: 0, lastHitSwingId: -1,
-      angle: m.angle || 0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastPacketTime: now, _lastSeen: now, isBoss: m.isBoss||false
+      angle: m.angle || 0, _targetAngle: m.angle || 0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastPacketTime: now, _lastSeen: now, isBoss: m.isBoss||false
     });
   });
 
@@ -30243,7 +30980,7 @@ function initMultiplayer() {
           eyes: m.eyes||'#ffcc66', hitFlash: m.hitFlash||0, typeName: m.typeName||'🐺 Kurt',
           dmg: m.dmg||28, speed: 0, xpReward: m.xpReward||50, goldReward: m.goldReward||20,
           provoked: true, lastHit: 0, lastBuildHit: 0, lastSpikeHit: 0, lastResHit: 0, lastHitSwingId: -1,
-          angle: m.angle||0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastPacketTime: now, _lastSeen: now, isBoss: m.isBoss||false
+          angle: m.angle||0, _targetAngle: m.angle||0, _stateSeq: m.seq || 0, _stateAt: m.ts || now, _lastPacketTime: now, _lastSeen: now, isBoss: m.isBoss||false
         };
         enemies.push(newMob);
         _enemyLocalMap.set(m.id, newMob);
@@ -30281,8 +31018,8 @@ function initMultiplayer() {
       if (ex) {
         ex._targetX = x; ex._targetY = y;
         ex.vx = vx; ex.vy = vy; ex.hp = hp;
-        if (ang > -9000) ex.angle = ang;
-        else if (vx !== 0 || vy !== 0) ex.angle = Math.atan2(vy, vx);
+        if (ang > -9000) ex._targetAngle = ang;
+        else if (vx !== 0 || vy !== 0) ex._targetAngle = Math.atan2(vy, vx);
         ex._lastSeen = now;
       } else {
         const mobNum = parseInt(String(id).replace(/\D/g, '')) || 1;
@@ -30299,7 +31036,7 @@ function initMultiplayer() {
           eyes: tDef.eyes, hitFlash: 0, typeName: tDef.typeName,
           dmg: tDef.dmg, speed: 0, xpReward: 80, goldReward: 35,
           provoked: true, lastHit: 0, lastBuildHit: 0, lastSpikeHit: 0, lastResHit: 0, lastHitSwingId: -1,
-          angle: ang > -9000 ? ang : 0, _lastSeen: now, isBoss: false,
+          angle: ang > -9000 ? ang : 0, _targetAngle: ang > -9000 ? ang : 0, _lastSeen: now, isBoss: false,
           enraged: Boolean(hp && hp < tDef.maxHp * 0.4)
         };
         enemies.push(newMob);
@@ -30362,7 +31099,7 @@ function initMultiplayer() {
     }
     if (m.typeName) e.typeName = m.typeName;
     if (m.lvl || m.level) e.level = e.lvl = m.lvl || m.level;
-    if (typeof m.angle === 'number') e.angle = m.angle;
+    if (typeof m.angle === 'number') e._targetAngle = m.angle;
   });
 
   // ── Mob tuzak dondurma sync — sunucu otoriteli, tüm yakın oyuncular görür ──
@@ -30375,7 +31112,9 @@ function initMultiplayer() {
     const trapY = Number.isFinite(Number(y)) ? Number(y) : e.y;
     e._capturedByTrap = buildingId;
     e._capturedTrapX = trapX; e._capturedTrapY = trapY;
+    e._capturedTrapTime = Date.now();
     e._frozenAngle = (frozenAngle !== undefined ? frozenAngle : (e.angle || 0));
+    e._targetAngle = e._frozenAngle;
     e.vx = 0; e.vy = 0;
     e.x = trapX; e.y = trapY;
     e._targetX = trapX; e._targetY = trapY;
@@ -30392,9 +31131,13 @@ function initMultiplayer() {
   });
 
   // ── Mob tuzaktan serbest kalma sync ────────────────────────────────────
-  _socket.on('mob_freed', ({ mobId }) => {
+  _socket.on('mob_freed', ({ mobId, buildingId, ignoreUntil }) => {
     const e = enemies.find(en => en._netId === mobId);
     if (!e) return;
+    if (buildingId) {
+      e._trapIgnoreBuildingId = buildingId;
+      e._trapIgnoreUntil = Number(ignoreUntil) || Date.now() + 1500;
+    }
     e._capturedByTrap = null;
     e._capturedTrapX = undefined;
     e._capturedTrapY = undefined;
@@ -30467,7 +31210,7 @@ function initMultiplayer() {
         if (typeof ts === 'number') attackingMob._stateAt = ts;
         attackingMob.state = 'attack';
         attackingMob.attackTimer = 0;
-        if (typeof angle === 'number') attackingMob.angle = angle;
+        if (typeof angle === 'number') attackingMob._targetAngle = angle;
       }
     }
     if (id && !attackingMob) return;
@@ -30507,7 +31250,7 @@ function initMultiplayer() {
     if (mob) {
       mob.state = 'attack';
       mob.attackTimer = 0;
-      if (typeof angle === 'number') mob.angle = angle;
+      if (typeof angle === 'number') mob._targetAngle = angle;
     }
     const ax = typeof x === 'number' ? x : (mob ? mob.x : player.x);
     const ay = typeof y === 'number' ? y : (mob ? mob.y : player.y);
@@ -31267,9 +32010,9 @@ function _mpSwing() {
     const sc = _getScytheItem(window._equippedScytheId);
     if (sc) _msTier = sc.tier;
   }
-  const _msTM   = [1.0, 1.5, 2.2, 3.5, 5.0, 8.0, 10.0, 13.0, 16.0, 19.0, 22.0, 26.0];
+  const _msTM   = [1, 1.35, 1.8, 2.4, 3.2, 4.2, 5.4, 6.8, 8.4, 10.2, 12.2, 14.5];
   const _msBDmg = player.weapon === 2 ? 30 : 22;
-  const _msDmg  = Math.min(900, Math.round(_msBDmg * (_msTM[_msTier] || 1) * (player.dmgBonus || 1)));
+  const _msDmg  = Math.min(420, Math.round(_msBDmg * (_msTM[_msTier] || 1) * (player.dmgBonus || 1)));
   const _effSwordSkin = window._equippedScytheId || (playerAcc && playerAcc.kiliclar) || null;
   const _effAxeSkin = (playerAcc && playerAcc.baltalar) || null;
   
@@ -31804,7 +32547,7 @@ function checkBuildingDamage() {
         if (Math.abs(_cbx) > _totR || Math.abs(_cby) > _totR) continue;
         if (_cbx * _cbx + _cby * _cby > _totR * _totR) continue;
         var _bTierDmg = _getTier(b);
-        var dmgPerTick = Math.round(45 * (TIER_DMG_MULS[_bTierDmg] || 1));
+        var dmgPerTick = [45, 75, 110, 160, 220, 300][_bTierDmg] || 45;
         var _bId = b._netId || (b._bLid = b._bLid || ++_eLidCounter);
         var _eLid = e._netId !== undefined ? e._netId : (e._lid = e._lid || ++_eLidCounter);
         var cdKey = 'e' + _eLid + '_b' + _bId;
@@ -31813,14 +32556,14 @@ function checkBuildingDamage() {
         e.hitFlash = 8;
         spawnBlood(e.x, e.y, 5);
         floatingTexts.push({ x: e.x, y: e.y - 32, text: '-' + dmgPerTick + ' \uD83D\uDDE1', alpha: 1, life: 26, color: '#ffcc44' });
-        if (e._netId !== undefined) {
-          if (_connected && _socket && b._netId) _socket.emit('spike_mob_hit', { mobId: e._netId, bId: b._netId });
+        if (_serverMobAuthority && e._netId !== undefined) {
+          if (_socket?.connected && b._netId) _socket.emit('spike_mob_hit', { mobId: e._netId, bId: b._netId });
         } else {
           e.hp = Math.max(0, e.hp - dmgPerTick);
           if (e.hp <= 0) {
             spawnBlood(e.x, e.y, 10); spawnGoldBurst(e.x, e.y);
             var _xp = e.xpReward || e.xp || 22, _gd = scaleGoldReward(e.goldReward || e.gold || 4);
-            player.xp += scaledXpGain(_xp); player.kills++; player.score = (player.score||0) + Math.round(_xp*1.5+_gd*6);
+            player.xp += scaledXpGain(_xp); player.kills++; _recordLocalKill(); player.score = (player.score||0) + Math.round(_xp*1.5+_gd*6);
             player.gold += _gd; updateUI(); updateXP(); recordKill(); spawnLoot(e.x, e.y, _gd);
             enemies.splice(_mei, 1);
             _eDead = true; break;
@@ -33383,7 +34126,7 @@ window._shareScoreWithParty = function(){
   var _url  = _base + '?partyCode=' + _code;
   var _kills = (typeof player !== 'undefined' && player.kills) || 0;
   var _age   = (typeof getAge === 'function' && typeof player !== 'undefined') ? getAge(player.gold) : '?';
-  var _time  = (typeof _fmtTime === 'function' && typeof globalTime !== 'undefined') ? _fmtTime(globalTime) : '';
+  var _time  = (typeof _fmtTime === 'function' && typeof _survivalStartTime !== 'undefined') ? _fmtTime(Math.max(0, Math.floor((Date.now() - _survivalStartTime) / 1000))) : '';
   var isEn = (localStorage.getItem('fb_lang') === 'en');
   var _text  = isEn 
     ? '⚔️ Got ' + _kills + ' kills in ForestBrawl.io! Age ' + _age + ', survived ' + _time + '!\n🌲 Play with me: ' + _url
@@ -35310,7 +36053,7 @@ function _angDiff(a,b){var d=a-b;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d
 var CAMPS = [
   {
     id: 'worldboss-scorpios', bossName: 'SCORPIOS • Akrep Kralı', bossLevel: 50,
-    bx: 5200, by: 0, terR: 1500, bossR: 112, bossMaxHp: 25000,
+    bx: 5200, by: 0, terR: 1500, bossR: 112, bossMaxHp: 180000,
     bossDmg: 60, bossSpd: 1.75, col: '#8a4d19', out: '#321707', eyeCol: '#d7ff45',
     sprite: 'scorpios', frames: [8, 12, 16],
     spriteBounds: [[66,66,124,181],[60,64,136,186],[66,49,124,207]],
@@ -35322,7 +36065,7 @@ var CAMPS = [
   },
   {
     id: 'worldboss-goliath', bossName: 'GOLIATH • Kaya Devi', bossLevel: 65,
-    bx: 0, by: -5200, terR: 1650, bossR: 132, bossMaxHp: 40000,
+    bx: 0, by: -5200, terR: 1650, bossR: 132, bossMaxHp: 280000,
     bossDmg: 85, bossSpd: 1.3, col: '#754326', out: '#27160e', eyeCol: '#fff0b5',
     sprite: 'goliath', frames: [8, 12, 16],
     spriteBounds: [[60,64,136,104],[51,64,154,106],[48,58,184,117]],
@@ -35416,7 +36159,7 @@ setInterval(function(){
           bs.lastPlayerDmg=now;
           var rawBossDmg=c.bossDmg;
           // Minimum 1 hasar garantisi — zırh ne kadar yüksek olursa olsun
-          var actualBossDmg=reduceLocalPlayerDamage(rawBossDmg);
+          var actualBossDmg=reduceLocalPlayerDamage(Math.min(rawBossDmg,Math.ceil((Number(player.maxHp)||250)*0.18)));
           player.hp=Math.max(0,player.hp-actualBossDmg);
           client.updateHpBar();
           client.shake(14);
@@ -35456,7 +36199,7 @@ setInterval(function(){
         if(bs.castingSkill&&!bs.castingSkill.applied&&now>=bs.castingSkill.telegraphEnd){
           bs.castingSkill.applied=true;
           var _csk=bs.castingSkill.skill;
-          var _csdmg=reduceLocalPlayerDamage(c.bossDmg*_csk.dmgMult);
+          var _csdmg=reduceLocalPlayerDamage(Math.min(c.bossDmg*_csk.dmgMult,Math.ceil((Number(player.maxHp)||250)*0.18)));
           var _pdx3=player.x-bs.x,_pdy3=player.y-bs.y;
           var _pd3=Math.sqrt(_pdx3*_pdx3+_pdy3*_pdy3)||1;
           var _hit=false;
@@ -35504,7 +36247,7 @@ setInterval(function(){
         bs.x+=hdx/hd*c.bossSpd*1.6*dt*60;
         bs.y+=hdy/hd*c.bossSpd*1.6*dt*60;
         // HP yalnızca yuva bölgesine yaklaşınca yavaşça iyileşir
-        if(hDist<c.terR*0.3) bs.hp=Math.min(c.bossMaxHp,bs.hp+c.bossMaxHp*0.0008);
+        if(!bs.aggroed&&hDist<c.terR*0.3) bs.hp=Math.min(c.bossMaxHp,bs.hp+c.bossMaxHp*0.0008);
       } else {
         bs.state='idle';
         // Patrol
@@ -35512,14 +36255,6 @@ setInterval(function(){
         bs.x=c.bx+Math.cos(bs.patrolA)*35;
         bs.y=c.by+Math.sin(bs.patrolA)*35;
         bs.angle=bs.patrolA+Math.PI/2;
-      }
-      // Player attacks boss (proximity auto-attack)
-      if(bs.aggroed&&pDist<c.bossR+55){
-        var plvl=client.getAge();
-        var pdmg=(5+plvl*1.5)*dt*6;
-        bs.hp-=pdmg;
-        bs.dmgFlashFrames=4;
-        if(bs.hp<=0)_bossDied(c,bs);
       }
       // Resource collection
       var nodes=campResNodes[c.id];
@@ -36343,7 +37078,7 @@ renderInventoryIcons(true);
     const bonusHp = (helmet.maxHpBonus || 0) + loot.maxHp;
     const combatStats = window.fbCombatStats || { defenceLevel: 1 };
     const playerLevel = typeof getPlayerLevel === 'function' ? getPlayerLevel(player) : 1;
-    const newMaxHp = Math.max(130, baseHp + bonusHp + (playerLevel - 1) * 22 + (combatStats.defenceLevel - 1) * 6);
+    const newMaxHp = Math.max(130, baseHp + bonusHp + (playerLevel - 1) * 2 + (combatStats.defenceLevel - 1));
     player.maxHp = newMaxHp;
     if (newMaxHp > oldMaxHp) {
       player.hp = Math.min(newMaxHp, (player.hp || baseHp) + (newMaxHp - oldMaxHp));
@@ -36477,42 +37212,6 @@ renderInventoryIcons(true);
   window._getScytheItem = function(id) {
     if (!id) return null;
     return SCYTHE_ITEMS.find(s => s.id === id) || null;
-  };
-
-  window.resetOwnedEquipmentForDeath = function() {
-    try {
-      localStorage.setItem('fb_owned_scythes', JSON.stringify([]));
-      localStorage.setItem('fb_owned_helmets', JSON.stringify([]));
-      localStorage.setItem('fb_crafted_axe_tier', '0');
-      localStorage.setItem('fb_crafted_sword_tier', '0');
-      localStorage.setItem('fb_owned_axe_tiers', JSON.stringify([0]));
-      localStorage.setItem('fb_owned_sword_tiers', JSON.stringify([0]));
-      localStorage.setItem('fb_player_diamond', '0');
-      localStorage.setItem('fb_player_amethyst', '0');
-      localStorage.setItem('fb_player_redite', '0');
-    } catch (_) {}
-    window._equippedScytheId = null;
-    window._equippedHelmetId = null;
-    window._craftedAxeTier = 0;
-    window._craftedSwordTier = 0;
-    window._ownedAxeTiers = [0];
-    window._ownedSwordTiers = [0];
-    if (typeof player !== 'undefined' && player) {
-      player.diamond = 0;
-      player.amethyst = 0;
-      player.redite = 0;
-    }
-    localStorage.removeItem('fb_equipped_scythe');
-    localStorage.removeItem('fb_equipped_helmet');
-    if (typeof window._refreshEquippedItemStats === 'function') window._refreshEquippedItemStats();
-    if (typeof window.selectScythePreview === 'function') window.selectScythePreview(SCYTHE_ITEMS[0].id);
-    if (typeof window.selectHelmetPreview === 'function') window.selectHelmetPreview(HELMET_ITEMS[0].id);
-    if (typeof renderInventoryIcons === 'function') renderInventoryIcons(true);
-    if (typeof window.renderScytheModal === 'function') window.renderScytheModal();
-    if (typeof window.renderHelmetShopModal === 'function') window.renderHelmetShopModal();
-    if (typeof window.renderBlacksmithModal === 'function') window.renderBlacksmithModal();
-    if (typeof _setScytheHudIcon === 'function') _setScytheHudIcon(SCYTHE_ITEMS[0].file);
-    if (typeof _setHelmetHudIcon === 'function') _setHelmetHudIcon(null);
   };
 
   function _createScytheImg(file) {
@@ -37085,42 +37784,6 @@ renderInventoryIcons(true);
   if (savedHelmet && !window._equippedHelmetId) localStorage.removeItem('fb_equipped_helmet');
 
   let _selectedHelmetId = window._equippedHelmetId || HELMET_ITEMS[0].id;
-
-  window.resetOwnedEquipmentForDeath = function() {
-    try {
-      localStorage.setItem('fb_owned_scythes', JSON.stringify([]));
-      localStorage.setItem('fb_owned_helmets', JSON.stringify([]));
-      localStorage.setItem('fb_crafted_axe_tier', '0');
-      localStorage.setItem('fb_crafted_sword_tier', '0');
-      localStorage.setItem('fb_owned_axe_tiers', JSON.stringify([0]));
-      localStorage.setItem('fb_owned_sword_tiers', JSON.stringify([0]));
-      localStorage.setItem('fb_player_diamond', '0');
-      localStorage.setItem('fb_player_amethyst', '0');
-      localStorage.setItem('fb_player_redite', '0');
-    } catch (_) {}
-    window._equippedScytheId = null;
-    window._equippedHelmetId = null;
-    window._craftedAxeTier = 0;
-    window._craftedSwordTier = 0;
-    window._ownedAxeTiers = [0];
-    window._ownedSwordTiers = [0];
-    if (typeof player !== 'undefined' && player) {
-      player.diamond = 0;
-      player.amethyst = 0;
-      player.redite = 0;
-    }
-    localStorage.removeItem('fb_equipped_scythe');
-    localStorage.removeItem('fb_equipped_helmet');
-    if (typeof window._refreshEquippedItemStats === 'function') window._refreshEquippedItemStats();
-    if (typeof window.selectScythePreview === 'function') window.selectScythePreview(SCYTHE_ITEMS[0].id);
-    if (typeof window.selectHelmetPreview === 'function') window.selectHelmetPreview(HELMET_ITEMS[0].id);
-    if (typeof renderInventoryIcons === 'function') renderInventoryIcons(true);
-    if (typeof window.renderScytheModal === 'function') window.renderScytheModal();
-    if (typeof window.renderHelmetShopModal === 'function') window.renderHelmetShopModal();
-    if (typeof window.renderBlacksmithModal === 'function') window.renderBlacksmithModal();
-    if (typeof _setScytheHudIcon === 'function') _setScytheHudIcon(SCYTHE_ITEMS[0].file);
-    _setHelmetHudIcon(null);
-  };
 
   // Sync HUD icon on load
   window.addEventListener('load', () => {
@@ -39012,3 +39675,768 @@ renderInventoryIcons(true);
 </div>
 </body>
 </html>
+<script>
+(() => {
+  'use strict';
+
+  const style = document.createElement('style');
+  style.textContent = `
+    #fb-mount-test-controls {
+      position: fixed;
+      z-index: 260;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 7px;
+      width: 164px;
+      pointer-events: none;
+      top: 64px;
+      left: 10px;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    #fb-mount-test-controls button {
+      min-height: 42px;
+      padding: 8px 11px;
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 12px;
+      color: #fff;
+      background: linear-gradient(145deg, rgba(28,36,48,.96), rgba(9,14,20,.98));
+      box-shadow: 0 5px 18px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.12);
+      font: 900 12px/1.2 'Segoe UI', Arial, sans-serif;
+      text-align: left;
+      text-shadow: 0 1px 3px #000;
+      cursor: pointer;
+      pointer-events: auto;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #fb-mount-test-controls button:active {
+      transform: scale(.96);
+    }
+
+    #fb-free-mount-btn {
+      border-color: rgba(251,191,36,.58);
+    }
+
+    #fb-mob-test-btn {
+      border-color: rgba(248,113,113,.58);
+      background: linear-gradient(145deg, rgba(82,28,28,.96), rgba(25,10,13,.98));
+    }
+
+    #fb-mount-test-status {
+      padding: 5px 8px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 8px;
+      color: #d8e2ee;
+      background: rgba(0,0,0,.72);
+      font-size: 10px;
+      font-weight: 800;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    @media (max-width: 480px) {
+      #fb-mount-test-controls {
+        width: 148px;
+      }
+
+      #fb-mount-test-controls button {
+        min-height: 39px;
+        padding: 7px 9px;
+        font-size: 11px;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const panel = document.createElement('section');
+  panel.id = 'fb-mount-test-controls';
+  panel.setAttribute('aria-label', 'Ücretsiz binek ve mob testleri');
+
+  let mountButton = document.getElementById('mount-btn');
+  if (!mountButton) {
+    mountButton = document.createElement('button');
+    mountButton.id = 'mount-btn';
+    mountButton.type = 'button';
+    mountButton.addEventListener('click', () => window.toggleMount());
+  }
+
+  mountButton.type = 'button';
+  mountButton.innerHTML =
+    '<span aria-hidden="true">🐺</span> Ücretsiz Binek';
+  mountButton.setAttribute('aria-label', 'Ücretsiz test bineğine bin veya in');
+  mountButton.title = 'Ücretsiz test bineği — hız artışı';
+  mountButton.style.setProperty('display', 'inline-flex', 'important');
+  mountButton.style.setProperty('align-items', 'center', 'important');
+  mountButton.style.setProperty('gap', '7px', 'important');
+  mountButton.style.setProperty('width', '100%', 'important');
+  mountButton.onclick = () => window.toggleMount();
+
+  const testMobsButton = document.createElement('button');
+  testMobsButton.id = 'fb-mob-test-btn';
+  testMobsButton.type = 'button';
+  testMobsButton.textContent = '🔥 3 Güçlü Mob Çağır';
+  testMobsButton.title = 'Çevrimdışı test alanına üç güçlü mob ekle';
+
+  const status = document.createElement('div');
+  status.id = 'fb-mount-test-status';
+  status.setAttribute('aria-live', 'polite');
+
+  panel.append(mountButton, testMobsButton, status);
+  document.body.appendChild(panel);
+
+  function positionPanel() {
+    const autoAttackButton = document.getElementById('premium-auto-btn');
+    const rect = autoAttackButton?.getBoundingClientRect();
+
+    if (rect && rect.width > 0 && rect.height > 0) {
+      const panelWidth = panel.getBoundingClientRect().width || 164;
+      const left = Math.min(
+        window.innerWidth - panelWidth - 8,
+        Math.max(8, rect.right + 8)
+      );
+      panel.style.left = `${left}px`;
+      panel.style.top = `${Math.max(8, rect.top)}px`;
+    } else {
+      panel.style.left = '10px';
+      panel.style.top = '64px';
+    }
+  }
+
+  function updateMountStatus() {
+    if (typeof player === 'undefined' || !player) return;
+
+    const mounted = Boolean(player.isMounted);
+    status.textContent = mounted
+      ? '🐺 BİNİLİ • Hız +%28 • Ücretsiz'
+      : 'Ücretsiz test bineği hazır';
+
+    mountButton.setAttribute('aria-pressed', mounted ? 'true' : 'false');
+    mountButton.innerHTML = mounted
+      ? '<span aria-hidden="true">🐺</span> Binekten İn'
+      : '<span aria-hidden="true">🐺</span> Ücretsiz Binek';
+
+    mountButton.style.background = mounted
+      ? 'linear-gradient(180deg, #f59e0b 0%, #b45309 100%)'
+      : '';
+  }
+
+  window.toggleMount = function() {
+    if (typeof player === 'undefined' || !player) return;
+
+    if (player.isMounted) {
+      player.isMounted = false;
+      player.mountType = null;
+      player.mountSpeedBonus = 0;
+
+      if (typeof showGameToast === 'function') {
+        showGameToast('Binekten indin. Test bineği tamamen ücretsiz.');
+      }
+    } else {
+      player.mountType = 'wolf';
+      player.isMounted = true;
+      player.mountSpeedBonus = 1.28;
+
+      if (typeof showGameToast === 'function') {
+        showGameToast('🐺 Ücretsiz test bineğine bindin! Hareket hızı +%28.');
+      }
+    }
+
+    if (typeof _updateMountButton === 'function') _updateMountButton();
+    updateMountStatus();
+  };
+
+  function removePreviousTestMobs() {
+    if (typeof enemies === 'undefined' || !Array.isArray(enemies)) return;
+
+    for (let i = enemies.length - 1; i >= 0; i--) {
+      if (enemies[i]?._mountTestMob) enemies.splice(i, 1);
+    }
+  }
+
+  function spawnTestMobs() {
+    if (typeof player === 'undefined' || !player ||
+        typeof enemies === 'undefined' || !Array.isArray(enemies)) {
+      return;
+    }
+
+    if (typeof _connected !== 'undefined' && _connected) {
+      if (typeof showGameToast === 'function') {
+        showGameToast('Test mobları yalnızca çevrimdışı modda çağrılabilir.');
+      }
+      return;
+    }
+
+    removePreviousTestMobs();
+
+    const specs = [
+      {
+        shape: 'magma_hound',
+        typeName: '🔥 Magma Tazısı',
+        radius: 66,
+        hp: 3600,
+        dmg: 42,
+        speed: 1.55,
+        color: '#9b3828',
+        outline: '#300d09',
+        eyes: '#ffcc33',
+        xpReward: 1,
+        goldReward: 1
+      },
+      {
+        shape: 'fire_drake',
+        typeName: '🐲 Alev Ejderi',
+        radius: 78,
+        hp: 5600,
+        dmg: 50,
+        speed: 1.25,
+        color: '#b83220',
+        outline: '#330b12',
+        eyes: '#ffdf55',
+        xpReward: 1,
+        goldReward: 1
+      },
+      {
+        shape: 'obsidian_golem',
+        typeName: '🪨 Obsidiyen Golem',
+        radius: 92,
+        hp: 9000,
+        dmg: 58,
+        speed: 0.92,
+        color: '#272334',
+        outline: '#08070b',
+        eyes: '#ff4a20',
+        xpReward: 1,
+        goldReward: 1
+      }
+    ];
+
+    const positions = [
+      { x: 300, y: -130 },
+      { x: 390, y: 20 },
+      { x: 300, y: 170 }
+    ];
+
+    for (let i = 0; i < specs.length; i++) {
+      const spec = specs[i];
+      const offset = positions[i];
+
+      enemies.push({
+        ...spec,
+        x: player.x + offset.x,
+        y: player.y + offset.y,
+        _targetX: player.x + offset.x,
+        _targetY: player.y + offset.y,
+        vx: 0,
+        vy: 0,
+        maxHp: spec.hp,
+        hitFlash: 0,
+        animTimer: Math.random() * Math.PI * 2,
+        attackTimer: 0,
+        attackDuration: 75,
+        state: 'idle',
+        provoked: true,
+        lastHit: 0,
+        lastBuildHit: 0,
+        lastSpikeHit: 0,
+        lastResHit: 0,
+        lastHitSwingId: -1,
+        _mountTestMob: true
+      });
+    }
+
+    if (typeof showGameToast === 'function') {
+      showGameToast('🔥 Magma Tazısı, Alev Ejderi ve Obsidiyen Golem çağrıldı!');
+    }
+  }
+
+  testMobsButton.addEventListener('click', spawnTestMobs);
+  window.addEventListener('resize', positionPanel, { passive: true });
+  window.addEventListener('orientationchange', positionPanel, { passive: true });
+
+  positionPanel();
+  updateMountStatus();
+  setInterval(updateMountStatus, 500);
+})();
+</script>
+<script>
+(() => {
+  'use strict';
+
+  // Önceki test çağrısında gerçek oyun dizisine eklenmiş mobları temizle.
+  if (typeof enemies !== 'undefined' && Array.isArray(enemies)) {
+    for (let i = enemies.length - 1; i >= 0; i--) {
+      if (enemies[i]?._mountTestMob) enemies.splice(i, 1);
+    }
+  }
+
+  const oldButton = document.getElementById('fb-mob-test-btn');
+  if (!oldButton) return;
+
+  // Eski tıklama dinleyicisini de kaldır: önceki sürüm mobları enemies dizisine ekliyordu.
+  const testButton = oldButton.cloneNode(true);
+  oldButton.replaceWith(testButton);
+  testButton.textContent = '🔥 3 Mob Önizle';
+
+  const style = document.createElement('style');
+  style.textContent = `
+    #fb-mob-preview {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(4, 8, 12, .82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    #fb-mob-preview.fb-mob-preview-open {
+      display: flex;
+    }
+
+    #fb-mob-preview-card {
+      width: min(760px, 96vw);
+      max-height: 90dvh;
+      overflow: auto;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 18px;
+      color: #fff;
+      background: linear-gradient(145deg, #1b2530, #0b1017);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .65);
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    #fb-mob-preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    #fb-mob-preview-header h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    #fb-mob-preview-close {
+      min-width: 40px;
+      min-height: 38px;
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 10px;
+      color: #fff;
+      background: #342126;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    #fb-mob-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .fb-mob-preview-item {
+      min-width: 0;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, .045);
+      text-align: center;
+    }
+
+    .fb-mob-preview-item canvas {
+      display: block;
+      width: 100%;
+      height: 150px;
+    }
+
+    .fb-mob-preview-name {
+      margin-top: 7px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .fb-mob-preview-desc {
+      margin-top: 4px;
+      color: #b9c4d0;
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 600px) {
+      #fb-mob-preview {
+        padding: 8px;
+      }
+
+      #fb-mob-preview-card {
+        padding: 12px;
+      }
+
+      #fb-mob-preview-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .fb-mob-preview-item {
+        display: grid;
+        grid-template-columns: 100px minmax(0, 1fr);
+        align-items: center;
+        gap: 8px;
+        text-align: left;
+      }
+
+      .fb-mob-preview-item canvas {
+        grid-row: span 2;
+        height: 88px;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const preview = document.createElement('section');
+  preview.id = 'fb-mob-preview';
+  preview.setAttribute('role', 'dialog');
+  preview.setAttribute('aria-modal', 'true');
+  preview.setAttribute('aria-labelledby', 'fb-mob-preview-title');
+
+  preview.innerHTML = `
+    <div id="fb-mob-preview-card">
+      <header id="fb-mob-preview-header">
+        <h2 id="fb-mob-preview-title">Güçlü Moblar — Görsel Önizleme</h2>
+        <button id="fb-mob-preview-close" type="button" aria-label="Kapat">✕</button>
+      </header>
+      <div id="fb-mob-preview-grid">
+        <article class="fb-mob-preview-item">
+          <canvas width="240" height="150" data-mob-shape="magma_hound"></canvas>
+          <div class="fb-mob-preview-name">🔥 Magma Tazısı</div>
+          <div class="fb-mob-preview-desc">Çevik yakın dövüşçü; lav aurası ve hücum animasyonu.</div>
+        </article>
+        <article class="fb-mob-preview-item">
+          <canvas width="240" height="150" data-mob-shape="fire_drake"></canvas>
+          <div class="fb-mob-preview-name">🐲 Alev Ejderi</div>
+          <div class="fb-mob-preview-desc">Kanatlı ağır saldırgan; alev parıltıları ve saldırı animasyonu.</div>
+        </article>
+        <article class="fb-mob-preview-item">
+          <canvas width="240" height="150" data-mob-shape="obsidian_golem"></canvas>
+          <div class="fb-mob-preview-name">🪨 Obsidiyen Golem</div>
+          <div class="fb-mob-preview-desc">Yavaş ve dayanıklı; çatlak taş zırhı ve magma çekirdeği.</div>
+        </article>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(preview);
+
+  const closeButton = preview.querySelector('#fb-mob-preview-close');
+  let animationFrame = 0;
+
+  function drawPreviews() {
+    if (!preview.classList.contains('fb-mob-preview-open')) return;
+
+    const time = performance.now() / 16;
+    for (const canvas of preview.querySelectorAll('canvas[data-mob-shape]')) {
+      const context = canvas.getContext('2d');
+      if (!context) continue;
+
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.save();
+      context.translate(canvas.width / 2, canvas.height / 2 + 4);
+
+      const shape = canvas.dataset.mobShape;
+      const mob = {
+        shape,
+        state: 'attack',
+        attackTimer: (time * 0.7) % 65,
+        animTimer: time,
+        color: '#8b3827',
+        outline: '#211016',
+        eyes: '#ffd34e'
+      };
+
+      if (typeof drawMobShape === 'function') {
+        drawMobShape(context, 38, mob.color, mob.outline, mob.eyes, shape, time, mob);
+      } else {
+        context.fillStyle = '#ff6644';
+        context.beginPath();
+        context.arc(0, 0, 30, 0, Math.PI * 2);
+        context.fill();
+      }
+
+      context.restore();
+    }
+
+    animationFrame = requestAnimationFrame(drawPreviews);
+  }
+
+  function closePreview() {
+    preview.classList.remove('fb-mob-preview-open');
+    cancelAnimationFrame(animationFrame);
+    animationFrame = 0;
+  }
+
+  testButton.addEventListener('click', () => {
+    preview.classList.add('fb-mob-preview-open');
+    cancelAnimationFrame(animationFrame);
+    drawPreviews();
+    closeButton.focus();
+  });
+
+  closeButton.addEventListener('click', closePreview);
+
+  preview.addEventListener('click', event => {
+    if (event.target === preview) closePreview();
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && preview.classList.contains('fb-mob-preview-open')) {
+      closePreview();
+    }
+  });
+})();
+</script>
+<script>
+(() => {
+  'use strict';
+
+  // Önceki test çağrısında gerçek oyun dizisine eklenmiş mobları temizle.
+  if (typeof enemies !== 'undefined' && Array.isArray(enemies)) {
+    for (let i = enemies.length - 1; i >= 0; i--) {
+      if (enemies[i]?._mountTestMob) enemies.splice(i, 1);
+    }
+  }
+
+  const oldButton = document.getElementById('fb-mob-test-btn');
+  if (!oldButton) return;
+
+  // Eski tıklama dinleyicisini de kaldır: önceki sürüm mobları enemies dizisine ekliyordu.
+  const testButton = oldButton.cloneNode(true);
+  oldButton.replaceWith(testButton);
+  testButton.textContent = '🔥 3 Mob Önizle';
+
+  const style = document.createElement('style');
+  style.textContent = `
+    #fb-mob-preview {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(4, 8, 12, .82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    #fb-mob-preview.fb-mob-preview-open {
+      display: flex;
+    }
+
+    #fb-mob-preview-card {
+      width: min(760px, 96vw);
+      max-height: 90dvh;
+      overflow: auto;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 18px;
+      color: #fff;
+      background: linear-gradient(145deg, #1b2530, #0b1017);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, .65);
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    #fb-mob-preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    #fb-mob-preview-header h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    #fb-mob-preview-close {
+      min-width: 40px;
+      min-height: 38px;
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 10px;
+      color: #fff;
+      background: #342126;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    #fb-mob-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .fb-mob-preview-item {
+      min-width: 0;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 13px;
+      background: rgba(255, 255, 255, .045);
+      text-align: center;
+    }
+
+    .fb-mob-preview-item canvas {
+      display: block;
+      width: 100%;
+      height: 150px;
+    }
+
+    .fb-mob-preview-name {
+      margin-top: 7px;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .fb-mob-preview-desc {
+      margin-top: 4px;
+      color: #b9c4d0;
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    @media (max-width: 600px) {
+      #fb-mob-preview {
+        padding: 8px;
+      }
+
+      #fb-mob-preview-card {
+        padding: 12px;
+      }
+
+      #fb-mob-preview-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .fb-mob-preview-item {
+        display: grid;
+        grid-template-columns: 100px minmax(0, 1fr);
+        align-items: center;
+        gap: 8px;
+        text-align: left;
+      }
+
+      .fb-mob-preview-item canvas {
+        grid-row: span 2;
+        height: 88px;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const preview = document.createElement('section');
+  preview.id = 'fb-mob-preview';
+  preview.setAttribute('role', 'dialog');
+  preview.setAttribute('aria-modal', 'true');
+  preview.setAttribute('aria-labelledby', 'fb-mob-preview-title');
+
+  preview.innerHTML = `
+    <div id="fb-mob-preview-card">
+      <header id="fb-mob-preview-header">
+        <h2 id="fb-mob-preview-title">Güçlü Moblar — Görsel Önizleme</h2>
+        <button id="fb-mob-preview-close" type="button" aria-label="Kapat">✕</button>
+      </header>
+      <div id="fb-mob-preview-grid">
+        <article class="fb-mob-preview-item">
+          <canvas width="240" height="150" data-mob-shape="magma_hound"></canvas>
+          <div class="fb-mob-preview-name">🔥 Magma Tazısı</div>
+          <div class="fb-mob-preview-desc">Çevik yakın dövüşçü; lav aurası ve hücum animasyonu.</div>
+        </article>
+        <article class="fb-mob-preview-item">
+          <canvas width="240" height="150" data-mob-shape="fire_drake"></canvas>
+          <div class="fb-mob-preview-name">🐲 Alev Ejderi</div>
+          <div class="fb-mob-preview-desc">Kanatlı ağır saldırgan; alev parıltıları ve saldırı animasyonu.</div>
+        </article>
+        <article class="fb-mob-preview-item">
+          <canvas width="240" height="150" data-mob-shape="obsidian_golem"></canvas>
+          <div class="fb-mob-preview-name">🪨 Obsidiyen Golem</div>
+          <div class="fb-mob-preview-desc">Yavaş ve dayanıklı; çatlak taş zırhı ve magma çekirdeği.</div>
+        </article>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(preview);
+
+  const closeButton = preview.querySelector('#fb-mob-preview-close');
+  let animationFrame = 0;
+
+  function drawPreviews() {
+    if (!preview.classList.contains('fb-mob-preview-open')) return;
+
+    const time = performance.now() / 16;
+    for (const canvas of preview.querySelectorAll('canvas[data-mob-shape]')) {
+      const context = canvas.getContext('2d');
+      if (!context) continue;
+
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.save();
+      context.translate(canvas.width / 2, canvas.height / 2 + 4);
+
+      const shape = canvas.dataset.mobShape;
+      const mob = {
+        shape,
+        state: 'attack',
+        attackTimer: (time * 0.7) % 65,
+        animTimer: time,
+        color: '#8b3827',
+        outline: '#211016',
+        eyes: '#ffd34e'
+      };
+
+      if (typeof drawMobShape === 'function') {
+        drawMobShape(context, 38, mob.color, mob.outline, mob.eyes, shape, time, mob);
+      } else {
+        context.fillStyle = '#ff6644';
+        context.beginPath();
+        context.arc(0, 0, 30, 0, Math.PI * 2);
+        context.fill();
+      }
+
+      context.restore();
+    }
+
+    animationFrame = requestAnimationFrame(drawPreviews);
+  }
+
+  function closePreview() {
+    preview.classList.remove('fb-mob-preview-open');
+    cancelAnimationFrame(animationFrame);
+    animationFrame = 0;
+  }
+
+  testButton.addEventListener('click', () => {
+    preview.classList.add('fb-mob-preview-open');
+    cancelAnimationFrame(animationFrame);
+    drawPreviews();
+    closeButton.focus();
+  });
+
+  closeButton.addEventListener('click', closePreview);
+
+  preview.addEventListener('click', event => {
+    if (event.target === preview) closePreview();
+  });
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && preview.classList.contains('fb-mob-preview-open')) {
+      closePreview();
+    }
+  });
+})();
+</script>
+

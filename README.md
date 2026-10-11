@@ -79,6 +79,10 @@ See `.env.example` for all available options:
 ### Core Gameplay
 - Navigate a procedurally generated forest world
 - Fight mobs to gain XP and coins
+- Toggle automatic melee attacks with the AUTO button beside Inventory; it targets nearby mobs and bosses and continues to use server-enforced attack cooldowns. The “Premium” label does not require a purchase.
+- Mobs are server-authoritative while connected and use local AI after connection fallback; their attacks damage windmills, walls, and fortifications in both modes. Spike hits share one server cooldown, trap captures have a 3-second hold with a short same-trap re-entry cooldown, trap damage is applied on the server, and online building melee hits are validated against range and facing.
+- Combat scales gradually with weapon tiers and level differences; a level-one player needs about five basic hits to defeat a level-one hare, and mob chases stop at attack range to prevent direction jitter. Player-versus-player hits are capped relative to maximum health, melee swings have a server-enforced cooldown, and world-boss melee/turret hits are capped so high-tier damage or passive contact cannot skip boss progression.
+- Crafted and purchased equipment ownership and equipped gear survive death and respawning. Match resources reset on death, while match kills, gold, and XP are recorded from pre-reset values.
 - Place and upgrade eight structure types across six visual tiers
 - Click one of your structures to upgrade it alone or upgrade all owned structures of that type
 - Join clans and parties

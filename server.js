@@ -51,11 +51,13 @@ const BUILD_DURABILITY_MULTIPLIER = 2;
 const BUILDING_MELEE_DAMAGE_MULTIPLIER = 0.4;
 const SCYTHE_DAMAGE_MULTIPLIER = 0.55;
 const BUILDING_HIT_COOLDOWN_MS = 250;
-const WEAPON_TIER_DAMAGE_MULTIPLIERS = Object.freeze([1, 1.5, 2.2, 3.5, 5, 8, 10, 13, 16, 19, 22, 26]);
+const MOB_TRAP_HOLD_MS = 3000;
+const MOB_TRAP_REENTRY_COOLDOWN_MS = 1500;
+const WEAPON_TIER_DAMAGE_MULTIPLIERS = Object.freeze([1, 1.35, 1.8, 2.4, 3.2, 4.2, 5.4, 6.8, 8.4, 10.2, 12.2, 14.5]);
 const BUILD_ACTION_COOLDOWN = 50;
 const TRAP_CAPTURE_DEPTH = 4;
 
-function calculateMeleeDamage(weapon, tier, { isScythe = false, damageMultiplier = 1, maxDamage = 900, buildingDamageMultiplier = 1 } = {}) {
+function calculateMeleeDamage(weapon, tier, { isScythe = false, damageMultiplier = 1, maxDamage = 420, buildingDamageMultiplier = 1 } = {}) {
   const tierIndex = Math.max(0, Math.min(11, Math.floor(Number(tier) || 0)));
   const rawDamage = Math.min(maxDamage, Math.round((weapon === 2 ? 30 : 22) * WEAPON_TIER_DAMAGE_MULTIPLIERS[tierIndex] * damageMultiplier));
   const weaponMultiplier = isScythe ? SCYTHE_DAMAGE_MULTIPLIER : 1;
@@ -99,7 +101,7 @@ function buildingCollisionRadius(building) {
   return Number(building.radius) || BUILD_RADII[Number(building.type)] || 36;
 }
 
-function resolveMobBuildingCollision(mob, building, previousPosition = null) {
+function resolveMobBuildingCollision(mob, building, previousPosition = null, now = Date.now()) {
   if (!mob || !building || (building.hp ?? 100) <= 0 || building.type === 5) {
     return { collided: false, trapped: false };
   }
@@ -126,6 +128,9 @@ function resolveMobBuildingCollision(mob, building, previousPosition = null) {
   };
 
   if (building.type === 6) {
+    if (mob.trapIgnoreBuildingId === building.id && now < (mob.trapIgnoreUntil || 0)) {
+      return { collided: false, trapped: false };
+    }
     const captureRadius = trapCaptureRadius(building, mobRadius);
     let captureX = currentX;
     let captureY = currentY;
@@ -153,7 +158,7 @@ function resolveMobBuildingCollision(mob, building, previousPosition = null) {
     mob.trappedBy = building.id;
     mob.trappedX = captureX;
     mob.trappedY = captureY;
-    mob.trappedUntil = Number.POSITIVE_INFINITY;
+    mob.trappedUntil = now + MOB_TRAP_HOLD_MS;
     mob.vx = 0;
     mob.vy = 0;
     mob.state = 'walk';
@@ -581,7 +586,7 @@ function sanitizeLootEquipment(rawValue, bag) {
 
 const SOCKET_EVENT_LIMITS = {
   state: [90, 1000], swing: [35, 1000], pvp_hit: [35, 1000], arrow_hit: [16, 1000],
-  spike_hit: [20, 1000], trap_touch: [25, 1000],
+  spike_hit: [20, 1000], trap_touch: [25, 1000], mob_trap_hit: [12, 1000],
   trap_owner_push: [35, 1000], res_hit: [25, 1000], mob_hit_req: [20, 1000],
   world_boss_hit_req: [20, 1000], world_boss_turret_hit_req: [20, 1000],
   place_building: [25, 1000], building_hit: [20, 1000], build_hp_update: [20, 1000], build_tier_update: [60, 1000], build_repair: [4, 1000],
@@ -654,33 +659,33 @@ setInterval(() => {
 }, 15 * 60 * 1000).unref();
 const MOB_TYPES = [
   // Village Outskirts Starter Peaceful Wildlife (Lv 1 - 3)
-  { shape: 'wild_hare', biome: 'forest', color: '#b59373', outline: '#3b2512', eyes: '#222222', typeName: '🐰 Yaban Tavşanı', radius: 52, hp: 130, dmg: 10, speed: 22, wanderSpeed: 12, xpReward: 35, goldReward: 12, baseLevel: 1, minLevel: 1, maxLevel: 2, isPeaceful: true },
-  { shape: 'forest_deer', biome: 'forest', color: '#966039', outline: '#3b200e', eyes: '#2b1810', typeName: '🦌 Orman Geyiği', radius: 68, hp: 240, dmg: 16, speed: 20, wanderSpeed: 11, xpReward: 60, goldReward: 18, baseLevel: 2, minLevel: 2, maxLevel: 3, isPeaceful: true },
+  { shape: 'wild_hare', biome: 'forest', color: '#b59373', outline: '#3b2512', eyes: '#222222', typeName: '🐰 Yaban Tavşanı', radius: 75, hp: 100, dmg: 15, speed: 22, wanderSpeed: 12, xpReward: 35, goldReward: 12, baseLevel: 1, minLevel: 1, maxLevel: 2, isPeaceful: true },
+  { shape: 'forest_deer', biome: 'forest', color: '#966039', outline: '#3b200e', eyes: '#2b1810', typeName: '🦌 Orman Geyiği', radius: 95, hp: 240, dmg: 25, speed: 20, wanderSpeed: 11, xpReward: 60, goldReward: 18, baseLevel: 2, minLevel: 2, maxLevel: 3, isPeaceful: true },
   // Forest (Orman Biyomu) — Outskirts (Lv 3-6) to Deep Woods (Lv 7-28)
-  { shape: 'forest_hornet', biome: 'forest', color: '#d8a628', outline: '#4a3108', eyes: '#ff4422', typeName: '🐝 Orman Eşek Arısı', radius: 60, hp: 280, dmg: 28, speed: 23, wanderSpeed: 13, xpReward: 105, goldReward: 26, baseLevel: 4, minLevel: 3, maxLevel: 5 },
-  { shape: 'wolf', biome: 'forest', color: '#6b4932', outline: '#28170d', eyes: '#ffcc66', typeName: '🐺 Kurt', radius: 66, hp: 320, dmg: 26, speed: 19, wanderSpeed: 10, xpReward: 90, goldReward: 24, baseLevel: 4, minLevel: 4, maxLevel: 6 },
-  { shape: 'wild_boar', biome: 'forest', color: '#70503b', outline: '#2d1c12', eyes: '#ffcf9a', typeName: '🐗 Yaban Domuzu', radius: 80, hp: 480, dmg: 40, speed: 17, wanderSpeed: 10, xpReward: 145, goldReward: 36, baseLevel: 7, minLevel: 6, maxLevel: 9 },
-  { shape: 'spider', biome: 'forest', color: '#2a1a38', outline: '#0f0814', eyes: '#ff1100', typeName: '🕷️ Örümcek', radius: 68, hp: 560, dmg: 46, speed: 17, wanderSpeed: 9, xpReward: 180, goldReward: 44, baseLevel: 10, minLevel: 8, maxLevel: 12 },
-  { shape: 'scorpion', biome: 'forest', color: '#4a2818', outline: '#1a0d06', eyes: '#ff4400', typeName: '🦂 Akrep', radius: 74, hp: 700, dmg: 52, speed: 15, wanderSpeed: 9, xpReward: 220, goldReward: 54, baseLevel: 12, minLevel: 10, maxLevel: 15 },
-  { shape: 'bear', biome: 'forest', color: '#4a2f1b', outline: '#1a1008', eyes: '#ffaa00', typeName: '🐻 Ayı', radius: 96, hp: 1020, dmg: 68, speed: 14, wanderSpeed: 8, xpReward: 330, goldReward: 85, baseLevel: 14, minLevel: 12, maxLevel: 17 },
-  { shape: 'grizzly_bear', biome: 'forest', color: '#765137', outline: '#2d1a10', eyes: '#ffb347', typeName: '🐻 Boz Ayı', radius: 112, hp: 1450, dmg: 86, speed: 13, wanderSpeed: 7, xpReward: 450, goldReward: 110, baseLevel: 18, minLevel: 16, maxLevel: 21 },
-  { shape: 'elder_wendigo', biome: 'forest', color: '#8d9b79', outline: '#263126', eyes: '#b9ffcf', typeName: '👹 Kadim Wendigo', radius: 140, hp: 2350, dmg: 106, speed: 14, wanderSpeed: 8, xpReward: 680, goldReward: 185, baseLevel: 22, minLevel: 20, maxLevel: 25 },
-  { shape: 'treant_boss', biome: 'forest', color: '#56713a', outline: '#1e3218', eyes: '#aaff66', typeName: '🌳 Ağaç Devi', radius: 175, hp: 3500, dmg: 124, speed: 10, wanderSpeed: 6, xpReward: 1000, goldReward: 280, baseLevel: 26, minLevel: 25, maxLevel: 28, isBoss: true },
+  { shape: 'forest_hornet', biome: 'forest', color: '#d8a628', outline: '#4a3108', eyes: '#ff4422', typeName: '🐝 Orman Eşek Arısı', radius: 85, hp: 280, dmg: 40, speed: 23, wanderSpeed: 13, xpReward: 105, goldReward: 26, baseLevel: 4, minLevel: 3, maxLevel: 5 },
+  { shape: 'wolf', biome: 'forest', color: '#6b4932', outline: '#28170d', eyes: '#ffcc66', typeName: '🐺 Kurt', radius: 90, hp: 320, dmg: 50, speed: 19, wanderSpeed: 10, xpReward: 90, goldReward: 24, baseLevel: 4, minLevel: 4, maxLevel: 6 },
+  { shape: 'wild_boar', biome: 'forest', color: '#70503b', outline: '#2d1c12', eyes: '#ffcf9a', typeName: '🐗 Yaban Domuzu', radius: 110, hp: 480, dmg: 65, speed: 17, wanderSpeed: 10, xpReward: 145, goldReward: 36, baseLevel: 7, minLevel: 6, maxLevel: 9 },
+  { shape: 'spider', biome: 'forest', color: '#2a1a38', outline: '#0f0814', eyes: '#ff1100', typeName: '🕷️ Örümcek', radius: 95, hp: 560, dmg: 75, speed: 17, wanderSpeed: 9, xpReward: 180, goldReward: 44, baseLevel: 10, minLevel: 8, maxLevel: 12 },
+  { shape: 'scorpion', biome: 'forest', color: '#4a2818', outline: '#1a0d06', eyes: '#ff4400', typeName: '🦂 Akrep', radius: 105, hp: 700, dmg: 90, speed: 15, wanderSpeed: 9, xpReward: 220, goldReward: 54, baseLevel: 12, minLevel: 10, maxLevel: 15 },
+  { shape: 'bear', biome: 'forest', color: '#4a2f1b', outline: '#1a1008', eyes: '#ffaa00', typeName: '🐻 Ayı', radius: 130, hp: 1020, dmg: 110, speed: 14, wanderSpeed: 8, xpReward: 330, goldReward: 85, baseLevel: 14, minLevel: 12, maxLevel: 17 },
+  { shape: 'grizzly_bear', biome: 'forest', color: '#765137', outline: '#2d1a10', eyes: '#ffb347', typeName: '🐻 Boz Ayı', radius: 150, hp: 1450, dmg: 140, speed: 13, wanderSpeed: 7, xpReward: 450, goldReward: 110, baseLevel: 18, minLevel: 16, maxLevel: 21 },
+  { shape: 'elder_wendigo', biome: 'forest', color: '#8d9b79', outline: '#263126', eyes: '#b9ffcf', typeName: '👹 Kadim Wendigo', radius: 185, hp: 2350, dmg: 175, speed: 14, wanderSpeed: 8, xpReward: 680, goldReward: 185, baseLevel: 22, minLevel: 20, maxLevel: 25 },
+  { shape: 'treant_boss', biome: 'forest', color: '#56713a', outline: '#1e3218', eyes: '#aaff66', typeName: '🌳 Ağaç Devi', radius: 230, hp: 7000, dmg: 200, speed: 10, wanderSpeed: 6, xpReward: 1000, goldReward: 280, baseLevel: 26, minLevel: 25, maxLevel: 28, isBoss: true },
 
   // Winter (Kış / Buzul Zirveleri Biyomu) — Lv 22 - 45
-  { shape: 'frost_fox', biome: 'winter', color: '#e2edff', outline: '#2c3e55', eyes: '#38b6ff', typeName: '🦊 Kutup Tilkisi', radius: 62, hp: 620, dmg: 55, speed: 20, wanderSpeed: 12, xpReward: 280, goldReward: 70, baseLevel: 24, minLevel: 22, maxLevel: 26 },
-  { shape: 'polar_bear', biome: 'winter', color: '#f0f5fb', outline: '#3b4b5e', eyes: '#00e5ff', typeName: '🐻‍❄️ Kutup Ayısı', radius: 112, hp: 1550, dmg: 94, speed: 15, wanderSpeed: 9, xpReward: 520, goldReward: 130, baseLevel: 30, minLevel: 28, maxLevel: 34 },
-  { shape: 'mammoth', biome: 'winter', color: '#46382f', outline: '#1c1510', eyes: '#82c8ff', typeName: '🦣 Mamut', radius: 155, hp: 2800, dmg: 128, speed: 12, wanderSpeed: 7, xpReward: 820, goldReward: 220, baseLevel: 38, minLevel: 35, maxLevel: 45 },
+  { shape: 'frost_fox', biome: 'winter', color: '#e2edff', outline: '#2c3e55', eyes: '#38b6ff', typeName: '🦊 Kutup Tilkisi', radius: 85, hp: 620, dmg: 80, speed: 20, wanderSpeed: 12, xpReward: 280, goldReward: 70, baseLevel: 24, minLevel: 22, maxLevel: 26 },
+  { shape: 'polar_bear', biome: 'winter', color: '#f0f5fb', outline: '#3b4b5e', eyes: '#00e5ff', typeName: '🐻‍❄️ Kutup Ayısı', radius: 150, hp: 1550, dmg: 150, speed: 15, wanderSpeed: 9, xpReward: 520, goldReward: 130, baseLevel: 30, minLevel: 28, maxLevel: 34 },
+  { shape: 'mammoth', biome: 'winter', color: '#46382f', outline: '#1c1510', eyes: '#82c8ff', typeName: '🦣 Mamut', radius: 205, hp: 2800, dmg: 200, speed: 12, wanderSpeed: 7, xpReward: 820, goldReward: 220, baseLevel: 38, minLevel: 35, maxLevel: 45 },
 
   // Desert (Çöl / Kum Tepeleri Biyomu) — Lv 24 - 45
-  { shape: 'sand_viper', biome: 'desert', color: '#c89a42', outline: '#4a330e', eyes: '#ffe600', typeName: '🐍 Çöl Engereği', radius: 62, hp: 660, dmg: 60, speed: 19, wanderSpeed: 11, xpReward: 300, goldReward: 75, baseLevel: 26, minLevel: 24, maxLevel: 28 },
-  { shape: 'dune_scorpion', biome: 'desert', color: '#9e6d2b', outline: '#382306', eyes: '#00ff66', typeName: '🦂 Kum Akrebi', radius: 82, hp: 980, dmg: 76, speed: 16, wanderSpeed: 10, xpReward: 410, goldReward: 100, baseLevel: 32, minLevel: 30, maxLevel: 36 },
-  { shape: 'dune_lizard', biome: 'desert', color: '#7a7042', outline: '#2b2711', eyes: '#ff9900', typeName: '🦎 Dikenli Kertenkele', radius: 98, hp: 1550, dmg: 92, speed: 17, wanderSpeed: 10, xpReward: 560, goldReward: 140, baseLevel: 38, minLevel: 36, maxLevel: 45 },
+  { shape: 'sand_viper', biome: 'desert', color: '#c89a42', outline: '#4a330e', eyes: '#ffe600', typeName: '🐍 Çöl Engereği', radius: 85, hp: 660, dmg: 90, speed: 19, wanderSpeed: 11, xpReward: 300, goldReward: 75, baseLevel: 26, minLevel: 24, maxLevel: 28 },
+  { shape: 'dune_scorpion', biome: 'desert', color: '#9e6d2b', outline: '#382306', eyes: '#00ff66', typeName: '🦂 Kum Akrebi', radius: 115, hp: 980, dmg: 120, speed: 16, wanderSpeed: 10, xpReward: 410, goldReward: 100, baseLevel: 32, minLevel: 30, maxLevel: 36 },
+  { shape: 'dune_lizard', biome: 'desert', color: '#7a7042', outline: '#2b2711', eyes: '#ff9900', typeName: '🦎 Dikenli Kertenkele', radius: 135, hp: 1550, dmg: 145, speed: 17, wanderSpeed: 10, xpReward: 560, goldReward: 140, baseLevel: 38, minLevel: 36, maxLevel: 45 },
 
   // Lava (Lav / Volkanik Caldera Biyomu) — Lv 38 - 65
-  { shape: 'magma_hound', biome: 'lava', color: '#2a1410', outline: '#ff3700', eyes: '#ffcc00', typeName: '🐺 Magma Tazısı', radius: 80, hp: 1020, dmg: 86, speed: 19, wanderSpeed: 11, xpReward: 450, goldReward: 115, baseLevel: 40, minLevel: 38, maxLevel: 46 },
-  { shape: 'fire_drake', biome: 'lava', color: '#420d09', outline: '#ff1e00', eyes: '#ffee33', typeName: '🐉 Lav Ejderhası', radius: 125, hp: 2050, dmg: 126, speed: 17, wanderSpeed: 10, xpReward: 760, goldReward: 205, baseLevel: 48, minLevel: 46, maxLevel: 56 },
-  { shape: 'obsidian_golem', biome: 'lava', color: '#18121a', outline: '#ff4400', eyes: '#ff0033', typeName: '🗿 Obsidyen Devi', radius: 165, hp: 3300, dmg: 152, speed: 11, wanderSpeed: 6, xpReward: 1050, goldReward: 290, baseLevel: 56, minLevel: 54, maxLevel: 65, isBoss: true },
+  { shape: 'magma_hound', biome: 'lava', color: '#2a1410', outline: '#ff3700', eyes: '#ffcc00', typeName: '🐺 Magma Tazısı', radius: 110, hp: 1020, dmg: 135, speed: 19, wanderSpeed: 11, xpReward: 450, goldReward: 115, baseLevel: 40, minLevel: 38, maxLevel: 46 },
+  { shape: 'fire_drake', biome: 'lava', color: '#420d09', outline: '#ff1e00', eyes: '#ffee33', typeName: '🐉 Lav Ejderhası', radius: 170, hp: 2050, dmg: 195, speed: 17, wanderSpeed: 10, xpReward: 760, goldReward: 205, baseLevel: 48, minLevel: 46, maxLevel: 56 },
+  { shape: 'obsidian_golem', biome: 'lava', color: '#18121a', outline: '#ff4400', eyes: '#ff0033', typeName: '🗿 Obsidyen Devi', radius: 220, hp: 10000, dmg: 240, speed: 11, wanderSpeed: 6, xpReward: 1050, goldReward: 290, baseLevel: 56, minLevel: 54, maxLevel: 65, isBoss: true },
 ];
 const databaseFile = process.env.DATABASE_FILE || path.join(__dirname, 'forestbrawl.db');
 let sqliteDb = null;
@@ -1378,6 +1383,20 @@ function ownedItemsForUser(user, items) {
   return canUseThor(user) ? ownedItems : ownedItems.filter(itemId => itemId !== 'thor');
 }
 
+function normalizeOwnedTiers(values) {
+  const tiers = Array.isArray(values)
+    ? values.map(Number).filter(tier => Number.isInteger(tier) && tier >= 0 && tier <= 11)
+    : [];
+  return [...new Set([0, ...tiers])];
+}
+
+function normalizeOwnedItemIds(values, pattern) {
+  if (!Array.isArray(values)) return [];
+  return [...new Set(values
+    .filter(value => typeof value === 'string' && pattern.test(value))
+    .map(value => value.trim()))];
+}
+
 function equippedItemsForUser(user, items) {
   const equippedItems = items && typeof items === 'object' ? { ...items } : {};
   if (!canUseThor(user)) {
@@ -1426,6 +1445,10 @@ function loadAccountData() {
           diamonds: Math.max(0, Number(u.diamonds) || 0),
           kills: Math.max(0, Number(u.kills || 0)),
           deaths: Math.max(0, Number(u.deaths || 0)),
+          meleeLevel: Math.max(1, Math.min(100, Number(u.meleeLevel) || 1)),
+          meleeXp: Math.max(0, Number(u.meleeXp) || 0),
+          defenceLevel: Math.max(1, Math.min(100, Number(u.defenceLevel) || 1)),
+          defenceXp: Math.max(0, Number(u.defenceXp) || 0),
           games: Math.max(0, Number(u.gamesPlayed || u.games || 0)),
           gamesPlayed: Math.max(0, Number(u.gamesPlayed || u.games || 0)),
           score: Math.max(0, Number(u.score || 0)),
@@ -1433,6 +1456,14 @@ function loadAccountData() {
           timePlayed: Math.max(0, Number(u.timePlayed || 0)),
           ownedItems: [],
           equippedItems: {},
+          ownedAxes: normalizeOwnedTiers(u.ownedAxes),
+          ownedSwords: normalizeOwnedTiers(u.ownedSwords),
+          ownedHelmets: normalizeOwnedItemIds(u.ownedHelmets, /^helmet_[a-z0-9_]{1,48}$/),
+          ownedScythes: normalizeOwnedItemIds(u.ownedScythes, /^scythe_tier_[1-8]$/),
+          axeTier: Math.max(0, Math.min(11, Math.floor(Number(u.axeTier) || 0))),
+          swordTier: Math.max(0, Math.min(11, Math.floor(Number(u.swordTier) || 0))),
+          scytheId: typeof u.scytheId === 'string' ? u.scytheId : null,
+          helmetSkin: typeof u.helmetSkin === 'string' ? u.helmetSkin : null,
           lootBag: sanitizeLootBag(u.lootBag),
           lootEquipment: {},
           battlePass: (u.battlePass && typeof u.battlePass === 'object') ? u.battlePass : null,
@@ -1454,6 +1485,10 @@ function loadAccountData() {
         };
         loadedUser.ownedItems = ownedItemsForUser(loadedUser, u.ownedItems);
         loadedUser.equippedItems = equippedItemsForUser(loadedUser, u.equippedItems);
+        if (!loadedUser.ownedAxes.includes(loadedUser.axeTier)) loadedUser.axeTier = 0;
+        if (!loadedUser.ownedSwords.includes(loadedUser.swordTier)) loadedUser.swordTier = 0;
+        if (!loadedUser.ownedScythes.includes(loadedUser.scytheId)) loadedUser.scytheId = null;
+        if (!loadedUser.ownedHelmets.includes(loadedUser.helmetSkin)) loadedUser.helmetSkin = null;
         loadedUser.lootEquipment = sanitizeLootEquipment(u.lootEquipment, loadedUser.lootBag);
         cleanUsers[uKey] = loadedUser;
       }
@@ -1494,6 +1529,10 @@ function loadAccountData() {
         diamonds: 0,
         kills: 0,
         deaths: 0,
+        meleeLevel: 1,
+        meleeXp: 0,
+        defenceLevel: 1,
+        defenceXp: 0,
         games: 0,
         gamesPlayed: 0,
         score: 0,
@@ -1501,6 +1540,14 @@ function loadAccountData() {
         timePlayed: 0,
         ownedItems: [],
         equippedItems: {},
+        ownedAxes: [0],
+        ownedSwords: [0],
+        ownedHelmets: [],
+        ownedScythes: [],
+        axeTier: 0,
+        swordTier: 0,
+        scytheId: null,
+        helmetSkin: null,
         lootBag: [],
         lootEquipment: {},
         questProgress: {},
@@ -1571,6 +1618,10 @@ function ensureOwnerAccountMatchesEnvironment() {
       diamonds: 0,
       kills: 0,
       deaths: 0,
+      meleeLevel: 1,
+      meleeXp: 0,
+      defenceLevel: 1,
+      defenceXp: 0,
       games: 0,
       gamesPlayed: 0,
       score: 0,
@@ -1578,6 +1629,14 @@ function ensureOwnerAccountMatchesEnvironment() {
       timePlayed: 0,
       ownedItems: [],
       equippedItems: {},
+      ownedAxes: [0],
+      ownedSwords: [0],
+      ownedHelmets: [],
+      ownedScythes: [],
+      axeTier: 0,
+      swordTier: 0,
+      scytheId: null,
+      helmetSkin: null,
       lootBag: [],
       lootEquipment: {},
       questProgress: {},
@@ -1763,10 +1822,22 @@ function publicUser(user) {
     gamesPlayed: user.gamesPlayed || user.games || 0,
     timePlayed: user.timePlayed || 0,
     xp: user.xp || 0,
+    meleeLevel: Math.max(1, Number(user.meleeLevel) || 1),
+    meleeXp: Math.max(0, Number(user.meleeXp) || 0),
+    defenceLevel: Math.max(1, Number(user.defenceLevel) || 1),
+    defenceXp: Math.max(0, Number(user.defenceXp) || 0),
     xpProgress: rInfo.xpProgress,
     xpToNextRank: rInfo.xpToNextRank,
     ownedItems: ownedItemsForUser(user, user.ownedItems),
     equippedItems: equippedItemsForUser(user, user.equippedItems),
+    ownedAxes: normalizeOwnedTiers(user.ownedAxes),
+    ownedSwords: normalizeOwnedTiers(user.ownedSwords),
+    ownedHelmets: normalizeOwnedItemIds(user.ownedHelmets, /^helmet_[a-z0-9_]{1,48}$/),
+    ownedScythes: normalizeOwnedItemIds(user.ownedScythes, /^scythe_tier_[1-8]$/),
+    axeTier: Number(user.axeTier) || 0,
+    swordTier: Number(user.swordTier) || 0,
+    scytheId: user.scytheId || null,
+    helmetSkin: user.helmetSkin || null,
     settings: user.settings || {},
     coins: user.coins ?? 0,
     gold: user.coins ?? 0,
@@ -3892,7 +3963,7 @@ const WORLD_BOSS_DEFS = Object.freeze([
     name: 'SCORPIOS • Akrep Kralı',
     level: 50,
     x: 5200, y: 0,
-    radius: 112, maxHp: 25000, speed: 105, aggroRange: 1500,
+    radius: 112, maxHp: 180000, speed: 105, aggroRange: 1500,
     damage: 60, attackCooldownMs: 1250, respawnMs: 180000,
     rewardGold: 750, rewardXp: 1800, rewardScore: 3500,
     skill: { id: 'void-burn', name: 'Void Yanığı', type: 'circle', radius: 210, damage: 120, cooldownMs: 8500, telegraphMs: 1300, color: '#b84aff' }
@@ -3902,7 +3973,7 @@ const WORLD_BOSS_DEFS = Object.freeze([
     name: 'GOLIATH • Kaya Devi',
     level: 65,
     x: 0, y: -5200,
-    radius: 132, maxHp: 40000, speed: 78, aggroRange: 1650,
+    radius: 132, maxHp: 280000, speed: 78, aggroRange: 1650,
     damage: 85, attackCooldownMs: 1450, respawnMs: 180000,
     rewardGold: 1200, rewardXp: 2800, rewardScore: 5500,
     skill: { id: 'rock-spike', name: 'Kaya Dikenleri', type: 'line', length: 440, radius: 88, damage: 175, cooldownMs: 9500, telegraphMs: 1450, color: '#d77b32' }
@@ -4604,19 +4675,10 @@ function calculateLevelGapMultiplier(attackerLevel, defenderLevel) {
   const diff = dLvl - aLvl; // Pozitifse savunucu (hedef) daha yüksek seviyeli
 
   if (diff <= 0) {
-    // Saldırgan eşit veya daha yüksek seviyeli: ezici darbe bonusu!
-    const adv = Math.abs(diff);
-    return 1 + Math.min(2.5, adv * 0.14);
+    return Math.min(1.6, 1 + Math.abs(diff) * 0.012);
   }
 
-  // Savunucu daha yüksek seviyeli: ciddi seviye cezası!
-  // "1 seviye oyuncu gidipde 10 seviyeye kesemez ne mobu ne oyuncuyu direk öldürür"
-  if (diff >= 10) return 0.04; // 10+ seviye fark: hasarın %96'sı emilir (neredeyse 1-2 hasar)
-  if (diff >= 8) return 0.08;
-  if (diff >= 6) return 0.16;
-  if (diff >= 4) return 0.30;
-  if (diff >= 2) return 0.55;
-  return 0.80; // 1 seviye fark
+  return Math.max(0.12, Math.pow(0.82, diff));
 }
 
 const MAX_MOBS = 120;
@@ -5243,10 +5305,13 @@ function publicMob(mob) {
 
 function applyMobSpikeDamage(mob, spike, now) {
   if (!mob || !spike || Number(spike.type) !== 3 || (spike.hp ?? 0) <= 0) return false;
-  if (now - (mob.lastSpikeHitAt || 0) < 400) return false;
+  const owner = players.get(spike.ownerId || spike._ownerId);
+  if (owner) return applySpikeDamageToMob(mob, spike, owner, now);
+  if (now - (mob.lastSpikeHitAt || 0) < 420) return false;
   mob.lastSpikeHitAt = now;
   const tier = Math.max(0, Math.min(5, Number(spike.tier) || 0));
-  const damage = [45, 75, 110, 160, 220, 300][tier] || 45;
+  const baseDamage = [45, 75, 110, 160, 220, 300][tier] || 45;
+  const damage = mob.isBoss ? Math.min(baseDamage, Math.ceil(mob.maxHp / 18)) : baseDamage;
   mob.hp = Math.max(0, mob.hp - damage);
   mob.stateSeq = (mob.stateSeq || 0) + 1;
   broadcastMobEventNear(mob, 'mob_update', { id: mob.id, seq: mob.stateSeq, ts: now, hp: mob.hp, maxHp: mob.maxHp, hitFlash: 8 });
@@ -5842,7 +5907,9 @@ function createMob(prefBiome = null, nearX = null, nearY = null) {
     xpReward: scaledXp, goldReward: scaledGold,
     isPeaceful: Boolean(type.isPeaceful),
     isBoss: Boolean(type.isBoss),
-    nextAttackAt: 0, wanderAngle: angle, angle, targetId: null, chaseUntil: 0,
+    nextAttackAt: 0, wanderAngle: angle, wanderTargetAngle: angle,
+    nextWanderTurnAt: Date.now() + 2500 + Math.random() * 2500,
+    angle, targetId: null, chaseUntil: 0,
     state: 'walk', stateSeq: 0, stateAt: Date.now(),
     chaseStartedAt: 0, ignoreTargetId: null, ignoreTargetUntil: 0,
   };
@@ -5965,19 +6032,27 @@ function applyMobDamage(mob, target, damage, isWeb = false) {
   const lvlFactor = calculateLevelGapMultiplier(mobLvl, targetLvl);
   const defLvl = Math.max(1, Number(target.defenceLevel || 1));
   const defBonus = 1 - Math.min(0.40, (defLvl - 1) * 0.015);
+  const armor = Math.max(0.3, Math.min(3.0, Number(target.armorMultiplier) || 1.0));
   const rawDmg = Number(damage) || 1;
-  const appliedDamage = Math.max(1, Math.round(rawDmg * lvlFactor * defBonus));
+  const maxEffectiveDamage = Math.max(1, Math.ceil((Number(target.maxHp) || 250) * 0.18));
+  const maxRawDamage = Math.max(1, Math.floor(maxEffectiveDamage * armor));
+  const appliedDamage = Math.min(
+    limitHitDamage(target, Math.round(rawDmg * lvlFactor * defBonus)),
+    maxRawDamage
+  );
+  const hpBefore = target.hp;
   applyPlayerDamage(target, appliedDamage);
+  const actualDamage = Math.max(0, hpBefore - target.hp);
 
   // Oyuncuya Defence XP kazandır
-  const defXpGain = Math.max(6, Math.round(appliedDamage * 0.55));
+  const defXpGain = Math.max(6, Math.round(actualDamage * 0.55));
   if (targetSocket) {
     awardCombatXp(target, 'defence', defXpGain, { from: mob.typeName || 'Canavar' });
   }
   const hpAt = target.hpAt;
   const hpSeq = target.hpSeq;
   const payload = {
-    id: target.id, hp: target.hp, dmg: appliedDamage, hpSeq, hpAt,
+    id: target.id, hp: target.hp, dmg: actualDamage, hpSeq, hpAt,
     sourceId: mob.id, sourceName: mob.typeName || 'Düşman', isWeb: Boolean(isWeb),
   };
   if (isBot) {
@@ -5991,6 +6066,11 @@ function applyMobDamage(mob, target, damage, isWeb = false) {
     io.to(target.id).emit('self_state', { hp: target.hp, hpSeq, hpAt });
   }
   return payload;
+}
+
+function limitHitDamage(target, damage) {
+  const maxHp = Math.max(1, Number(target?.maxHp) || 250);
+  return Math.min(Math.max(1, Math.round(Number(damage) || 1)), Math.max(1, Math.ceil(maxHp * 0.22)));
 }
 
 function awardCombatXp(player, type, amount, details = {}) {
@@ -6010,6 +6090,7 @@ function awardCombatXp(player, type, amount, details = {}) {
   if (player._authUser) {
     player._authUser[levelKey] = nextLevel;
     player._authUser[xpKey] = xp;
+    saveAccountData();
   }
   const targetSocket = io.sockets.sockets.get(player.id);
   if (!targetSocket) return;
@@ -6035,8 +6116,7 @@ function isPlayerCombatEligible(player, socketMap = io?.sockets?.sockets) {
 function isMobTargetEligible(mob, candidate, socketMap = io?.sockets?.sockets) {
   if (!mob || !candidate) return false;
   if (!isPlayerCombatEligible(candidate, socketMap)) return false;
-  // Players inside village buffer zone (< 1400) cannot be targeted by mobs
-  if (Math.hypot(candidate.x || 0, candidate.y || 0) < 1400) return false;
+  if (isInsideSafeVillage(candidate.x, candidate.y)) return false;
   // Peaceful mobs (Hare, Deer) never auto-aggro unless provoked by player attack
   if (mob.isPeaceful && mob.targetId !== candidate.id) return false;
   const d = Math.hypot((candidate.x || 0) - (mob.x || 0), (candidate.y || 0) - (mob.y || 0));
@@ -6134,7 +6214,7 @@ function applySpikeDamageToTarget(target, spike, now = Date.now(), fromPush = fa
   target.lastSpikeHitAt = now;
 
   const tier = Math.max(0, Math.min(5, Number(spike.tier) || 0));
-  const damage = Math.min(180, Math.round(60 * [1, 1.15, 1.3, 1.5, 1.8, 2.2][tier]));
+  const damage = limitHitDamage(target, Math.min(180, Math.round(60 * [1, 1.15, 1.3, 1.5, 1.8, 2.2][tier])));
   applyPlayerDamage(target, damage);
 
   const owner = players.get(spike.ownerId);
@@ -6218,44 +6298,95 @@ function triggerSpikeContacts(spike, now = Date.now()) {
 }
 
 function applySpikeDamageToMob(mob, spike, attacker, now = Date.now()) {
-  if (!mob || mob.hp <= 0 || !spike || Number(spike.type) !== 3 || (spike.hp ?? 0) <= 0 || !attacker) return false;
-  const hitKey = `spike:${spike.id}:${mob.id}`;
-  if (now - (mobHitCooldowns.get(hitKey) || 0) < 420) return false;
-  mobHitCooldowns.set(hitKey, now);
+  if (!mob || mob.hp <= 0 || !spike || Number(spike.type) !== 3 || (spike.hp ?? 0) <= 0) return false;
+  if (now - (mob.lastSpikeHitAt || 0) < 420) return false;
+  mob.lastSpikeHitAt = now;
   const tier = Math.max(0, Math.min(5, Number(spike.tier) || 0));
-  const damage = Math.min(300, Math.round(45 * [1, 1.15, 1.3, 1.5, 1.8, 2.2][tier]));
+  const baseDamage = [45, 75, 110, 160, 220, 300][tier] || 45;
+  const damage = mob.isBoss ? Math.min(baseDamage, Math.ceil(mob.maxHp / 18)) : baseDamage;
   mob.hp = Math.max(0, mob.hp - damage);
-  setMobTarget(mob, attacker.id, now);
+  if (attacker) setMobTarget(mob, attacker.id, now);
   mob.stateSeq = (mob.stateSeq || 0) + 1;
-  broadcastMobEventNear(mob, 'mob_update', { id: mob.id, seq: mob.stateSeq, hp: mob.hp, maxHp: mob.maxHp, hitFlash: 8, targetId: attacker.id });
+  broadcastMobEventNear(mob, 'mob_update', {
+    id: mob.id, seq: mob.stateSeq, ts: now, hp: mob.hp, maxHp: mob.maxHp,
+    hitFlash: 8, ...(attacker ? { targetId: attacker.id } : {})
+  });
 
   if (mob.hp <= 0) {
     mobs.delete(mob.id);
-    broadcastMobEventNear(mob, 'mob_dead', { id: mob.id, killerId: attacker.id });
-    const rewardGold = Math.max(1, Math.floor((mob.goldReward || 10) * 0.65));
-    const rewardXp = Math.max(1, Math.round((mob.xpReward || 35) * Math.max(0.1, Number(adminConfig.xpRate) || 1)));
-    const rewardScore = Math.round(rewardXp * 0.75 + rewardGold * 3);
-    attacker.gold = (attacker.gold || 0) + rewardGold;
-    attacker.xp = (attacker.xp || 0) + rewardXp;
-    attacker.score = (attacker.score || 0) + rewardScore;
-    attacker.kills = (attacker.kills || 0) + 1;
-    applyLoadoutStats(attacker);
-    attacker.hpSeq = (attacker.hpSeq || 0) + 1;
-    attacker.hpAt = Date.now();
-    const mobQuestKey = questMobKey(mob);
-    recordServerQuestProgress(attacker, { kills: 1, ...(mobQuestKey ? { [mobQuestKey]: 1 } : {}), gold: rewardGold });
-    persistPlayerScore(attacker);
-    const attackerSocket = io.sockets.sockets.get(attacker.id);
-    if (attackerSocket) {
-      attackerSocket.emit('self_state', {
-        hp: attacker.hp, maxHp: attacker.maxHp, baseMaxHp: attacker._loadoutBaseMaxHp,
-        hpSeq: attacker.hpSeq, hpAt: attacker.hpAt,
-        g: attacker.gold, xp: attacker.xp, sc: attacker.score, k: attacker.kills
-      });
-      attackerSocket.emit('mob_kill_reward', { xp: rewardXp, gold: rewardGold, score: rewardScore, typeName: mob.typeName });
-    }
-    awardLoot(attacker, mob.level || mob.lvl || 1, Boolean(mob.isBoss));
+    broadcastMobEventNear(mob, 'mob_dead', { id: mob.id, killerId: attacker?.id || spike.ownerId || null });
+    if (attacker) awardBuildingMobKill(mob, attacker, 0.65);
     setTimeout(() => { if (players.size > 0) ensureMobs(); }, 4000 + Math.random() * 2000);
+  }
+  return true;
+}
+
+function awardBuildingMobKill(mob, attacker, goldMultiplier = 1) {
+  if (!mob || !attacker) return;
+  const rewardGold = Math.max(1, Math.floor((mob.goldReward || 10) * goldMultiplier));
+  const rewardXp = Math.max(1, Math.round((mob.xpReward || 35) * Math.max(0.1, Number(adminConfig.xpRate) || 1)));
+  const rewardScore = Math.round(rewardXp * 0.75 + rewardGold * 3);
+  attacker.gold = (attacker.gold || 0) + rewardGold;
+  attacker.xp = (attacker.xp || 0) + rewardXp;
+  attacker.score = (attacker.score || 0) + rewardScore;
+  attacker.kills = (attacker.kills || 0) + 1;
+  applyLoadoutStats(attacker);
+  attacker.hpSeq = (attacker.hpSeq || 0) + 1;
+  attacker.hpAt = Date.now();
+  const mobQuestKey = questMobKey(mob);
+  recordServerQuestProgress(attacker, { kills: 1, ...(mobQuestKey ? { [mobQuestKey]: 1 } : {}), gold: rewardGold });
+  persistPlayerScore(attacker);
+  const attackerSocket = io.sockets.sockets.get(attacker.id);
+  if (attackerSocket) {
+    attackerSocket.emit('self_state', {
+      hp: attacker.hp, maxHp: attacker.maxHp, baseMaxHp: attacker._loadoutBaseMaxHp,
+      hpSeq: attacker.hpSeq, hpAt: attacker.hpAt,
+      g: attacker.gold, xp: attacker.xp, sc: attacker.score, k: attacker.kills,
+      matchKills: Math.max(0, attacker.kills - (attacker.matchStartKills || 0))
+    });
+    attackerSocket.emit('mob_kill_reward', { xp: rewardXp, gold: rewardGold, score: rewardScore, typeName: mob.typeName });
+  }
+  awardLoot(attacker, mob.level || mob.lvl || 1, Boolean(mob.isBoss));
+}
+
+function applyMobTrapDamage(mob, trap, now = Date.now()) {
+  if (!mob || mob.hp <= 0 || !trap || Number(trap.type) !== 6 || (trap.hp ?? 0) <= 0) return false;
+  const trapId = String(trap.id);
+  const isFirstHit = mob.trapDamageBuildingId !== trapId;
+  if (!isFirstHit && now - (mob.lastTrapDamageAt || 0) < 1500) return false;
+  mob.trapDamageBuildingId = trapId;
+  mob.lastTrapDamageAt = now;
+  const tier = Math.max(0, Math.min(5, Number(trap.tier) || 0));
+  const damage = (isFirstHit ? [35, 60, 90, 130, 180, 250] : [10, 18, 28, 40, 55, 75])[tier] || 10;
+  mob.hp = Math.max(0, mob.hp - damage);
+  mob.stateSeq = (mob.stateSeq || 0) + 1;
+  broadcastMobEventNear(mob, 'mob_update', { id: mob.id, seq: mob.stateSeq, ts: now, hp: mob.hp, maxHp: mob.maxHp, hitFlash: 8 });
+  if (mob.hp <= 0) {
+    mobs.delete(mob.id);
+    const owner = players.get(trap.ownerId || trap._ownerId);
+    broadcastMobEventNear(mob, 'mob_dead', { id: mob.id, killerId: owner?.id || trap.ownerId || null });
+    if (owner) awardBuildingMobKill(mob, owner);
+    setTimeout(() => { if (players.size > 0) ensureMobs(); }, 4000 + Math.random() * 2000);
+  }
+  return true;
+}
+
+function applyMobBuildingDamage(mob, building, now = Date.now()) {
+  if (!mob || !building || (building.hp ?? 0) <= 0) return false;
+  const type = Number(building.type);
+  const cooldown = type === 4 ? 1200 : type === 8 ? 1500 : type === 9 ? 2000 : 0;
+  if (!cooldown || now - (mob.lastBuildHitAt || 0) <= cooldown) return false;
+  mob.lastBuildHitAt = now;
+  const damageMultiplier = type === 4 ? 0.8 : type === 8 ? 0.6 : 0.4;
+  const damage = Math.max(1, Math.round((Number(mob.dmg) || 0) * damageMultiplier));
+  building.hp = Math.max(0, (building.hp ?? building.maxHp ?? 100) - damage);
+  io.emit('build_hp_update', { id: building.id, hp: building.hp });
+  if (building.hp <= 0) {
+    if (type === 6) releaseTrapVictims(building.id);
+    buildings.delete(building.id);
+    scheduleBuildingGridRebuild();
+    io.emit('build_destroy', { id: building.id });
+    io.emit('trap_freed', { buildingId: building.id });
   }
   return true;
 }
@@ -6345,8 +6476,8 @@ function applyLoadoutStats(player) {
   player.baseMaxHp = baseMaxHp;
   player._loadoutBaseMaxHp = Math.max(130, Math.round(baseMaxHp * hpMultiplier));
   const bonusHp = helmetItemStats ? (helmetItemStats.maxHpBonus || 0) : 0;
-  const combatHpBonus = (calculatePlayerLevel(player) - 1) * 22
-    + (Math.max(1, Number(player.defenceLevel) || 1) - 1) * 6;
+  const combatHpBonus = (calculatePlayerLevel(player) - 1) * 2
+    + (Math.max(1, Number(player.defenceLevel) || 1) - 1);
   player.maxHp = Math.max(130, player._loadoutBaseMaxHp + bonusHp + combatHpBonus + lootStats.maxHp);
   const previousHpValue = Number(player.hp);
   const previousHp = Number.isFinite(previousHpValue) ? Math.max(0, previousHpValue) : previousMaxHp;
@@ -6375,6 +6506,24 @@ function applyLoadoutStats(player) {
   player.loadoutSet = premiumDesign.set;
   player.setInfo = setBonus;
   player.weaponInfo = weaponStats;
+}
+
+function persistPlayerEquipment(player) {
+  const user = player?._authUser;
+  if (!user) return;
+  user.ownedAxes = normalizeOwnedTiers(player.ownedAxes);
+  user.ownedSwords = normalizeOwnedTiers(player.ownedSwords);
+  user.ownedHelmets = normalizeOwnedItemIds(player.ownedHelmets, /^helmet_[a-z0-9_]{1,48}$/);
+  user.ownedScythes = normalizeOwnedItemIds(player.ownedScythes, /^scythe_tier_[1-8]$/);
+  user.axeTier = user.ownedAxes.includes(Number(player.axeTier)) ? Number(player.axeTier) : 0;
+  user.swordTier = user.ownedSwords.includes(Number(player.swordTier)) ? Number(player.swordTier) : 0;
+  user.scytheId = user.ownedScythes.includes(player.scytheId) ? player.scytheId : null;
+  user.helmetSkin = user.ownedHelmets.includes(player.helmetSkin) ? player.helmetSkin : null;
+  user.meleeLevel = Math.max(1, Math.min(100, Number(player.meleeLevel) || 1));
+  user.meleeXp = Math.max(0, Number(player.meleeXp) || 0);
+  user.defenceLevel = Math.max(1, Math.min(100, Number(player.defenceLevel) || 1));
+  user.defenceXp = Math.max(0, Number(player.defenceXp) || 0);
+  saveAccountData();
 }
 
 function lootInventoryPayload(player) {
@@ -6526,18 +6675,7 @@ function onPlayerDeath(playerId) {
     target.apples = 5;
     target.score = 0;
     target.sc = 0;
-    target.axeTier = 0;
-    target.swordTier = 0;
-    target.ownedAxes = [0];
-    target.ownedSwords = [0];
-    target.helmetSkin = '';
-    target.ownedHelmets = [];
-    target.scytheId = null;
-    target._preScytheSwordTier = null;
-    target.ownedScythes = [];
-    if (String(target.swordSkin || '').startsWith('scythe_')) target.swordSkin = null;
-    target.acc = { ...(target.acc || {}), h: null };
-    if (String(target.acc.w || '').startsWith('scythe_')) target.acc.w = null;
+    persistPlayerEquipment(target);
     target._dead = true;
     if (target.isBot) {
       target.trappedBy = null;
@@ -6867,6 +7005,8 @@ setInterval(() => {
         mob.vy = 0;
         mob.x = mob.trappedX ?? mob.x;
         mob.y = mob.trappedY ?? mob.y;
+        applyMobTrapDamage(mob, b, now);
+        if (mob.hp <= 0) continue;
         for (const spike of nearbyBuildings(mob.x, mob.y, mob.radius + 90)) {
           const dx = mob.x - spike.x;
           const dy = mob.y - spike.y;
@@ -6876,9 +7016,20 @@ setInterval(() => {
         changed.push(publicMob(mob));
         continue; // Mob is trapped in place — CANNOT chase or attack distant players!
       } else {
+        const expiredTrapId = mob.trappedBy;
         mob.trappedBy = null;
         mob.trappedUntil = 0;
-        io.emit('mob_freed', { mobId: mob.id });
+        if (expiredTrapId) {
+          mob.trapIgnoreBuildingId = expiredTrapId;
+          mob.trapIgnoreUntil = now + MOB_TRAP_REENTRY_COOLDOWN_MS;
+        }
+        mob.trapDamageBuildingId = null;
+        mob.lastTrapDamageAt = 0;
+        io.emit('mob_freed', {
+          mobId: mob.id,
+          buildingId: expiredTrapId || null,
+          ignoreUntil: mob.trapIgnoreUntil || 0
+        });
       }
     }
 
@@ -6948,48 +7099,49 @@ setInterval(() => {
 
     const targetDistance = target ? ((target.x - mob.x) ** 2 + (target.y - mob.y) ** 2) : Infinity;
     if (target && now < mob.chaseUntil) {
-      const distance = Math.sqrt(targetDistance) || 1;
+      const distance = Math.sqrt(targetDistance);
       const spd = ((mob.speed || MOB_SPEED) * 0.5) * (mob.isEnraged ? 1.28 : 1.0);
-      const targetAngle = Math.atan2(target.y - mob.y, target.x - mob.x);
-      const mobHash = (parseInt(String(mob.id).replace(/\D/g, ''), 10) || 0) % 5;
-      const flankOffset = (mobHash - 2) * 0.26;
-      mob.angle = distance > 80 ? (targetAngle + flankOffset) : targetAngle;
-      mob.vx = Math.cos(mob.angle) * spd;
-      mob.vy = Math.sin(mob.angle) * spd;
+      const stopDistance = (mob.radius || MOB_RADIUS) + 30;
+      const targetAngle = distance > 1 ? Math.atan2(target.y - mob.y, target.x - mob.x) : mob.angle;
+      mob.angle = targetAngle;
+      const approachDistance = Math.max(0, distance - stopDistance);
+      const chaseSpeed = Math.min(spd, approachDistance / tickScale);
+      mob.vx = Math.cos(targetAngle) * chaseSpeed;
+      mob.vy = Math.sin(targetAngle) * chaseSpeed;
 
       let abilityFired = false;
       const shape = mob.shape || '';
 
       // Biome Signature Abilities
-      if ((shape === 'spider' || shape === 'orumcek') && distance < 300 && distance > 70 && now >= (mob.nextAbilityAt || 0) && now - (mob.lastWebAt || 0) >= (mob.isEnraged ? 3200 : 4500)) {
+      if ((shape === 'spider' || shape === 'orumcek') && distance < 300 && distance > 70 && now >= (mob.nextAbilityAt || 0) && now - (mob.lastWebAt || 0) >= (mob.isEnraged ? 2500 : 3500)) {
         mob.lastWebAt = now;
-        mob.nextAbilityAt = now + (mob.isEnraged ? 3200 : 4500);
-        mob.nextAttackAt = now + (mob.isEnraged ? 1200 : 1800);
+        mob.nextAbilityAt = now + (mob.isEnraged ? 2500 : 3500);
+        mob.nextAttackAt = now + (mob.isEnraged ? 900 : 1300);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
         const webDmg = 18;
         const webDamage = applyMobDamage(mob, target, webDmg, true);
         broadcastMobEventNear(mob, 'mob_attack', {
-          id: mob.id, targetId: target.id, dmg: webDmg, hp: webDamage?.hp, hpSeq: webDamage?.hpSeq,
+          id: mob.id, targetId: target.id, dmg: webDamage?.dmg ?? 0, hp: webDamage?.hp, hpSeq: webDamage?.hpSeq,
           typeName: mob.typeName, shape: mob.shape, isWeb: true,
           x: mob.x, y: mob.y, angle: mob.angle, targetX: target.x, targetY: target.y, seq: mob.stateSeq, ts: mob.stateAt
         });
         abilityFired = true;
       } else if (shape === 'polar_bear' && distance < 150 && now >= (mob.nextAbilityAt || 0)) {
-        mob.nextAbilityAt = now + 6000;
-        mob.nextAttackAt = now + (mob.isEnraged ? 1050 : 1500);
+        mob.nextAbilityAt = now + 4500;
+        mob.nextAttackAt = now + (mob.isEnraged ? 800 : 1100);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
         const slamDmg = 65;
         const damageRes = applyMobDamage(mob, target, slamDmg);
         broadcastMobEventNear(mob, 'mob_ability', {
-          id: mob.id, ability: 'glacial_slam', targetId: target.id, dmg: slamDmg, hp: damageRes?.hp,
+          id: mob.id, ability: 'glacial_slam', targetId: target.id, dmg: damageRes?.dmg ?? 0, hp: damageRes?.hp,
           x: mob.x, y: mob.y, targetX: target.x, targetY: target.y, radius: 150, shape
         });
         abilityFired = true;
       } else if (shape === 'frost_fox' && distance > 90 && distance < 280 && now >= (mob.nextAbilityAt || 0)) {
-        mob.nextAbilityAt = now + 4500;
-        mob.nextAttackAt = now + (mob.isEnraged ? 1000 : 1400);
+        mob.nextAbilityAt = now + 3500;
+        mob.nextAttackAt = now + (mob.isEnraged ? 750 : 1100);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
         const dashDist = Math.min(80, Math.max(20, distance - 40));
@@ -7000,13 +7152,13 @@ setInterval(() => {
         const dashDmg = 45;
         const damageRes = applyMobDamage(mob, target, dashDmg);
         broadcastMobEventNear(mob, 'mob_ability', {
-          id: mob.id, ability: 'frost_dash', targetId: target.id, dmg: dashDmg, hp: damageRes?.hp,
+          id: mob.id, ability: 'frost_dash', targetId: target.id, dmg: damageRes?.dmg ?? 0, hp: damageRes?.hp,
           x: mob.x, y: mob.y, targetX: target.x, targetY: target.y, shape
         });
         abilityFired = true;
       } else if (shape === 'mammoth' && distance < 260 && now >= (mob.nextAbilityAt || 0)) {
-        mob.nextAbilityAt = now + 7000;
-        mob.nextAttackAt = now + (mob.isEnraged ? 1150 : 1600);
+        mob.nextAbilityAt = now + 5500;
+        mob.nextAttackAt = now + (mob.isEnraged ? 900 : 1200);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
         const chargeDist = Math.min(70, Math.max(20, distance - 30));
@@ -7017,49 +7169,49 @@ setInterval(() => {
         const trampleDmg = 80;
         const damageRes = applyMobDamage(mob, target, trampleDmg);
         broadcastMobEventNear(mob, 'mob_ability', {
-          id: mob.id, ability: 'trample', targetId: target.id, dmg: trampleDmg, hp: damageRes?.hp,
+          id: mob.id, ability: 'trample', targetId: target.id, dmg: damageRes?.dmg ?? 0, hp: damageRes?.hp,
           x: mob.x, y: mob.y, targetX: target.x, targetY: target.y, shape
         });
         abilityFired = true;
       } else if (shape === 'sand_viper' && distance > 80 && distance < 340 && now >= (mob.nextAbilityAt || 0)) {
-        mob.nextAbilityAt = now + 4000;
-        mob.nextAttackAt = now + (mob.isEnraged ? 1000 : 1400);
+        mob.nextAbilityAt = now + 3000;
+        mob.nextAttackAt = now + (mob.isEnraged ? 750 : 1100);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
         const spitDmg = 38;
         const damageRes = applyMobDamage(mob, target, spitDmg, true);
         broadcastMobEventNear(mob, 'mob_ability', {
-          id: mob.id, ability: 'venom_spit', targetId: target.id, dmg: spitDmg, hp: damageRes?.hp,
+          id: mob.id, ability: 'venom_spit', targetId: target.id, dmg: damageRes?.dmg ?? 0, hp: damageRes?.hp,
           x: mob.x, y: mob.y, targetX: target.x, targetY: target.y, shape
         });
         abilityFired = true;
       } else if (shape === 'dune_scorpion' && distance < 110 && now >= (mob.nextAbilityAt || 0)) {
-        mob.nextAbilityAt = now + 6500;
-        mob.nextAttackAt = now + (mob.isEnraged ? 1050 : 1500);
+        mob.nextAbilityAt = now + 5000;
+        mob.nextAttackAt = now + (mob.isEnraged ? 800 : 1100);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
         const clampDmg = 55;
         const damageRes = applyMobDamage(mob, target, clampDmg);
         broadcastMobEventNear(mob, 'mob_ability', {
-          id: mob.id, ability: 'pincer_clamp', targetId: target.id, dmg: clampDmg, hp: damageRes?.hp,
+          id: mob.id, ability: 'pincer_clamp', targetId: target.id, dmg: damageRes?.dmg ?? 0, hp: damageRes?.hp,
           x: mob.x, y: mob.y, targetX: target.x, targetY: target.y, shape
         });
         abilityFired = true;
       } else if (shape === 'dune_lizard' && distance < 130 && now >= (mob.nextAbilityAt || 0)) {
-        mob.nextAbilityAt = now + 5000;
-        mob.nextAttackAt = now + (mob.isEnraged ? 1000 : 1400);
+        mob.nextAbilityAt = now + 4000;
+        mob.nextAttackAt = now + (mob.isEnraged ? 750 : 1100);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
         const whipDmg = 50;
         const damageRes = applyMobDamage(mob, target, whipDmg);
         broadcastMobEventNear(mob, 'mob_ability', {
-          id: mob.id, ability: 'tail_whip', targetId: target.id, dmg: whipDmg, hp: damageRes?.hp,
+          id: mob.id, ability: 'tail_whip', targetId: target.id, dmg: damageRes?.dmg ?? 0, hp: damageRes?.hp,
           x: mob.x, y: mob.y, targetX: target.x, targetY: target.y, shape
         });
         abilityFired = true;
       } else if (shape === 'magma_hound' && distance > 80 && distance < 260 && now >= (mob.nextAbilityAt || 0)) {
-        mob.nextAbilityAt = now + 4200;
-        mob.nextAttackAt = now + (mob.isEnraged ? 1000 : 1400);
+        mob.nextAbilityAt = now + 3200;
+        mob.nextAttackAt = now + (mob.isEnraged ? 750 : 1100);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
         const pounceDist = Math.min(80, Math.max(20, distance - 30));
@@ -7070,48 +7222,48 @@ setInterval(() => {
         const pounceDmg = 60;
         const damageRes = applyMobDamage(mob, target, pounceDmg);
         broadcastMobEventNear(mob, 'mob_ability', {
-          id: mob.id, ability: 'blaze_pounce', targetId: target.id, dmg: pounceDmg, hp: damageRes?.hp,
+          id: mob.id, ability: 'blaze_pounce', targetId: target.id, dmg: damageRes?.dmg ?? 0, hp: damageRes?.hp,
           x: mob.x, y: mob.y, targetX: target.x, targetY: target.y, shape
         });
         abilityFired = true;
       } else if (shape === 'fire_drake' && distance < 280 && now >= (mob.nextAbilityAt || 0)) {
-        mob.nextAbilityAt = now + 5500;
-        mob.nextAttackAt = now + (mob.isEnraged ? 1050 : 1500);
+        mob.nextAbilityAt = now + 4200;
+        mob.nextAttackAt = now + (mob.isEnraged ? 800 : 1100);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
         const breathDmg = 70;
         const damageRes = applyMobDamage(mob, target, breathDmg);
         broadcastMobEventNear(mob, 'mob_ability', {
-          id: mob.id, ability: 'inferno_breath', targetId: target.id, dmg: breathDmg, hp: damageRes?.hp,
+          id: mob.id, ability: 'inferno_breath', targetId: target.id, dmg: damageRes?.dmg ?? 0, hp: damageRes?.hp,
           x: mob.x, y: mob.y, targetX: target.x, targetY: target.y, angle: mob.angle, shape
         });
         abilityFired = true;
       } else if (shape === 'obsidian_golem' && distance < 190 && now >= (mob.nextAbilityAt || 0)) {
-        mob.nextAbilityAt = now + 8000;
-        mob.nextAttackAt = now + (mob.isEnraged ? 1150 : 1600);
+        mob.nextAbilityAt = now + 6000;
+        mob.nextAttackAt = now + (mob.isEnraged ? 900 : 1200);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
         const quakeDmg = 85;
         const damageRes = applyMobDamage(mob, target, quakeDmg);
         broadcastMobEventNear(mob, 'mob_ability', {
-          id: mob.id, ability: 'seismic_quake', targetId: target.id, dmg: quakeDmg, hp: damageRes?.hp,
+          id: mob.id, ability: 'seismic_quake', targetId: target.id, dmg: damageRes?.dmg ?? 0, hp: damageRes?.hp,
           x: mob.x, y: mob.y, targetX: target.x, targetY: target.y, radius: 190, shape
         });
         abilityFired = true;
       }
 
       // Standard melee attack if no ability fired and in contact range
-      if (!abilityFired && distance < (mob.radius + 60) && now >= (mob.nextAttackAt || 0) && (now - (target.stateAt || 0) < 600)) {
+      if (!abilityFired && distance < (mob.radius + 60) && now >= (mob.nextAttackAt || 0) && now - (target.stateAt || 0) < 2500) {
         const meleeDamage = applyMobDamage(mob, target, mob.dmg);
-        mob.nextAttackAt = now + (mob.isEnraged ? 1050 : 1600);
+        mob.nextAttackAt = now + (mob.isEnraged ? 800 : 1200);
         mob.chaseUntil = now + MOB_CHASE_TIMEOUT;
         mob.state = 'attack';
         broadcastMobEventNear(mob, 'mob_attack', {
-          id: mob.id, targetId: target.id, dmg: mob.dmg, hp: meleeDamage?.hp, hpSeq: meleeDamage?.hpSeq,
+          id: mob.id, targetId: target.id, dmg: meleeDamage?.dmg ?? 0, hp: meleeDamage?.hp, hpSeq: meleeDamage?.hpSeq,
           typeName: mob.typeName, shape: mob.shape,
           x: mob.x, y: mob.y, angle: mob.angle, targetX: target.x, targetY: target.y, seq: mob.stateSeq, ts: mob.stateAt
         });
-      } else if (mob.state === 'attack' && now >= (mob.nextAttackAt || 0) - 800) {
+      } else if (mob.state === 'attack' && now >= (mob.nextAttackAt || 0) - 600) {
         mob.state = 'walk';
       }
 
@@ -7128,11 +7280,17 @@ setInterval(() => {
       const leash = mob.leashRadius || 550;
       const distFromHome = Math.hypot(mob.x - homeX, mob.y - homeY);
       if (distFromHome > leash * 0.8) {
-        // Outside territory leash: steer directly back toward home
-        mob.wanderAngle = Math.atan2(homeY - mob.y, homeX - mob.x);
-      } else if (Math.random() < 0.06) {
-        mob.wanderAngle += (Math.random() - 0.5) * 1.4;
+        mob.wanderTargetAngle = Math.atan2(homeY - mob.y, homeX - mob.x);
+      } else if (now >= (mob.nextWanderTurnAt || 0)) {
+        mob.wanderTargetAngle = mob.wanderAngle + (Math.random() - 0.5) * 1.2;
+        mob.nextWanderTurnAt = now + 2500 + Math.random() * 2500;
       }
+      const wanderTurn = Math.atan2(
+        Math.sin(mob.wanderTargetAngle - mob.wanderAngle),
+        Math.cos(mob.wanderTargetAngle - mob.wanderAngle)
+      );
+      const maxWanderTurn = 0.045 * tickScale;
+      mob.wanderAngle += Math.max(-maxWanderTurn, Math.min(maxWanderTurn, wanderTurn));
       const wspd = (mob.wanderSpeed || MOB_WANDER_SPEED) * 0.5;
 
       // Biome-aware wandering boundaries
@@ -7229,7 +7387,7 @@ setInterval(() => {
     const sweepCenterX = (previousX + mob.x) * 0.5;
     const sweepCenterY = (previousY + mob.y) * 0.5;
     for (const b of nearbyBuildings(sweepCenterX, sweepCenterY, mob.radius + 120 + movementDistance * 0.5)) {
-      const collision = resolveMobBuildingCollision(mob, b, { x: previousX, y: previousY });
+      const collision = resolveMobBuildingCollision(mob, b, { x: previousX, y: previousY }, now);
       if (collision.trapped) {
         mob.nextAttackAt = now + 3500;
         io.emit('mob_trapped', {
@@ -7245,6 +7403,9 @@ setInterval(() => {
       if (collision.collided && b.type === 3 && (b.hp ?? 100) > 0) {
         applyMobSpikeDamage(mob, b, now);
         break;
+      }
+      if (collision.collided && [4, 8, 9].includes(Number(b.type))) {
+        applyMobBuildingDamage(mob, b, now);
       }
     }
 
@@ -7916,7 +8077,7 @@ setInterval(() => {
             // Forward arc check: Target must be in front of the bot (+/- 75 degrees)
             if (facingDiff < Math.PI * 0.42 && (!targetPlayer.clanId || targetPlayer.clanId !== bot.clanId)) {
               const multiplier = [1, 1.4, 2.0, 3.0, 4.5][bot.swordTier || 1] || 1.4;
-              const dmg = Math.round((bot.weapon === 2 ? 26 : 18) * multiplier);
+              const dmg = limitHitDamage(targetPlayer, Math.round((bot.weapon === 2 ? 26 : 18) * multiplier));
 
               targetPlayer._lastAttackedBy = bot.id;
               applyPlayerDamage(targetPlayer, dmg);
@@ -8374,6 +8535,20 @@ io.on('connection', (socket) => {
       baseWorldX = vSpawn.x;
       baseWorldY = vSpawn.y;
     }
+    const ownedAxes = authUser
+      ? normalizeOwnedTiers(authUser.ownedAxes)
+      : normalizeOwnedTiers(data.ownedAxes);
+    const ownedSwords = authUser
+      ? normalizeOwnedTiers(authUser.ownedSwords)
+      : normalizeOwnedTiers(data.ownedSwords);
+    const ownedHelmets = authUser
+      ? normalizeOwnedItemIds(authUser.ownedHelmets, /^helmet_[a-z0-9_]{1,48}$/)
+      : normalizeOwnedItemIds(data.ownedHelmets, /^helmet_[a-z0-9_]{1,48}$/);
+    const ownedScythes = authUser
+      ? normalizeOwnedItemIds(authUser.ownedScythes, /^scythe_tier_[1-8]$/)
+      : normalizeOwnedItemIds(data.ownedScythes, /^scythe_tier_[1-8]$/);
+    const requestedAxeTier = Math.max(0, Math.min(11, Math.floor(Number(authUser?.axeTier ?? data.axeTier) || 0)));
+    const requestedSwordTier = Math.max(0, Math.min(11, Math.floor(Number(authUser?.swordTier ?? data.swordTier) || 0)));
     const state = {
       ...data,
       mode: gameMode,
@@ -8417,12 +8592,12 @@ io.on('connection', (socket) => {
       weapon: Number(data.weapon) || 1,
       designWeapon: sanitizePremiumDesign(data).weapon,
       loadoutSet: sanitizePremiumDesign(data).set,
-      axeTier: 0,
-      swordTier: 0,
-      ownedAxes: [0],
-      ownedSwords: [0],
-      ownedHelmets: [],
-      ownedScythes: [],
+      axeTier: ownedAxes.includes(requestedAxeTier) ? requestedAxeTier : 0,
+      swordTier: ownedSwords.includes(requestedSwordTier) ? requestedSwordTier : 0,
+      ownedAxes,
+      ownedSwords,
+      ownedHelmets,
+      ownedScythes,
       lootBag: sanitizeLootBag(authUser?.lootBag),
       lootEquipment: sanitizeLootEquipment(authUser?.lootEquipment, sanitizeLootBag(authUser?.lootBag)),
       role: sanitizePlayerLoadout(data.role, data.helmet).role,
@@ -8434,8 +8609,8 @@ io.on('connection', (socket) => {
       swordSkin: String(data.swordSkin || data.acc?.w || '').startsWith('scythe_')
         ? null
         : (data.swordSkin || data.acc?.w || null),
-      scytheId: null,
-      helmetSkin: null,
+      scytheId: ownedScythes.includes(authUser?.scytheId || data.scytheId) ? (authUser?.scytheId || data.scytheId) : null,
+      helmetSkin: ownedHelmets.includes(authUser?.helmetSkin || data.helmetSkin) ? (authUser?.helmetSkin || data.helmetSkin) : null,
       buildX: typeof data.buildX === 'number' ? data.buildX : null,
       buildY: typeof data.buildY === 'number' ? data.buildY : null,
       profileCosmetics: authUser?.equippedItems ? {
@@ -8624,12 +8799,7 @@ io.on('connection', (socket) => {
     player.diamond = 0;
     player.amethyst = 0;
     player.redite = 0;
-    player.axeTier = 0;
-    player.swordTier = 0;
-    player.ownedAxes = [0];
-    player.ownedSwords = [0];
-    player.helmetSkin = '';
-    player.ownedHelmets = [];
+    persistPlayerEquipment(player);
     player.apples = 5;
     player.weapon = 1;
     player.trappedBy = null;
@@ -8645,9 +8815,12 @@ io.on('connection', (socket) => {
     player.helmet = loadout.helmet;
     applyLoadoutStats(player);
     socket.emit('own_respawn', { x: spawnPt.x, y: spawnPt.y });
-    socket.emit('self_state', { x: spawnPt.x, y: spawnPt.y, hp: player.hp, hpSeq: 0, hpAt: player.hpAt, sc: player.score, g: player.gold, wood: player.wood, stone: player.stone, apples: player.apples, diamond: player.diamond || 0, amethyst: player.amethyst || 0, redite: player.redite || 0, seq: player.stateSeq || 0 });
+    socket.emit('self_state', { x: spawnPt.x, y: spawnPt.y, hp: player.hp, hpSeq: 0, hpAt: player.hpAt, sc: player.score, g: player.gold, xp: player.xp, k: player.kills, matchKills: 0, wood: player.wood, stone: player.stone, apples: player.apples, diamond: player.diamond || 0, amethyst: player.amethyst || 0, redite: player.redite || 0, seq: player.stateSeq || 0 });
     socket.emit('buildings_sync', { buildings: Object.fromEntries(buildings) });
-    io.emit('gear_update', { id: socket.id, axeTier: 0, swordTier: 0, helmetSkin: '' });
+    io.emit('gear_update', {
+      id: socket.id, axeTier: player.axeTier, swordTier: player.swordTier,
+      helmetSkin: player.helmetSkin || '', scytheId: player.scytheId || null
+    });
     io.emit('player_respawn', { id: socket.id, state: compactFullState(player) });
     broadcastOnlineCount();
   });
@@ -9086,7 +9259,7 @@ io.on('connection', (socket) => {
     const isScythe = weapon === 2 && Boolean(attacker.scytheId || data.scytheId || (attacker.swordSkin && String(attacker.swordSkin).startsWith('scythe_')) || (data.swordSkin && String(data.swordSkin).startsWith('scythe_')));
     const now = Date.now();
     const attackSpeed = Math.max(0.88, Math.min(1.18, Number(attacker.attackSpeedMultiplier) || 1));
-    const baseSwingCooldown = isBuildingWeapon ? 40 : (isScythe ? 260 : (weapon === 2 ? 54 : 42));
+    const baseSwingCooldown = isBuildingWeapon ? 40 : (isScythe ? 380 : (weapon === 2 ? 330 : 300));
     const swingCooldown = isBuildingWeapon ? baseSwingCooldown : Math.round(baseSwingCooldown / attackSpeed);
     if (now - (attacker.lastSwingAt || 0) < swingCooldown) return;
     const swingId = Number.isFinite(Number(data.swingId)) ? Number(data.swingId) : null;
@@ -9107,7 +9280,7 @@ io.on('connection', (socket) => {
     attacker.attackUntil = now + (isBuildingWeapon ? 240 : swingCooldown);
     attacker.isAttacking = true;
     attacker.attackTimer = 0;
-    attacker.attackDuration = isBuildingWeapon ? 240 : Math.round((weapon === 2 ? 280 : 300) / attackSpeed);
+    attacker.attackDuration = isBuildingWeapon ? 240 : Math.round((isScythe ? 380 : (weapon === 2 ? 330 : 300)) / attackSpeed);
     const attackPacket = {
       id: socket.id,
       weapon,
@@ -9127,7 +9300,7 @@ io.on('connection', (socket) => {
       if (targetId === socket.id || target.hp <= 0) continue;
       if (!validateCombatState(attacker, target, { allowTrapHit: true, rangeLimit: range + 64, damage })) continue;
       if (swingId && target.lastHitSwingId === swingId) continue;
-      if (now - (target.lastHitTime || 0) < Math.round((isScythe ? 260 : 140) / attackSpeed)) continue;
+      if (now - (target.lastHitTime || 0) < Math.round((isScythe ? 380 : (weapon === 2 ? 330 : 300)) / attackSpeed)) continue;
       const dx = (Number(target.x) || 0) - attackerX, dy = (Number(target.y) || 0) - attackerY;
       let difference = Math.abs(Math.atan2(dy, dx) - angle);
       if (difference > Math.PI) difference = Math.PI * 2 - difference;
@@ -9139,9 +9312,9 @@ io.on('connection', (socket) => {
       const aLvl = calculatePlayerLevel(attacker);
       const tLvl = calculatePlayerLevel(target);
       const lvlFactor = calculateLevelGapMultiplier(aLvl, tLvl);
-      const mBonus = 1 + (Math.max(1, Number(attacker.meleeLevel || 1)) - 1) * 0.022;
+      const mBonus = 1 + Math.min(0.75, (Math.max(1, Number(attacker.meleeLevel || 1)) - 1) * 0.022);
       const tDefBonus = 1 - Math.min(0.40, (Math.max(1, Number(target.defenceLevel || 1)) - 1) * 0.015);
-      const finalPvpDmg = Math.max(1, Math.round(damage * lvlFactor * mBonus * tDefBonus));
+      const finalPvpDmg = limitHitDamage(target, Math.round(damage * lvlFactor * mBonus * tDefBonus));
 
       applyPlayerDamage(target, finalPvpDmg);
 
@@ -9166,6 +9339,10 @@ io.on('connection', (socket) => {
         target.kills = target.kills || 0;
         attacker.kills = (attacker.kills || 0) + 1;
         attacker.score = (attacker.score || 0) + 150;
+        socket.emit('self_state', {
+          matchKills: Math.max(0, attacker.kills - (attacker.matchStartKills || 0)),
+          sc: attacker.score
+        });
         if (!attacker.isBot && !target.isBot) {
           recordServerQuestProgress(attacker, {
             pvpKills: 1,
@@ -9205,7 +9382,7 @@ io.on('connection', (socket) => {
     const weapon = attacker.weapon === 2 ? 2 : 1;
     const isScythe = weapon === 2 && Boolean(attacker.scytheId || (attacker.swordSkin && String(attacker.swordSkin).startsWith('scythe_')));
     const attackSpeed = Math.max(0.88, Math.min(1.18, Number(attacker.attackSpeedMultiplier) || 1));
-    if (now - (target.lastHitTime || 0) < Math.round((isScythe ? 260 : 140) / attackSpeed)) return; // Prevent duplicate rapid damage
+    if (now - (target.lastHitTime || 0) < Math.round((isScythe ? 380 : 300) / attackSpeed)) return; // Prevent duplicate rapid damage
     const dx = (Number(target.x) || 0) - (Number(attacker.x) || 0);
     const dy = (Number(target.y) || 0) - (Number(attacker.y) || 0);
     const dist = Math.hypot(dx, dy);
@@ -9219,7 +9396,7 @@ io.on('connection', (socket) => {
     const aLvl = calculatePlayerLevel(attacker);
     const tLvl = calculatePlayerLevel(target);
     const lvlFactor = calculateLevelGapMultiplier(aLvl, tLvl);
-    const mBonus = 1 + (Math.max(1, Number(attacker.meleeLevel || 1)) - 1) * 0.022;
+    const mBonus = 1 + Math.min(0.75, (Math.max(1, Number(attacker.meleeLevel || 1)) - 1) * 0.022);
     const tDefBonus = 1 - Math.min(0.40, (Math.max(1, Number(target.defenceLevel || 1)) - 1) * 0.015);
     let damage = Math.max(1, Math.round(rawDamage * lvlFactor * mBonus * tDefBonus));
 
@@ -9227,6 +9404,7 @@ io.on('connection', (socket) => {
     if (attacker.critChance && Math.random() < attacker.critChance) {
       damage = Math.round(damage * (attacker.critMultiplier || 1.75));
     }
+    damage = limitHitDamage(target, damage);
 
     // Necromancer Lifesteal (Ruh Necromancer)
     if (attacker.lifesteal && attacker.lifesteal > 0 && (attacker.hp ?? 0) < (attacker.maxHp || 250)) {
@@ -9267,6 +9445,10 @@ io.on('connection', (socket) => {
       target.kills = target.kills || 0;
       attacker.kills = (attacker.kills || 0) + 1;
       attacker.score = (attacker.score || 0) + 150;
+      socket.emit('self_state', {
+        matchKills: Math.max(0, attacker.kills - (attacker.matchStartKills || 0)),
+        sc: attacker.score
+      });
       if (!attacker.isBot && !target.isBot) {
         recordServerQuestProgress(attacker, {
           pvpKills: 1,
@@ -9323,6 +9505,7 @@ io.on('connection', (socket) => {
         damage = turretProjectileDamage(turret);
       }
     }
+    damage = limitHitDamage(target, damage);
     applyPlayerDamage(target, damage);
     if (target.isBot) alertBotAttacked(target, attacker);
     io.to(data.targetId).emit('pvp_hit', { dmg: damage, fromName: attacker.name || 'Oyuncu' });
@@ -9334,6 +9517,10 @@ io.on('connection', (socket) => {
       target.kills = target.kills || 0;
       attacker.kills = (attacker.kills || 0) + 1;
       attacker.score = (attacker.score || 0) + 150;
+      socket.emit('self_state', {
+        matchKills: Math.max(0, attacker.kills - (attacker.matchStartKills || 0)),
+        sc: attacker.score
+      });
       if (!attacker.isBot && !target.isBot) {
         recordServerQuestProgress(attacker, {
           pvpKills: 1,
@@ -9393,23 +9580,26 @@ io.on('connection', (socket) => {
   });
 
   socket.on('mob_trap_hit', (data = {}) => {
+    if (socketEventRateLimited(socket, 'mob_trap_hit')) return;
     const mob = mobs.get(String(data.mobId || ''));
     if (!mob || mob.hp <= 0) return;
     const b = buildings.get(String(data.buildingId || ''));
     const owner = b ? players.get(b.ownerId) : null;
     if (!b || b.type !== 6 || (b.hp ?? 0) <= 0 || !owner || owner.hp <= 0 || owner.id !== socket.id) return;
+    const now = Date.now();
+    if (mob.trappedBy || (mob.trapIgnoreBuildingId === b.id && now < (mob.trapIgnoreUntil || 0))) return;
     const dx = mob.x - b.x, dy = mob.y - b.y;
     const triggerRadius = trapCaptureRadius(b, mob.radius || 36);
     if (dx * dx + dy * dy > triggerRadius * triggerRadius) return;
     if (b && (b.hp ?? 100) > 0) {
       mob.trappedBy = b.id;
-      mob.trappedUntil = Number.POSITIVE_INFINITY;
+      mob.trappedUntil = now + MOB_TRAP_HOLD_MS;
       mob.trappedX = mob.x;
       mob.trappedY = mob.y;
       mob.vx = 0;
       mob.vy = 0;
       mob.state = 'walk';
-      mob.nextAttackAt = Date.now() + 3500; // Freeze attack while trapped
+      mob.nextAttackAt = now + MOB_TRAP_HOLD_MS;
       io.emit('mob_trapped', { mobId: mob.id, buildingId: b.id, x: mob.x, y: mob.y });
     }
   });
@@ -9662,6 +9852,7 @@ io.on('connection', (socket) => {
     player.swordSkin = id;
     player.swordTier = tier;
     applyLoadoutStats(player);
+    persistPlayerEquipment(player);
     player.hpSeq = (player.hpSeq || 0) + 1;
     player.hpAt = Date.now();
     socket.emit('self_state', {
@@ -9700,6 +9891,7 @@ io.on('connection', (socket) => {
     player.swordSkin = id;
     player.swordTier = tier;
     applyLoadoutStats(player);
+    persistPlayerEquipment(player);
     player.hpSeq = (player.hpSeq || 0) + 1;
     player.hpAt = Date.now();
     socket.emit('self_state', {
@@ -9807,6 +9999,8 @@ io.on('connection', (socket) => {
       });
     }
 
+    persistPlayerEquipment(player);
+
     // Success response
     socket.emit('blacksmith_craft_res', {
       ok: true,
@@ -9877,6 +10071,7 @@ io.on('connection', (socket) => {
     } else {
       return socket.emit('blacksmith_equip_res', { ok: false, error: 'Bu eşyaya sahip değilsiniz.' });
     }
+    persistPlayerEquipment(player);
     broadcastPlayerEventNear(player, 'gear_update', {
       id: socket.id,
       axeTier: player.axeTier,
@@ -10031,7 +10226,7 @@ io.on('connection', (socket) => {
       const mobLvl = mob.level || 1;
       const lvlFactor = calculateLevelGapMultiplier(aLvl, mobLvl);
       const meleeLvl = Math.max(1, Number(attacker.meleeLevel || 1));
-      const meleeBonus = 1 + (meleeLvl - 1) * 0.022;
+      const meleeBonus = 1 + Math.min(0.75, (meleeLvl - 1) * 0.022);
       dmg = Math.max(1, Math.round(dmg * lvlFactor * meleeBonus));
 
       // Draconic Crit (Ejderha Barbar)
@@ -10054,6 +10249,7 @@ io.on('connection', (socket) => {
       awardCombatXp(attacker, 'melee', meleeXpGain, { hitId: mob.id, targetLvl: mobLvl });
     }
 
+    if (mob.isBoss) dmg = Math.min(dmg, Math.max(1, Math.ceil((Number(mob.maxHp) || 1) / 18)));
     mob.hp = Math.max(0, mob.hp - dmg);
     setMobTarget(mob, socket.id, now);
 
@@ -10064,6 +10260,7 @@ io.on('connection', (socket) => {
     mob.vy = (mob.vy || 0) + Math.sin(pushAngle) * pushForce;
     mob.x += Math.cos(pushAngle) * (pushForce * 0.7);
     mob.y += Math.sin(pushAngle) * (pushForce * 0.7);
+    mob.angle = Math.atan2(sourceY - mob.y, sourceX - mob.x);
 
     mob.stateSeq = (mob.stateSeq || 0) + 1;
     broadcastMobEventNear(mob, 'mob_update', {
@@ -10102,7 +10299,8 @@ io.on('connection', (socket) => {
       socket.emit('self_state', {
         hp: attacker.hp, maxHp: attacker.maxHp, baseMaxHp: attacker._loadoutBaseMaxHp,
         hpSeq: attacker.hpSeq, hpAt: attacker.hpAt,
-        g: attacker.gold, xp: attacker.xp, sc: attacker.score, k: attacker.kills
+        g: attacker.gold, xp: attacker.xp, sc: attacker.score, k: attacker.kills,
+        matchKills: Math.max(0, attacker.kills - (attacker.matchStartKills || 0))
       });
       socket.emit('mob_kill_reward', {
         xp: rewardXp,
@@ -10160,7 +10358,8 @@ io.on('connection', (socket) => {
     const bossLvl = bossDef.level || 50;
     const lvlFactor = calculateLevelGapMultiplier(aLvl, bossLvl);
     const meleeLvl = Math.max(1, Number(attacker.meleeLevel || 1));
-    damage = Math.max(1, Math.round(damage * lvlFactor * (1 + (meleeLvl - 1) * 0.022)));
+    const meleeBonus = 1 + Math.min(0.75, (meleeLvl - 1) * 0.022);
+    damage = Math.min(420, Math.max(1, Math.round(damage * lvlFactor * meleeBonus)));
 
     // Melee XP
     awardCombatXp(attacker, 'melee', Math.max(10, Math.round(damage * 0.5)), { bossId });
@@ -10198,10 +10397,10 @@ io.on('connection', (socket) => {
     if (Math.hypot(turret.x - boss.x, turret.y - boss.y) > turretRange(turret) + bossDef.radius + 16) return;
 
     const now = Date.now();
-    const shotCooldownMs = Math.ceil((70 - turretTier(turret) * 10) * 1000 / 60);
+    const shotCooldownMs = 1000;
     if (now - (turret.lastBossHitAt || 0) < shotCooldownMs) return;
     turret.lastBossHitAt = now;
-    const damage = turretProjectileDamage(turret);
+    const damage = Math.min(120, turretProjectileDamage(turret));
     const appliedDamage = Math.min(damage, boss.hp);
     recordWorldBossContribution(boss, attacker, appliedDamage);
     boss.hp = Math.max(0, boss.hp - appliedDamage);
@@ -10351,10 +10550,30 @@ io.on('connection', (socket) => {
     const swingId = Number(data.swingId);
     const now = Date.now();
     if (!Number.isFinite(swingId) || swingId !== attacker.lastSwingId || now - (attacker.lastSwingAt || 0) > 350) return;
+    const weapon = Number(attacker.weapon);
+    if (weapon !== 1 && weapon !== 2) return;
+    if (building.ownerClanId && attacker.clanId && building.ownerClanId === attacker.clanId) return;
+    const isScythe = weapon === 2 && Boolean(attacker.scytheId || (attacker.swordSkin && String(attacker.swordSkin).startsWith('scythe_')));
+    const attackAngle = Number(attacker.lastAttackAngle);
+    if (!Number.isFinite(attackAngle)) return;
+    const dx = Number(building.x) - (Number(attacker.x) || 0);
+    const dy = Number(building.y) - (Number(attacker.y) || 0);
+    const distance = Math.hypot(dx, dy);
+    const buildingRadius = buildingCollisionRadius(building);
+    const attackerRadius = Math.max(16, Math.min(64, Number(attacker.radius) || 24));
+    const weaponRange = isScythe ? 168 : weapon === 2 ? 140 : 128;
+    if (distance > attackerRadius * 0.5 + weaponRange + buildingRadius) return;
+    const pointBlank = distance <= attackerRadius + buildingRadius + 20;
+    if (!pointBlank && attacker.trappedBy !== building.id) {
+      let angleDiff = Math.atan2(dy, dx) - attackAngle;
+      while (angleDiff > Math.PI) angleDiff -= Math.PI * 2;
+      while (angleDiff < -Math.PI) angleDiff += Math.PI * 2;
+      const spread = isScythe ? Math.PI / 2.5 : weapon === 2 ? Math.PI / 3.25 : Math.PI / 2.57;
+      if (Math.abs(angleDiff) > spread) return;
+    }
     const hitIds = attacker.lastBuildingHitIds || (attacker.lastBuildingHitIds = new Set());
     const buildingId = String(building.id || id);
     if (hitIds.has(buildingId)) return;
-    if (Math.hypot((Number(attacker.x) || 0) - Number(building.x), (Number(attacker.y) || 0) - Number(building.y)) > 250) return;
     // Removed: if (building.ownerId === socket.id) return; (Players should be able to break their own builds)
     const lastHitAt = attacker.lastBuildingHitAt || (attacker.lastBuildingHitAt = new Map());
     if (now - (lastHitAt.get(buildingId) || 0) < BUILDING_HIT_COOLDOWN_MS) return;
@@ -10365,8 +10584,6 @@ io.on('connection', (socket) => {
         if (now - hitAt > 10000) lastHitAt.delete(hitBuildingId);
       }
     }
-    const weapon = Number(attacker.weapon) === 2 ? 2 : 1;
-    const isScythe = weapon === 2 && Boolean(attacker.scytheId || (attacker.swordSkin && String(attacker.swordSkin).startsWith('scythe_')));
     const tier = Math.max(0, Math.min(5, Number(weapon === 2 ? attacker.swordTier : attacker.axeTier) || 0));
     const hitDmg = calculateMeleeDamage(weapon, tier, { isScythe, maxDamage: 120, buildingDamageMultiplier: BUILDING_MELEE_DAMAGE_MULTIPLIER });
     building.hp = Math.max(0, (building.hp ?? building.maxHp ?? 100) - hitDmg);
@@ -10392,6 +10609,13 @@ io.on('connection', (socket) => {
     if (hp >= (building.hp ?? building.maxHp ?? 100)) return;
     building.hp = Math.max(0, Math.min(building.hp ?? building.maxHp ?? 100, hp));
     io.emit('build_hp_update', { id, hp: building.hp });
+    if (building.hp <= 0) {
+      if (Number(building.type) === 6) releaseTrapVictims(id);
+      buildings.delete(id);
+      scheduleBuildingGridRebuild();
+      io.emit('build_destroy', { id });
+      io.emit('trap_freed', { buildingId: id });
+    }
   });
 
   socket.on('build_repair', ({ id } = {}) => {
